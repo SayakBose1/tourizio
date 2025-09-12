@@ -1,0 +1,244 @@
+<!-- Hero Section -->
+<div
+  class="relative bg-cover bg-center h-64 md:h-96 rounded-b-lg"
+  style="background-image: url('assets/images/bg.jpg')"
+>
+  <!-- Dark overlay for readability -->
+  <div
+    class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center text-white px-4"
+  >
+    <h1 class="text-4xl md:text-5xl font-bold mb-2">
+      Explore Your Dream Destination
+    </h1>
+    <p class="text-lg md:text-2xl">
+      Discover amazing places and plan your perfect trip
+    </p>
+  </div>
+</div>
+
+<!-- Trending Destinations Section -->
+<div class="max-w-6xl mx-auto py-12 px-4">
+  <h2 class="text-3xl font-bold text-center mb-8">Trending Destinations</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div
+      *ngFor="let place of trendingPlaces"
+      class="bg-white rounded-xl shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300"
+    >
+      <!-- Image with skeleton -->
+      <div class="relative w-full h-48 overflow-hidden">
+        <ng-container *ngIf="place.image; else loadingSkeleton">
+          <img
+            [src]="place.image"
+            [alt]="place.name"
+            class="w-full h-full object-cover"
+          />
+        </ng-container>
+        <ng-template #loadingSkeleton>
+          <div class="skeleton w-full h-full"></div>
+        </ng-template>
+      </div>
+
+      <div class="p-4">
+        <h3 class="text-xl font-semibold">{{ place.name }}</h3>
+        <p class="text-gray-500">{{ place.location }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Destinations Section -->
+<div class="bg-gray-50 py-12 px-4">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">
+      Choose Your Destination
+    </h2>
+
+    <!-- Destination Dropdown -->
+    <div class="flex justify-center mb-6">
+      <select
+        (change)="onSelectDestination($event.target.value)"
+        class="mb-6 p-4 border-2 border-blue-600 rounded-xl shadow-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="">-- Select a Destination --</option>
+        <option *ngFor="let d of destinations" [value]="d">{{ d }}</option>
+      </select>
+    </div>
+
+    <!-- Type Filter Dropdown -->
+    <div class="flex justify-center mb-10 gap-4">
+      <label class="text-gray-700 font-semibold mt-2">Filter by Type:</label>
+      <select
+        (change)="filterByType($event.target.value)"
+        class="p-3 border-2 border-blue-600 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="">All Types</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Cultural">Cultural</option>
+        <option value="Food">Food</option>
+        <option value="Nature">Nature</option>
+      </select>
+    </div>
+
+    <!-- Popular Places Heading -->
+    <div *ngIf="selectedDestination">
+      <h3 class="text-2xl font-semibold mb-6 text-gray-700 text-center">
+        Popular Places in {{ selectedDestination }}
+      </h3>
+    </div>
+  </div>
+</div>
+
+<!-- Places Grid (with skeleton loader for images) -->
+<div class="grid md:grid-cols-3 gap-8">
+  <div
+    *ngFor="let p of filteredPlaces"
+    class="bg-white rounded-xl shadow-lg overflow-hidden relative hover:shadow-2xl transform transition duration-300 hover:-translate-y-1"
+  >
+    <!-- Image wrapper with skeleton -->
+    <div class="relative w-full h-56 rounded-t-xl overflow-hidden">
+      <ng-container *ngIf="p.image; else loadingSkeleton">
+        <img
+          [src]="p.image"
+          [alt]="p.name"
+          class="w-full h-full object-cover"
+        />
+      </ng-container>
+      <ng-template #loadingSkeleton>
+        <div class="skeleton w-full h-full"></div>
+      </ng-template>
+    </div>
+
+    <div class="p-6 flex flex-col">
+      <h4 class="text-xl font-semibold mb-1">{{ p.name }}</h4>
+      <p class="text-gray-600 mb-4">{{ p.location }}</p>
+
+      <!-- Price and Days inline -->
+      <p class="text-green-600 font-bold mb-4">
+        ₹{{ p.price }}
+        <span *ngIf="p.days" class="ml-3">
+          <span class="text-gray-400">•&nbsp;</span>
+          <span class="text-green-600">{{ p.days }}</span>
+          <span class="text-green-600 font-bold">
+            {{ p.days === 1 ? " day" : " days" }}
+          </span>
+        </span>
+      </p>
+
+      <div class="flex gap-3 mb-4">
+        <button
+          (click)="onBookNow(p.id)"
+          class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+        >
+          Book Now
+        </button>
+        <button
+          class="flex-1 bg-gray-200 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 font-semibold transition"
+        >
+          View Details
+        </button>
+      </div>
+
+      <!-- Mini Map -->
+      <div
+        class="w-full h-48 md:h-64 rounded-lg shadow-inner overflow-hidden relative"
+        [id]="'mini-map-' + p.id"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- Featured Experiences Section -->
+<div class="bg-gray-50 py-12 mt-12 rounded-lg max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl font-bold text-center mb-8">Featured Experiences</h2>
+  <div class="grid md:grid-cols-4 gap-6">
+    <div
+      class="bg-white rounded-lg shadow-lg p-6 text-center hover:scale-105 transition"
+    >
+      <img
+        src="https://images.unsplash.com/photo-1508780709619-79562169bc64"
+        class="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
+      />
+      <h3 class="font-semibold mb-2">Adventure Trips</h3>
+      <p class="text-gray-600">
+        Trekking, rafting, and more for thrill seekers.
+      </p>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-lg p-6 text-center hover:scale-105 transition"
+    >
+      <img
+        src="https://images.unsplash.com/photo-1509099836639-18ba1795216d"
+        class="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
+      />
+      <h3 class="font-semibold mb-2">Cultural Tours</h3>
+      <p class="text-gray-600">Explore local traditions and heritage sites.</p>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-lg p-6 text-center hover:scale-105 transition"
+    >
+      <img
+        src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0"
+        class="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
+      />
+      <h3 class="font-semibold mb-2">Food Tours</h3>
+      <p class="text-gray-600">
+        Taste the local cuisine and street food delights.
+      </p>
+    </div>
+
+    <div
+      class="bg-white rounded-lg shadow-lg p-6 text-center hover:scale-105 transition"
+    >
+      <img
+        src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+        class="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
+      />
+      <h3 class="font-semibold mb-2">Nature Trails</h3>
+      <p class="text-gray-600">Relax in scenic landscapes and natural parks.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Newsletter / Subscription Section -->
+<div
+  class="bg-blue-600 text-white py-12 px-4 rounded-lg mt-12 text-center max-w-6xl mx-auto"
+>
+  <h3 class="text-3xl md:text-4xl font-bold mb-3">Get Travel Updates</h3>
+  <p class="mb-6 text-lg md:text-xl">
+    Subscribe to our newsletter for the latest deals, guides, and travel tips.
+  </p>
+
+  <form
+    (ngSubmit)="subscribe()"
+    class="flex flex-col md:flex-row justify-center items-center gap-4"
+  >
+    <input
+      type="email"
+      [(ngModel)]="email"
+      name="email"
+      placeholder="Enter your email"
+      class="p-4 rounded-lg md:rounded-r-none w-full md:w-1/3 focus:outline-none text-gray-800"
+      required
+    />
+    <button
+      type="submit"
+      class="bg-white text-blue-600 font-semibold px-6 py-4 rounded-lg md:rounded-l-none hover:bg-gray-100 transition"
+    >
+      Subscribe
+    </button>
+  </form>
+
+  <!-- Success message -->
+  <p
+    *ngIf="subscribed"
+    class="mt-4 text-green-500 font-semibold transition-all duration-300"
+  >
+    ✅ Subscribed successfully!
+  </p>
+
+  <p class="mt-4 text-sm md:text-base text-white/80">
+    We respect your privacy. Unsubscribe at any time.
+  </p>
+</div>

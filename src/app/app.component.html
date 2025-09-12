@@ -1,0 +1,11 @@
+<div class="min-h-screen flex flex-col">
+  <app-navbar></app-navbar>
+
+  <main [@routeAnimations]="prepareRoute(outlet)">
+    <div class="container flex-1">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+  </main>
+
+  <app-footer *ngIf="!isAuthPage()"></app-footer>
+</div>

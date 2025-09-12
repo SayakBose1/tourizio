@@ -1,0 +1,157 @@
+<div class="relative bg-gradient-to-br from-gray-50 to-gray-100 py-16 px-6">
+  <div class="max-w-2xl mx-auto bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-8 border border-gray-200">
+    
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-gray-900">Contact Us</h2>
+      <p class="text-gray-600 mt-2">We’d love to hear from you! Fill out the form below.</p>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="showSuccessMessage" 
+         class="mb-6 flex items-center gap-3 p-4 bg-green-50 border border-green-300 text-green-800 rounded-lg">
+      <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M5 13l4 4L19 7" />
+      </svg>
+      <div>
+        <p class="font-medium">Thank you for your message!</p>
+        <p class="text-sm">We'll get back to you within 24 hours.</p>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="showErrorMessage" 
+         class="mb-6 flex items-center gap-3 p-4 bg-red-50 border border-red-300 text-red-800 rounded-lg">
+      <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M6 18L18 6M6 6l12 12" />
+      </svg>
+      <div>
+        <p class="font-medium">Something went wrong!</p>
+        <p class="text-sm">Please try again or contact us directly.</p>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <form (ngSubmit)="submitContact()" #contactForm="ngForm" class="space-y-5">
+      <input type="hidden" name="access_key" [value]="web3formsKey">
+      <input type="hidden" name="subject" value="New Contact Form Submission - Tourism App">
+      <input type="hidden" name="redirect" value="https://web3forms.com/success">
+
+      <!-- Name -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Name</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-user"></i>
+          </span>
+          <input 
+            type="text" 
+            [(ngModel)]="contact.name" 
+            name="name"
+            class="w-full border border-gray-300 rounded-md p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+            placeholder="Your full name"
+            required>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Email</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-envelope"></i>
+          </span>
+          <input 
+            type="email" 
+            [(ngModel)]="contact.email" 
+            name="email"
+            class="w-full border border-gray-300 rounded-md p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+            placeholder="your.email@example.com"
+            required>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Phone (Optional)</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-phone"></i>
+          </span>
+          <input 
+            type="tel" 
+            [(ngModel)]="contact.phone" 
+            name="phone"
+            class="w-full border border-gray-300 rounded-md p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+            placeholder="+1 (555) 123-4567">
+        </div>
+      </div>
+
+      <!-- Inquiry Type -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Inquiry Type</label>
+        <select 
+          [(ngModel)]="contact.inquiryType" 
+          name="inquiry_type"
+          class="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          <option value="">Select inquiry type</option>
+          <option value="booking">Booking Inquiry</option>
+          <option value="information">General Information</option>
+          <option value="support">Customer Support</option>
+          <option value="feedback">Feedback</option>
+          <option value="partnership">Partnership</option>
+        </select>
+      </div>
+
+      <!-- Message -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Message</label>
+        <textarea 
+          [(ngModel)]="contact.message" 
+          name="message"
+          rows="5"
+          class="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical" 
+          placeholder="Tell us how we can help you with your travel plans..."
+          required></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit"
+        [disabled]="isSubmitting || !contactForm.valid"
+        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-lg shadow-md hover:shadow-xl transform hover:-translate-y-0.5 transition disabled:bg-gray-400 disabled:cursor-not-allowed font-semibold">
+        <span *ngIf="!isSubmitting">Send Message</span>
+        <span *ngIf="isSubmitting" class="flex items-center justify-center">
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Sending...
+        </span>
+      </button>
+
+      <p class="text-sm text-gray-500 text-center">
+        We respect your privacy and will never share your information.
+      </p>
+    </form>
+
+    <!-- Alternative Contact Methods -->
+    <div class="mt-10 pt-6 border-t border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">Other Ways to Reach Us</h3>
+      <div class="flex flex-col md:flex-row justify-around text-gray-700 text-sm gap-4">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-envelope text-blue-600"></i> support&#64;tourizio.com
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-phone text-blue-600"></i> +1 (555) 123-4567
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-map-marker-alt text-blue-600"></i> 123 Tourism Street, Travel City
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,44 @@
+# Node modules
+/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Angular build output
+/dist/
+/out-tsc/
+/coverage/
+/build/
+
+# Compiled output
+*.js.map
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Firebase
+.firebase/
+.firebaserc
+firebase-debug.log
+
+# Angular specific
+.angular/cache/
+.angular/cli.json
+.angular-latest.json
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# Ignore Netlify local folder
+.netlify/

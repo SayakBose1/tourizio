@@ -1,0 +1,461 @@
+<div class="text-center py-12">
+  <h1 class="text-4xl font-bold text-blue-600 mb-4">
+    {{ title }}
+  </h1>
+  <p class="text-gray-700 text-lg">
+    {{ displaySubtitle }}<span *ngIf="showCursor" class="typing-cursor"></span>
+  </p>
+</div>
+
+<!-- Carousel -->
+<swiper-container
+  slides-per-view="1"
+  space-between="20"
+  loop="true"
+  autoplay-delay="4000"
+  autoplay-disable-on-interaction="false"
+  pagination="true"
+  navigation="true"
+  effect="fade"
+  speed="700"
+  allow-touch-move="true"
+  grab-cursor="true"
+  class="w-full max-w-4xl mx-auto rounded-lg shadow-lg"
+>
+  <swiper-slide>
+    <img
+      src="assets/images/img1.jpg"
+      alt="Tour Place 1"
+      class="w-full h-96 object-cover rounded-lg transition-transform duration-700 ease-in-out"
+    />
+  </swiper-slide>
+  <swiper-slide>
+    <img
+      src="assets/images/img2.jpg"
+      alt="Tour Place 2"
+      class="w-full h-96 object-cover rounded-lg transition-transform duration-700 ease-in-out"
+    />
+  </swiper-slide>
+  <swiper-slide>
+    <img
+      src="assets/images/img3.jpeg"
+      alt="Tour Place 3"
+      class="w-full h-96 object-cover rounded-lg transition-transform duration-700 ease-in-out"
+    />
+  </swiper-slide>
+  <swiper-slide>
+    <img
+      src="assets/images/img4.jpg"
+      alt="Tour Place 4"
+      class="w-full h-96 object-cover rounded-lg transition-transform duration-700 ease-in-out"
+    />
+  </swiper-slide>
+  <swiper-slide>
+    <img
+      src="assets/images/img5.jpg"
+      alt="Tour Place 5"
+      class="w-full h-96 object-cover rounded-lg transition-transform duration-700 ease-in-out"
+    />
+  </swiper-slide>
+  <swiper-slide>
+    <img
+      src="assets/images/img6.jpg"
+      alt="Tour Place 6"
+      class="w-full h-96 object-cover rounded-lg transition-transform duration-700 ease-in-out"
+    />
+  </swiper-slide>
+</swiper-container>
+
+<!-- Featured Destinations -->
+<div class="max-w-6xl mx-auto py-12 px-4">
+  <h2 class="text-3xl font-bold text-center mb-8">Featured Destinations</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Taj Mahal -->
+    <div
+      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
+    >
+      <img
+        src="assets/images/taj-mehel.jpeg"
+        alt="Taj Mahal"
+        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
+      >
+        <h3 class="text-xl font-semibold text-white">Taj Mahal</h3>
+        <p class="text-gray-300 text-center">
+          Marvel at the iconic white marble mausoleum in Agra.
+        </p>
+        <button
+          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+
+    <!-- Jaipur -->
+    <div
+      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
+    >
+      <img
+        src="assets/images/jaipur.jpg"
+        alt="Jaipur"
+        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
+      >
+        <h3 class="text-xl font-semibold text-white">Jaipur</h3>
+        <p class="text-gray-300 text-center">
+          Explore the Pink City with its stunning palaces and forts.
+        </p>
+        <button
+          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+
+    <!-- Kerala Backwaters -->
+    <div
+      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
+    >
+      <img
+        src="assets/images/kerala.jpg"
+        alt="Kerala Backwaters"
+        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
+      >
+        <h3 class="text-xl font-semibold text-white">Kerala Backwaters</h3>
+        <p class="text-gray-300 text-center">
+          Relax in the serene backwaters of God’s Own Country.
+        </p>
+        <button
+          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+
+    <!-- Goa Beaches -->
+    <div
+      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
+    >
+      <img
+        src="assets/images/goa.jpg"
+        alt="Goa Beaches"
+        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
+      >
+        <h3 class="text-xl font-semibold text-white">Goa Beaches</h3>
+        <p class="text-gray-300 text-center">
+          Relax on the sunny beaches and enjoy vibrant nightlife.
+        </p>
+        <button
+          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+
+    <!-- Varanasi Ghats -->
+    <div
+      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
+    >
+      <img
+        src="assets/images/Varanasi.jpg"
+        alt="Varanasi Ghats"
+        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
+      >
+        <h3 class="text-xl font-semibold text-white">Varanasi Ghats</h3>
+        <p class="text-gray-300 text-center">
+          Witness the spiritual rituals along the sacred Ganges.
+        </p>
+        <button
+          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+
+    <!-- Hampi -->
+    <div
+      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
+    >
+      <img
+        src="assets/images/hampi.jpg"
+        alt="Hampi"
+        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
+      />
+      <div
+        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
+      >
+        <h3 class="text-xl font-semibold text-white">Hampi</h3>
+        <p class="text-gray-300 text-center">
+          Explore the ancient ruins, temples, and boulder-strewn landscapes of
+          the UNESCO World Heritage site.
+        </p>
+        <button
+          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Services-->
+<div class="bg-grey-50 py-12">
+  <div class="max-w-6xl mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-8 scroll-reveal">Our Services</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Guided Tours -->
+      <div
+        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal"
+        style="transition-delay: 0.2s"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-16 h-16 mx-auto mb-4 text-blue-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 14l9-5-9-5-9 5 9 5z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 14l6.16-3.422a12.083 12.083 0 01-.36 4.206C15.595 16.675 14.038 18 12 18s-3.595-1.325-5.8-3.216a12.083 12.083 0 01-.36-4.206L12 14z"
+          />
+        </svg>
+        <h3 class="text-xl font-semibold mb-2">Guided Tours</h3>
+        <p class="text-gray-600">
+          Enjoy professional guided tours at top destinations.
+        </p>
+      </div>
+
+      <!-- Hotel Booking -->
+      <div
+        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal"
+        style="transition-delay: 0.4s"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-16 h-16 mx-auto mb-4 text-blue-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2v-7H3v7a2 2 0 002 2z"
+          />
+        </svg>
+        <h3 class="text-xl font-semibold mb-2">Hotel Booking</h3>
+        <p class="text-gray-600">
+          Book the best hotels with ease and confidence.
+        </p>
+      </div>
+
+      <!-- Adventure Trips -->
+      <div
+        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal"
+        style="transition-delay: 0.6s"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-16 h-16 mx-auto mb-4 text-blue-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8c-1.657 0-3 1.567-3 3.5S10.343 15 12 15s3-1.567 3-3.5S13.657 8 12 8z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 2v2m0 16v2m8.485-8.485l-1.414 1.414M4.929 4.929l-1.414 1.414M20 12h2M2 12h2M19.071 4.929l-1.414-1.414M6.343 17.657l-1.414-1.414"
+          />
+        </svg>
+        <h3 class="text-xl font-semibold mb-2">Adventure Trips</h3>
+        <p class="text-gray-600">
+          Experience exciting adventures tailored for you.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tourism Statistics Section -->
+<div class="max-w-6xl mx-auto mt-7 py-12 px-6">
+  <div class="text-center mb-10 scroll-reveal">
+    <h2 class="text-3xl font-bold text-black mb-2">Our Tourism Impact</h2>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <!-- Destinations Covered -->
+    <div
+      class="text-center bg-white rounded-lg shadow-lg p-6 tourism-stat-card scroll-reveal"
+      style="transition-delay: 0.2s"
+    >
+      <div
+        class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center icon-container"
+      >
+        <i class="fas fa-map-marked-alt text-2xl text-blue-600"></i>
+      </div>
+      <div class="text-3xl font-bold text-gray-800 mb-2">100+</div>
+      <div class="text-gray-600 font-medium">Destinations Covered</div>
+    </div>
+
+    <!-- Happy Travelers -->
+    <div
+      class="text-center bg-white rounded-lg shadow-lg p-6 tourism-stat-card scroll-reveal"
+      style="transition-delay: 0.4s"
+    >
+      <div
+        class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center icon-container"
+      >
+        <i class="fas fa-users text-2xl text-green-600"></i>
+      </div>
+      <div class="text-3xl font-bold text-gray-800 mb-2">15K+</div>
+      <div class="text-gray-600 font-medium">Happy Travelers</div>
+    </div>
+
+    <!-- Tours Completed -->
+    <div
+      class="text-center bg-white rounded-lg shadow-lg p-6 tourism-stat-card scroll-reveal"
+      style="transition-delay: 0.6s"
+    >
+      <div
+        class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center icon-container"
+      >
+        <i class="fas fa-route text-2xl text-purple-600"></i>
+      </div>
+      <div class="text-3xl font-bold text-gray-800 mb-2">8.5K+</div>
+      <div class="text-gray-600 font-medium">Tours Completed</div>
+    </div>
+
+    <!-- Customer Satisfaction -->
+    <div
+      class="text-center bg-white rounded-lg shadow-lg p-6 tourism-stat-card scroll-reveal"
+      style="transition-delay: 0.8s"
+    >
+      <div
+        class="w-16 h-16 mx-auto mb-4 bg-yellow-100 rounded-full flex items-center justify-center icon-container"
+      >
+        <i class="fas fa-star text-2xl text-yellow-600"></i>
+      </div>
+      <div class="text-3xl font-bold text-gray-800 mb-2">96%</div>
+      <div class="text-gray-600 font-medium">Customer Satisfaction</div>
+    </div>
+  </div>
+</div>
+
+<!--Testimonials-->
+<div class="max-w-6xl mx-auto py-12 px-4">
+  <h2 class="text-3xl font-bold text-center mb-8 text-black scroll-reveal">
+    What Our Travelers Say
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Testimonial 1 -->
+    <div
+      class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center testimonial-card-hover scroll-reveal"
+      style="transition-delay: 0.2s"
+    >
+      <img
+        src="https://i.pravatar.cc/100?img=3"
+        alt="User 1"
+        class="w-20 h-20 rounded-full mb-4"
+      />
+      <h3 class="text-xl font-semibold mb-1">Alice Johnson</h3>
+      <div class="flex mb-2">
+        <span class="text-yellow-400">★ ★ ★ ★ ★</span>
+      </div>
+      <p class="text-gray-600">
+        Amazing experience! The guided tours and local tips made our trip
+        unforgettable.
+      </p>
+    </div>
+
+    <!-- Testimonial 2 -->
+    <div
+      class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center testimonial-card-hover scroll-reveal"
+      style="transition-delay: 0.4s"
+    >
+      <img
+        src="https://i.pravatar.cc/100?img=7"
+        alt="User 2"
+        class="w-20 h-20 rounded-full mb-4"
+      />
+      <h3 class="text-xl font-semibold mb-1">Rahul Sharma</h3>
+      <div class="flex mb-2">
+        <span class="text-yellow-400">★ ★ ★ ★ ★</span>
+      </div>
+      <p class="text-gray-600">
+        Booking was seamless and the destinations recommended were perfect for
+        families.
+      </p>
+    </div>
+
+    <!-- Testimonial 3 -->
+    <div
+      class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center testimonial-card-hover scroll-reveal"
+      style="transition-delay: 0.6s"
+    >
+      <img
+        src="https://i.pravatar.cc/100?img=5"
+        alt="User 3"
+        class="w-20 h-20 rounded-full mb-4"
+      />
+      <h3 class="text-xl font-semibold mb-1">Priya Verma</h3>
+      <div class="flex mb-2">
+        <span class="text-yellow-400">★ ★ ★ ★ ★</span>
+      </div>
+      <p class="text-gray-600">
+        Loved the adventure trips! Everything was well organized and
+        stress-free.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!--Booking-->
+<div class="bg-blue-600 text-white py-12 text-center rounded-lg mx-4 md:mx-32">
+  <h2 class="text-3xl font-bold mb-4">Ready for Your Next Adventure?</h2>
+  <p class="mb-6">
+    Discover amazing destinations and plan your dream trip with us.
+  </p>
+  <button
+    (click)="goToDestinations()"
+    class="bg-yellow-400 text-blue-700 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-500 transition"
+  >
+    Explore Now
+  </button>
+</div>

@@ -1,0 +1,212 @@
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <a
+          routerLink="/"
+          class="text-2xl font-bold text-indigo-600 tracking-tight"
+        >
+          Tourizio
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a
+          routerLink="/"
+          routerLinkActive="text-red-600 font-bold"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="relative text-gray-700 hover:text-red-500 transition-colors duration-200 font-bold py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-red-500 after:transition-all after:duration-200 after:w-0 hover:after:w-full [&.router-link-active]:after:w-full"
+        >
+          Home
+        </a>
+        <a
+          routerLink="/destinations"
+          routerLinkActive="text-red-600 font-bold"
+          class="relative text-gray-700 hover:text-red-500 transition-colors duration-200 font-bold py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-red-500 after:transition-all after:duration-200 after:w-0 hover:after:w-full [&.router-link-active]:after:w-full"
+        >
+          Destinations
+        </a>
+        <a
+          routerLink="/booking"
+          routerLinkActive="text-red-600 font-bold"
+          class="relative text-gray-700 hover:text-red-500 transition-colors duration-200 font-bold py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-red-500 after:transition-all after:duration-200 after:w-0 hover:after:w-full [&.router-link-active]:after:w-full"
+        >
+          Booking
+        </a>
+        <a
+          routerLink="/contact"
+          routerLinkActive="text-red-600 font-bold"
+          class="relative text-gray-700 hover:text-red-500 transition-colors duration-200 font-bold py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-red-500 after:transition-all after:duration-200 after:w-0 hover:after:w-full [&.router-link-active]:after:w-full"
+        >
+          Contact
+        </a>
+      </div>
+
+      <!-- Auth / User Buttons (Desktop) -->
+      <div class="hidden md:flex items-center space-x-4">
+        <ng-container *ngIf="user$ | async as user; else authButtons">
+          <div class="relative">
+            <button
+              (click)="toggleProfileMenu()"
+              class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-50 transition"
+            >
+              <img
+                *ngIf="user.isGoogleUser; else defaultIcon"
+                [src]="user.photoURL"
+                class="w-8 h-8 rounded-full"
+              />
+              <ng-template #defaultIcon>
+                <i class="fa fa-user text-gray-700 w-8 h-8"></i>
+              </ng-template>
+              <span class="font-medium text-gray-700">{{
+                user.displayName || user.email
+              }}</span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div
+              *ngIf="showProfileMenu"
+              class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-2 z-50"
+            >
+              <button
+                (click)="goToProfile()"
+                class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+              >
+                <i class="fas fa-user-circle mr-2"></i> Profile
+              </button>
+              <button
+                (click)="logout()"
+                class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+              >
+                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #authButtons>
+          <a
+            routerLink="/login"
+            class="px-5 py-2 rounded-full font-medium text-gray-700 bg-gradient-to-r from-gray-100 to-gray-200 shadow-sm hover:from-gray-200 hover:to-gray-300 hover:shadow-md transition-all"
+          >
+            Login
+          </a>
+          <a
+            routerLink="/signup"
+            class="px-5 py-2 rounded-full font-medium text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-md hover:from-emerald-600 hover:to-emerald-700 hover:shadow-lg transition-all"
+          >
+            Sign Up
+          </a>
+        </ng-template>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center">
+        <button (click)="toggleMenu()" class="text-gray-700 focus:outline-none">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Menu -->
+  <div
+    *ngIf="menuOpen"
+    class="md:hidden bg-white border-t border-gray-100 px-4 pt-4 pb-6 space-y-1"
+  >
+    <a
+      routerLink="/"
+      routerLinkActive="text-red-600 font-bold pl-4 border-l-2 border-red-500"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="block text-gray-700 hover:text-red-600 font-bold py-3 px-2 transition-all duration-200 border-l-2 border-transparent hover:border-red-300 hover:pl-4"
+    >
+      Home
+    </a>
+    <a
+      routerLink="/destinations"
+      routerLinkActive="text-red-600 font-bold pl-4 border-l-2 border-red-500"
+      class="block text-gray-700 hover:text-red-600 font-bold py-3 px-2 transition-all duration-200 border-l-2 border-transparent hover:border-red-300 hover:pl-4"
+    >
+      Destinations
+    </a>
+    <a
+      routerLink="/booking"
+      routerLinkActive="text-red-600 font-bold pl-4 border-l-2 border-red-500"
+      class="block text-gray-700 hover:text-red-600 font-bold py-3 px-2 transition-all duration-200 border-l-2 border-transparent hover:border-red-300 hover:pl-4"
+    >
+      Booking
+    </a>
+    <a
+      routerLink="/contact"
+      routerLinkActive="text-red-600 font-bold pl-4 border-l-2 border-red-500"
+      class="block text-gray-700 hover:text-red-600 font-bold py-3 px-2 transition-all duration-200 border-l-2 border-transparent hover:border-red-300 hover:pl-4"
+    >
+       Contact
+    </a>
+    <hr class="border-gray-200 my-4" />
+
+    <!-- Mobile Auth / User -->
+    <ng-container *ngIf="user$ | async as user; else mobileAuth">
+      <div
+        (click)="toggleProfileMenu()"
+        class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-full cursor-pointer"
+      >
+        <img
+          *ngIf="user.isGoogleUser; else mobileDefaultIcon"
+          [src]="user.photoURL"
+          class="w-8 h-8 rounded-full"
+        />
+        <ng-template #mobileDefaultIcon>
+          <i class="fa fa-user text-gray-700 w-8 h-8"></i>
+        </ng-template>
+        <span class="font-medium text-gray-700">{{
+          user.displayName || user.email
+        }}</span>
+      </div>
+
+      <div *ngIf="showProfileMenu" class="mt-2 space-y-1">
+        <button
+          (click)="goToProfile()"
+          class="w-full text-left px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 transition"
+        >
+          <i class="fas fa-user-circle mr-2"></i> Profile
+        </button>
+        <button
+          (click)="logout()"
+          class="w-full text-left px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 transition"
+        >
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #mobileAuth>
+      <a
+        routerLink="/login"
+        class="block px-4 py-2 rounded-full text-center font-medium text-gray-700 bg-gradient-to-r from-gray-100 to-gray-200 shadow-sm hover:from-gray-200 hover:to-gray-300 hover:shadow-md transition-all"
+      >
+        Login
+      </a>
+      <a
+        routerLink="/signup"
+        class="block px-4 py-2 rounded-full text-center font-medium text-white bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-md hover:from-emerald-600 hover:to-emerald-700 hover:shadow-lg transition-all mt-2"
+      >
+        Sign Up
+      </a>
+    </ng-template>
+  </div>
+</nav>

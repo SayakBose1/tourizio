@@ -1,0 +1,43 @@
+<div class="max-w-4xl mx-auto py-12 px-4">
+  <h2 class="text-3xl font-bold mb-6">My Profile</h2>
+
+  <div *ngIf="user; else notLoggedIn" class="bg-white rounded-xl shadow-lg p-6">
+    <div class="flex items-center space-x-4">
+      <img
+        *ngIf="user.photoURL"
+        [src]="user.photoURL"
+        alt="Profile Photo"
+        class="w-16 h-16 rounded-full shadow"
+      />
+      <div>
+        <h3 class="text-xl font-semibold">{{ user.displayName }}</h3>
+        <p class="text-gray-600">{{ user.email }}</p>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <h4 class="text-lg font-semibold">My Bookings</h4>
+
+    <div *ngIf="loading">Loading bookings...</div>
+
+    <div *ngIf="!loading && bookings.length === 0" class="text-gray-500">
+      You have no bookings yet.
+    </div>
+
+    <ul *ngIf="!loading && bookings.length > 0" class="mt-2 space-y-2">
+      <li *ngFor="let b of bookings" class="border rounded p-2">
+        <p><strong>Destination:</strong> {{ b.destination }}</p>
+        <p><strong>Date:</strong> {{ b.date }}</p>
+        <p><strong>People:</strong> {{ b.people }}</p>
+        <p><strong>Price:</strong> ₹{{ b.price }}</p>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template #notLoggedIn>
+    <p class="text-center text-gray-500">
+      You are not logged in. <a routerLink="/login" class="text-blue-600">Login here</a>
+    </p>
+  </ng-template>
+</div>

@@ -1,0 +1,1223 @@
+{
+    "destinations": [
+        "Andhra Pradesh",
+        "Arunachal Pradesh",
+        "Assam",
+        "Bihar",
+        "Chhattisgarh",
+        "Goa",
+        "Gujarat",
+        "Haryana",
+        "Himachal Pradesh",
+        "Jharkhand",
+        "Karnataka",
+        "Kerala",
+        "Madhya Pradesh",
+        "Maharashtra",
+        "Manipur",
+        "Meghalaya",
+        "Mizoram",
+        "Nagaland",
+        "Odisha",
+        "Punjab",
+        "Rajasthan",
+        "Sikkim",
+        "Tamil Nadu",
+        "Telangana",
+        "Tripura",
+        "Uttar Pradesh",
+        "Uttarakhand",
+        "West Bengal",
+        "Andaman and Nicobar Islands",
+        "Chandigarh",
+        "Dadra and Nagar Haveli and Daman and Diu",
+        "Delhi",
+        "Jammu and Kashmir",
+        "Ladakh",
+        "Lakshadweep",
+        "Puducherry"
+    ],
+    "placesMap": {
+        "Andhra Pradesh": [
+            {
+                "id": 1,
+                "name": "Tirupati Temple",
+                "location": "Andhra Pradesh, India",
+                "price": 15000,
+                "days": 2,
+                "lat": 13.682,
+                "lng": 79.421,
+                "type": "Cultural"
+            },
+            {
+                "id": 2,
+                "name": "Araku Valley",
+                "location": "Andhra Pradesh, India",
+                "price": 12000,
+                "days": 3,
+                "lat": 18.327,
+                "lng": 82.876,
+                "type": "Nature"
+            },
+            {
+                "id": 3,
+                "name": "Borra Caves",
+                "location": "Andhra Pradesh, India",
+                "price": 13000,
+                "days": 2,
+                "lat": 18.283,
+                "lng": 83.043,
+                "type": "Adventure"
+            }
+        ],
+        "Arunachal Pradesh": [
+            {
+                "id": 4,
+                "name": "Tawang Monastery",
+                "location": "Arunachal Pradesh, India",
+                "price": 20000,
+                "days": 4,
+                "lat": 27.586,
+                "lng": 91.859,
+                "type": "Cultural"
+            },
+            {
+                "id": 5,
+                "name": "Ziro Valley",
+                "location": "Arunachal Pradesh, India",
+                "price": 18000,
+                "days": 3,
+                "lat": 27.566,
+                "lng": 93.833,
+                "type": "Nature"
+            },
+            {
+                "id": 6,
+                "name": "Sela Pass",
+                "location": "Arunachal Pradesh, India",
+                "price": 19000,
+                "days": 2,
+                "lat": 27.5,
+                "lng": 92.083,
+                "type": "Adventure"
+            }
+        ],
+        "Assam": [
+            {
+                "id": 7,
+                "name": "Kaziranga National Park",
+                "location": "Assam, India",
+                "price": 17000,
+                "days": 3,
+                "lat": 26.577,
+                "lng": 93.171,
+                "type": "Nature"
+            },
+            {
+                "id": 8,
+                "name": "Kamakhya Temple",
+                "location": "Assam, India",
+                "price": 12000,
+                "days": 1,
+                "lat": 26.167,
+                "lng": 91.706,
+                "type": "Cultural"
+            },
+            {
+                "id": 9,
+                "name": "Majuli Island",
+                "location": "Assam, India",
+                "price": 16000,
+                "days": 2,
+                "lat": 27.0,
+                "lng": 94.216,
+                "type": "Nature"
+            }
+        ],
+        "Bihar": [
+            {
+                "id": 10,
+                "name": "Mahabodhi Temple",
+                "location": "Bihar, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 24.696,
+                "lng": 84.991,
+                "type": "Cultural"
+            },
+            {
+                "id": 11,
+                "name": "Nalanda University",
+                "location": "Bihar, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 25.136,
+                "lng": 85.443,
+                "type": "Cultural"
+            },
+            {
+                "id": 12,
+                "name": "Vikramshila Ruins",
+                "location": "Bihar, India",
+                "price": 13000,
+                "days": 1,
+                "lat": 25.3,
+                "lng": 87.033,
+                "type": "Cultural"
+            }
+        ],
+        "Chhattisgarh": [
+            {
+                "id": 13,
+                "name": "Chitrakote Falls",
+                "location": "Chhattisgarh, India",
+                "price": 17000,
+                "days": 2,
+                "lat": 18.982,
+                "lng": 81.96,
+                "type": "Nature"
+            },
+            {
+                "id": 14,
+                "name": "Barnawapara Sanctuary",
+                "location": "Chhattisgarh, India",
+                "price": 15000,
+                "days": 2,
+                "lat": 21.492,
+                "lng": 82.08,
+                "type": "Nature"
+            },
+            {
+                "id": 15,
+                "name": "Bhoramdeo Temple",
+                "location": "Chhattisgarh, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 22.1,
+                "lng": 81.0,
+                "type": "Cultural"
+            }
+        ],
+        "Goa": [
+            {
+                "id": 16,
+                "name": "Baga Beach",
+                "location": "Goa, India",
+                "price": 15000,
+                "days": 2,
+                "lat": 15.552,
+                "lng": 73.7545,
+                "type": "Nature"
+            },
+            {
+                "id": 17,
+                "name": "Fort Aguada",
+                "location": "Goa, India",
+                "price": 12000,
+                "days": 1,
+                "lat": 15.497,
+                "lng": 73.771,
+                "type": "Cultural"
+            },
+            {
+                "id": 18,
+                "name": "Dudhsagar Falls",
+                "location": "Goa, India",
+                "price": 18000,
+                "days": 2,
+                "lat": 15.3143,
+                "lng": 74.3132,
+                "type": "Adventure"
+            }
+        ],
+        "Gujarat": [
+            {
+                "id": 19,
+                "name": "Gir National Park",
+                "location": "Gujarat, India",
+                "price": 20000,
+                "days": 3,
+                "lat": 21.124,
+                "lng": 70.824,
+                "type": "Nature"
+            },
+            {
+                "id": 20,
+                "name": "Somnath Temple",
+                "location": "Gujarat, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 20.888,
+                "lng": 70.401,
+                "type": "Cultural"
+            },
+            {
+                "id": 21,
+                "name": "Statue of Unity",
+                "location": "Gujarat, India",
+                "price": 25000,
+                "days": 1,
+                "lat": 21.838,
+                "lng": 73.719,
+                "type": "Cultural"
+            }
+        ],
+        "Haryana": [
+            {
+                "id": 22,
+                "name": "Kingdom of Dreams",
+                "location": "Haryana, India",
+                "price": 12000,
+                "days": 1,
+                "lat": 28.47,
+                "lng": 77.068,
+                "type": "Cultural"
+            },
+            {
+                "id": 23,
+                "name": "Sultanpur Bird Sanctuary",
+                "location": "Haryana, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 28.463,
+                "lng": 76.895,
+                "type": "Nature"
+            },
+            {
+                "id": 24,
+                "name": "Kurukshetra",
+                "location": "Haryana, India",
+                "price": 16000,
+                "days": 1,
+                "lat": 29.967,
+                "lng": 76.817,
+                "type": "Cultural"
+            }
+        ],
+        "Himachal Pradesh": [
+            {
+                "id": 25,
+                "name": "Manali",
+                "location": "Himachal Pradesh, India",
+                "price": 20000,
+                "days": 3,
+                "lat": 32.2432,
+                "lng": 77.1892,
+                "type": "Adventure"
+            },
+            {
+                "id": 26,
+                "name": "Shimla",
+                "location": "Himachal Pradesh, India",
+                "price": 17000,
+                "days": 2,
+                "lat": 31.1048,
+                "lng": 77.1734,
+                "type": "Nature"
+            },
+            {
+                "id": 27,
+                "name": "Dalhousie",
+                "location": "Himachal Pradesh, India",
+                "price": 19000,
+                "days": 2,
+                "lat": 32.5376,
+                "lng": 75.973,
+                "type": "Nature"
+            }
+        ],
+        "Jharkhand": [
+            {
+                "id": 28,
+                "name": "Dassam Falls",
+                "location": "Jharkhand, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 23.25,
+                "lng": 85.55,
+                "type": "Nature"
+            },
+            {
+                "id": 29,
+                "name": "Betla National Park",
+                "location": "Jharkhand, India",
+                "price": 15000,
+                "days": 2,
+                "lat": 23.833,
+                "lng": 84.217,
+                "type": "Nature"
+            },
+            {
+                "id": 30,
+                "name": "Parasnath Hill",
+                "location": "Jharkhand, India",
+                "price": 13000,
+                "days": 1,
+                "lat": 23.95,
+                "lng": 86.15,
+                "type": "Adventure"
+            }
+        ],
+        "Karnataka": [
+            {
+                "id": 31,
+                "name": "Mysore Palace",
+                "location": "Karnataka, India",
+                "price": 20000,
+                "days": 2,
+                "lat": 12.305,
+                "lng": 76.655,
+                "type": "Cultural"
+            },
+            {
+                "id": 32,
+                "name": "Hampi",
+                "location": "Karnataka, India",
+                "price": 22000,
+                "days": 3,
+                "lat": 15.335,
+                "lng": 76.462,
+                "type": "Cultural"
+            },
+            {
+                "id": 33,
+                "name": "Coorg",
+                "location": "Karnataka, India",
+                "price": 19000,
+                "days": 2,
+                "lat": 12.337,
+                "lng": 75.806,
+                "type": "Nature"
+            }
+        ],
+        "Kerala": [
+            {
+                "id": 34,
+                "name": "Alleppey Backwaters",
+                "location": "Kerala, India",
+                "price": 14000,
+                "days": 2,
+                "lat": 9.4981,
+                "lng": 76.3388,
+                "type": "Nature"
+            },
+            {
+                "id": 35,
+                "name": "Munnar Hills",
+                "location": "Kerala, India",
+                "price": 16000,
+                "days": 2,
+                "lat": 10.0889,
+                "lng": 77.0595,
+                "type": "Nature"
+            },
+            {
+                "id": 36,
+                "name": "Kovalam Beach",
+                "location": "Kerala, India",
+                "price": 13000,
+                "days": 1,
+                "lat": 8.4012,
+                "lng": 76.978,
+                "type": "Nature"
+            }
+        ],
+        "Madhya Pradesh": [
+            {
+                "id": 37,
+                "name": "Khajuraho Temples",
+                "location": "Madhya Pradesh, India",
+                "price": 20000,
+                "days": 2,
+                "lat": 24.852,
+                "lng": 79.922,
+                "type": "Cultural"
+            },
+            {
+                "id": 38,
+                "name": "Kanha National Park",
+                "location": "Madhya Pradesh, India",
+                "price": 18000,
+                "days": 3,
+                "lat": 22.333,
+                "lng": 80.633,
+                "type": "Nature"
+            },
+            {
+                "id": 39,
+                "name": "Ujjain Mahakaleshwar",
+                "location": "Madhya Pradesh, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 23.176,
+                "lng": 75.787,
+                "type": "Cultural"
+            }
+        ],
+        "Maharashtra": [
+            {
+                "id": 40,
+                "name": "Gateway of India",
+                "location": "Maharashtra, India",
+                "price": 25000,
+                "days": 1,
+                "lat": 18.922,
+                "lng": 72.834,
+                "type": "Cultural"
+            },
+            {
+                "id": 41,
+                "name": "Ajanta Caves",
+                "location": "Maharashtra, India",
+                "price": 20000,
+                "days": 2,
+                "lat": 20.551,
+                "lng": 75.703,
+                "type": "Cultural"
+            },
+            {
+                "id": 42,
+                "name": "Mahabaleshwar",
+                "location": "Maharashtra, India",
+                "price": 18000,
+                "days": 1,
+                "lat": 17.923,
+                "lng": 73.658,
+                "type": "Nature"
+            }
+        ],
+        "Manipur": [
+            {
+                "id": 43,
+                "name": "Loktak Lake",
+                "location": "Manipur, India",
+                "price": 16000,
+                "days": 1,
+                "lat": 24.517,
+                "lng": 93.783,
+                "type": "Nature"
+            },
+            {
+                "id": 44,
+                "name": "Kangla Fort",
+                "location": "Manipur, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 24.817,
+                "lng": 93.95,
+                "type": "Cultural"
+            },
+            {
+                "id": 45,
+                "name": "Shirui Hills",
+                "location": "Manipur, India",
+                "price": 15000,
+                "days": 2,
+                "lat": 25.0,
+                "lng": 94.5,
+                "type": "Nature"
+            }
+        ],
+        "Meghalaya": [
+            {
+                "id": 46,
+                "name": "Cherrapunji",
+                "location": "Meghalaya, India",
+                "price": 17000,
+                "days": 2,
+                "lat": 25.3,
+                "lng": 91.7,
+                "type": "Nature"
+            },
+            {
+                "id": 47,
+                "name": "Living Root Bridges",
+                "location": "Meghalaya, India",
+                "price": 16000,
+                "days": 2,
+                "lat": 25.3,
+                "lng": 91.67,
+                "type": "Nature"
+            },
+            {
+                "id": 48,
+                "name": "Shillong Peak",
+                "location": "Meghalaya, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 25.567,
+                "lng": 91.883,
+                "type": "Nature"
+            }
+        ],
+        "Mizoram": [
+            {
+                "id": 49,
+                "name": "Aizawl",
+                "location": "Mizoram, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 23.727,
+                "lng": 92.717,
+                "type": "Cultural"
+            },
+            {
+                "id": 50,
+                "name": "Phawngpui Hills",
+                "location": "Mizoram, India",
+                "price": 16000,
+                "days": 2,
+                "lat": 22.5,
+                "lng": 93.0,
+                "type": "Nature"
+            },
+            {
+                "id": 51,
+                "name": "Tam Dil Lake",
+                "location": "Mizoram, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 23.75,
+                "lng": 92.75,
+                "type": "Nature"
+            }
+        ],
+        "Nagaland": [
+            {
+                "id": 52,
+                "name": "Kohima War Cemetery",
+                "location": "Nagaland, India",
+                "price": 13000,
+                "days": 1,
+                "lat": 25.667,
+                "lng": 94.117,
+                "type": "Cultural"
+            },
+            {
+                "id": 53,
+                "name": "Dzukou Valley",
+                "location": "Nagaland, India",
+                "price": 15000,
+                "days": 2,
+                "lat": 25.5,
+                "lng": 93.75,
+                "type": "Nature"
+            },
+            {
+                "id": 54,
+                "name": "Shilloi Lake",
+                "location": "Nagaland, India",
+                "price": 12000,
+                "days": 1,
+                "lat": 25.417,
+                "lng": 94.167,
+                "type": "Nature"
+            }
+        ],
+        "Odisha": [
+            {
+                "id": 55,
+                "name": "Jagannath Temple",
+                "location": "Odisha, India",
+                "price": 20000,
+                "days": 2,
+                "lat": 19.804,
+                "lng": 85.818,
+                "type": "Cultural"
+            },
+            {
+                "id": 56,
+                "name": "Konark Sun Temple",
+                "location": "Odisha, India",
+                "price": 18000,
+                "days": 1,
+                "lat": 19.887,
+                "lng": 86.094,
+                "type": "Cultural"
+            },
+            {
+                "id": 57,
+                "name": "Chilika Lake",
+                "location": "Odisha, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 19.84,
+                "lng": 85.47,
+                "type": "Nature"
+            }
+        ],
+        "Punjab": [
+            {
+                "id": 58,
+                "name": "Golden Temple",
+                "location": "Punjab, India",
+                "price": 22000,
+                "days": 1,
+                "lat": 31.62,
+                "lng": 74.876,
+                "type": "Cultural"
+            },
+            {
+                "id": 59,
+                "name": "Jallianwala Bagh",
+                "location": "Punjab, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 31.62,
+                "lng": 74.879,
+                "type": "Cultural"
+            },
+            {
+                "id": 60,
+                "name": "Wagah Border",
+                "location": "Punjab, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 31.6,
+                "lng": 74.574,
+                "type": "Cultural"
+            }
+        ],
+        "Rajasthan": [
+            {
+                "id": 61,
+                "name": "Jaipur City Palace",
+                "location": "Rajasthan, India",
+                "price": 25000,
+                "days": 2,
+                "lat": 26.9258,
+                "lng": 75.8239,
+                "type": "Cultural"
+            },
+            {
+                "id": 62,
+                "name": "Udaipur Lake Palace",
+                "location": "Rajasthan, India",
+                "price": 26000,
+                "days": 2,
+                "lat": 24.5749,
+                "lng": 73.6754,
+                "type": "Cultural"
+            },
+            {
+                "id": 63,
+                "name": "Jodhpur Mehrangarh Fort",
+                "location": "Rajasthan, India",
+                "price": 24000,
+                "days": 1,
+                "lat": 26.296,
+                "lng": 73.036,
+                "type": "Cultural"
+            }
+        ],
+        "Sikkim": [
+            {
+                "id": 64,
+                "name": "Gangtok",
+                "location": "Sikkim, India",
+                "price": 20000,
+                "days": 2,
+                "lat": 27.338,
+                "lng": 88.606,
+                "type": "Cultural"
+            },
+            {
+                "id": 65,
+                "name": "Tsomgo Lake",
+                "location": "Sikkim, India",
+                "price": 18000,
+                "days": 1,
+                "lat": 27.375,
+                "lng": 88.76,
+                "type": "Nature"
+            },
+            {
+                "id": 66,
+                "name": "Nathula Pass",
+                "location": "Sikkim, India",
+                "price": 19000,
+                "days": 1,
+                "lat": 27.386,
+                "lng": 88.764,
+                "type": "Adventure"
+            }
+        ],
+        "Tamil Nadu": [
+            {
+                "id": 67,
+                "name": "Meenakshi Temple",
+                "location": "Tamil Nadu, India",
+                "price": 18000,
+                "days": 1,
+                "lat": 9.919,
+                "lng": 78.12,
+                "type": "Cultural"
+            },
+            {
+                "id": 68,
+                "name": "Marina Beach",
+                "location": "Tamil Nadu, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 13.05,
+                "lng": 80.282,
+                "type": "Nature"
+            },
+            {
+                "id": 69,
+                "name": "Ooty",
+                "location": "Tamil Nadu, India",
+                "price": 16000,
+                "days": 2,
+                "lat": 11.406,
+                "lng": 76.693,
+                "type": "Nature"
+            }
+        ],
+        "Telangana": [
+            {
+                "id": 70,
+                "name": "Charminar",
+                "location": "Telangana, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 17.361,
+                "lng": 78.474,
+                "type": "Cultural"
+            },
+            {
+                "id": 71,
+                "name": "Golconda Fort",
+                "location": "Telangana, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 17.383,
+                "lng": 78.401,
+                "type": "Cultural"
+            },
+            {
+                "id": 72,
+                "name": "Ramoji Film City",
+                "location": "Telangana, India",
+                "price": 20000,
+                "days": 2,
+                "lat": 17.254,
+                "lng": 78.681,
+                "type": "Adventure"
+            }
+        ],
+        "Tripura": [
+            {
+                "id": 73,
+                "name": "Ujjayanta Palace",
+                "location": "Tripura, India",
+                "price": 12000,
+                "days": 1,
+                "lat": 23.833,
+                "lng": 91.267,
+                "type": "Cultural"
+            },
+            {
+                "id": 74,
+                "name": "Neermahal Palace",
+                "location": "Tripura, India",
+                "price": 13000,
+                "days": 1,
+                "lat": 23.5,
+                "lng": 91.5,
+                "type": "Cultural"
+            },
+            {
+                "id": 75,
+                "name": "Jampui Hills",
+                "location": "Tripura, India",
+                "price": 14000,
+                "days": 2,
+                "lat": 23.92,
+                "lng": 92.2,
+                "type": "Nature"
+            }
+        ],
+        "Uttar Pradesh": [
+            {
+                "id": 76,
+                "name": "Taj Mahal",
+                "location": "Uttar Pradesh, India",
+                "price": 30000,
+                "days": 1,
+                "lat": 27.175,
+                "lng": 78.042,
+                "type": "Cultural"
+            },
+            {
+                "id": 77,
+                "name": "Varanasi Ghats",
+                "location": "Uttar Pradesh, India",
+                "price": 18000,
+                "days": 2,
+                "lat": 25.317,
+                "lng": 83.007,
+                "type": "Cultural"
+            },
+            {
+                "id": 78,
+                "name": "Fatehpur Sikri",
+                "location": "Uttar Pradesh, India",
+                "price": 16000,
+                "days": 1,
+                "lat": 27.092,
+                "lng": 77.667,
+                "type": "Cultural"
+            }
+        ],
+        "Uttarakhand": [
+            {
+                "id": 79,
+                "name": "Rishikesh",
+                "location": "Uttarakhand, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 30.086,
+                "lng": 78.267,
+                "type": "Adventure"
+            },
+            {
+                "id": 80,
+                "name": "Nainital",
+                "location": "Uttarakhand, India",
+                "price": 16000,
+                "days": 2,
+                "lat": 29.391,
+                "lng": 79.454,
+                "type": "Nature"
+            },
+            {
+                "id": 81,
+                "name": "Kedarnath",
+                "location": "Uttarakhand, India",
+                "price": 20000,
+                "days": 2,
+                "lat": 30.735,
+                "lng": 79.067,
+                "type": "Cultural"
+            }
+        ],
+        "West Bengal": [
+            {
+                "id": 82,
+                "name": "Victoria Memorial",
+                "location": "West Bengal, India",
+                "price": 17000,
+                "days": 1,
+                "lat": 22.5448,
+                "lng": 88.3426,
+                "type": "Cultural"
+            },
+            {
+                "id": 83,
+                "name": "Sundarbans",
+                "location": "West Bengal, India",
+                "price": 20000,
+                "days": 2,
+                "lat": 21.9497,
+                "lng": 89.1833,
+                "type": "Nature"
+            },
+            {
+                "id": 84,
+                "name": "Darjeeling",
+                "location": "West Bengal, India",
+                "price": 18000,
+                "days": 2,
+                "lat": 27.041,
+                "lng": 88.263,
+                "type": "Nature"
+            }
+        ],
+        "Andaman and Nicobar Islands": [
+            {
+                "id": 85,
+                "name": "Cellular Jail",
+                "location": "Port Blair, Andaman",
+                "price": 20000,
+                "days": 1,
+                "lat": 11.675,
+                "lng": 92.745,
+                "type": "Cultural"
+            },
+            {
+                "id": 86,
+                "name": "Havelock Island",
+                "location": "Andaman Islands",
+                "price": 22000,
+                "days": 2,
+                "lat": 11.979,
+                "lng": 92.987,
+                "type": "Nature"
+            },
+            {
+                "id": 87,
+                "name": "Radhanagar Beach",
+                "location": "Andaman Islands",
+                "price": 23000,
+                "days": 2,
+                "lat": 11.982,
+                "lng": 92.987,
+                "type": "Nature"
+            }
+        ],
+        "Chandigarh": [
+            {
+                "id": 88,
+                "name": "Rock Garden",
+                "location": "Chandigarh, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 30.739,
+                "lng": 76.779,
+                "type": "Cultural"
+            },
+            {
+                "id": 89,
+                "name": "Sukhna Lake",
+                "location": "Chandigarh, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 30.742,
+                "lng": 76.818,
+                "type": "Nature"
+            },
+            {
+                "id": 90,
+                "name": "Rose Garden",
+                "location": "Chandigarh, India",
+                "price": 13000,
+                "days": 1,
+                "lat": 30.741,
+                "lng": 76.773,
+                "type": "Nature"
+            }
+        ],
+        "Dadra and Nagar Haveli and Daman and Diu": [
+            {
+                "id": 91,
+                "name": "Diu Fort",
+                "location": "Daman and Diu, India",
+                "price": 16000,
+                "days": 1,
+                "lat": 20.715,
+                "lng": 70.985,
+                "type": "Cultural"
+            },
+            {
+                "id": 92,
+                "name": "Jampore Beach",
+                "location": "Daman, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 20.397,
+                "lng": 72.832,
+                "type": "Nature"
+            },
+            {
+                "id": 93,
+                "name": "Tribal Museum",
+                "location": "Silvassa, India",
+                "price": 12000,
+                "days": 1,
+                "lat": 20.273,
+                "lng": 73.008,
+                "type": "Cultural"
+            }
+        ],
+        "Delhi": [
+            {
+                "id": 94,
+                "name": "Red Fort",
+                "location": "Delhi, India",
+                "price": 18000,
+                "days": 1,
+                "lat": 28.656,
+                "lng": 77.241,
+                "type": "Cultural"
+            },
+            {
+                "id": 95,
+                "name": "India Gate",
+                "location": "Delhi, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 28.6139,
+                "lng": 77.2295,
+                "type": "Cultural"
+            },
+            {
+                "id": 96,
+                "name": "Qutub Minar",
+                "location": "Delhi, India",
+                "price": 17000,
+                "days": 1,
+                "lat": 28.524,
+                "lng": 77.185,
+                "type": "Cultural"
+            }
+        ],
+        "Jammu and Kashmir": [
+            {
+                "id": 97,
+                "name": "Dal Lake",
+                "location": "Srinagar, Jammu & Kashmir",
+                "price": 22000,
+                "days": 2,
+                "lat": 34.0837,
+                "lng": 74.7973,
+                "type": "Nature"
+            },
+            {
+                "id": 98,
+                "name": "Gulmarg",
+                "location": "Jammu & Kashmir",
+                "price": 25000,
+                "days": 2,
+                "lat": 34.05,
+                "lng": 74.38,
+                "type": "Nature"
+            },
+            {
+                "id": 99,
+                "name": "Vaishno Devi",
+                "location": "Jammu & Kashmir",
+                "price": 20000,
+                "days": 1,
+                "lat": 33.03,
+                "lng": 74.95,
+                "type": "Cultural"
+            }
+        ],
+        "Ladakh": [
+            {
+                "id": 100,
+                "name": "Pangong Lake",
+                "location": "Ladakh, India",
+                "price": 25000,
+                "days": 2,
+                "lat": 33.749,
+                "lng": 78.421,
+                "type": "Nature"
+            },
+            {
+                "id": 101,
+                "name": "Leh Palace",
+                "location": "Ladakh, India",
+                "price": 20000,
+                "days": 1,
+                "lat": 34.165,
+                "lng": 77.586,
+                "type": "Cultural"
+            },
+            {
+                "id": 102,
+                "name": "Magnetic Hill",
+                "location": "Ladakh, India",
+                "price": 21000,
+                "days": 1,
+                "lat": 34.171,
+                "lng": 77.582,
+                "type": "Adventure"
+            }
+        ],
+        "Lakshadweep": [
+            {
+                "id": 103,
+                "name": "Agatti Island",
+                "location": "Lakshadweep, India",
+                "price": 23000,
+                "days": 2,
+                "lat": 10.86,
+                "lng": 72.2,
+                "type": "Nature"
+            },
+            {
+                "id": 104,
+                "name": "Bangaram Atoll",
+                "location": "Lakshadweep, India",
+                "price": 24000,
+                "days": 2,
+                "lat": 11.13,
+                "lng": 72.7,
+                "type": "Nature"
+            },
+            {
+                "id": 105,
+                "name": "Kavaratti Island",
+                "location": "Lakshadweep, India",
+                "price": 22000,
+                "days": 2,
+                "lat": 10.57,
+                "lng": 72.64,
+                "type": "Nature"
+            }
+        ],
+        "Puducherry": [
+            {
+                "id": 106,
+                "name": "Promenade Beach",
+                "location": "Puducherry, India",
+                "price": 14000,
+                "days": 1,
+                "lat": 11.93,
+                "lng": 79.83,
+                "type": "Nature"
+            },
+            {
+                "id": 107,
+                "name": "Auroville",
+                "location": "Puducherry, India",
+                "price": 15000,
+                "days": 1,
+                "lat": 12.0,
+                "lng": 79.81,
+                "type": "Cultural"
+            },
+            {
+                "id": 108,
+                "name": "Paradise Beach",
+                "location": "Puducherry, India",
+                "price": 16000,
+                "days": 1,
+                "lat": 11.89,
+                "lng": 79.83,
+                "type": "Nature"
+            }
+        ]
+    },
+    "trending": [
+        {
+            "id": 76,
+            "name": "Taj Mahal",
+            "location": "Uttar Pradesh, India",
+            "price": 30000,
+            "lat": 27.175,
+            "lng": 78.042,
+            "type": "Cultural"
+        },
+        {
+            "id": 30,
+            "name": "Parasnath Hill",
+            "location": "Jharkhand, India",
+            "price": 13000,
+            "lat": 23.95,
+            "lng": 86.15,
+            "type": "Adventure"
+        },
+        {
+            "id": 97,
+            "name": "Dal Lake",
+            "location": "Jammu & Kashmir",
+            "price": 22000,
+            "lat": 34.0837,
+            "lng": 74.7973,
+            "type": "Adventure"
+        }
+    ]
+}

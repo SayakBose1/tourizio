@@ -1,0 +1,53 @@
+{
+  "name": "tourizio-frontend",
+  "version": "0.0.1",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --proxy-config proxy.conf.json",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "17.3.12",
+    "@angular/common": "17.3.12",
+    "@angular/compiler": "17.3.12",
+    "@angular/core": "17.3.12",
+    "@angular/fire": "^17.1.0",
+    "@angular/forms": "17.3.12",
+    "@angular/platform-browser": "17.3.12",
+    "@angular/platform-browser-dynamic": "17.3.12",
+    "@angular/router": "17.3.12",
+    "@emailjs/browser": "^4.4.1",
+    "@fortawesome/fontawesome-free": "^7.0.1",
+    "@stripe/stripe-js": "^7.9.0",
+    "emailjs-com": "^3.2.0",
+    "firebase": "^10.14.1",
+    "leaflet": "^1.9.4",
+    "rxjs": "~7.8.0",
+    "swiper": "^11.2.10",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "17.3.12",
+    "@angular/cli": "17.3.12",
+    "@angular/compiler-cli": "17.3.12",
+    "@types/leaflet": "^1.9.20",
+    "@types/node": "^18.0.0",
+    "@types/stripe-v3": "^3.1.33",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.2.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.2.0"
+  }
+}

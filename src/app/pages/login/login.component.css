@@ -1,0 +1,10 @@
+/* Ensure the overlay does not block clicks */
+.backdrop-blur-md {
+  pointer-events: none;
+}
+
+/* Form container */
+.login-form-container {
+  position: relative;
+  z-index: 10; /* already there but just to be sure */
+}
