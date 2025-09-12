@@ -16,6 +16,7 @@ import { environment } from '../environments/environment';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BlogComponent } from './pages/blog/blog.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeComponent,
     FooterComponent,
     ProfileComponent,
+    BlogComponent,
   ],
   imports: [
     BrowserModule,

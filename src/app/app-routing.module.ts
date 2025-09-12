@@ -5,6 +5,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { SignupComponent } from "./pages/signup/signup.component";
 import { ProfileComponent } from "./pages/profile/profile.component";
+import { BlogComponent } from "./pages/blog/blog.component";
 
 const routes: Routes = [
   { path: "", component: HomeComponent, data: { animation: "HomePage" } },
@@ -49,6 +50,7 @@ const routes: Routes = [
     component: ProfileComponent,
     data: { animation: "ProfilePage" },
   },
+  { path: 'blog', component: BlogComponent  },
 
   { path: "**", redirectTo: "" },
 ];

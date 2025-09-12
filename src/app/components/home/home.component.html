@@ -446,6 +446,94 @@
   </div>
 </div>
 
+<!-- NEW: Blog Section -->
+<div class="bg-grey-50 py-12">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 md:p-12">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="flex-1 text-left">
+          <div class="flex items-center gap-2 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            <span class="text-blue-600 font-semibold text-sm uppercase tracking-wide">Travel Stories</span>
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            Discover Amazing Travel Stories & Tips
+          </h2>
+          <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+            Get inspired by real travel experiences, hidden gems, local insights, and expert tips from fellow travelers. Your next adventure starts with a great story.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">#TravelTips</span>
+            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">#HiddenGems</span>
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">#CultureGuides</span>
+            <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium">#FoodAdventures</span>
+          </div>
+        </div>
+        
+        <div class="flex-shrink-0">
+          <div class="relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-lg opacity-30 animate-pulse"></div>
+            <button
+              (click)="goToBlog()"
+              class="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105 hover:from-blue-700 hover:to-purple-700 flex items-center gap-3"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+              </svg>
+              Explore Blog
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mini preview cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+        <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/90 transition-all duration-300 cursor-pointer" (click)="goToBlog()">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-10 0h10m0 0v14a2 2 0 01-2 2H9a2 2 0 01-2-2V4z"/>
+              </svg>
+            </div>
+            <h4 class="font-semibold text-gray-800 text-sm">Latest Stories</h4>
+          </div>
+          <p class="text-xs text-gray-600">Hidden gems of Kerala & street food adventures</p>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/90 transition-all duration-300 cursor-pointer" (click)="goToBlog()">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+              </svg>
+            </div>
+            <h4 class="font-semibold text-gray-800 text-sm">Travel Tips</h4>
+          </div>
+          <p class="text-xs text-gray-600">Budget travel hacks & packing essentials</p>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/90 transition-all duration-300 cursor-pointer" (click)="goToBlog()">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <h4 class="font-semibold text-gray-800 text-sm">Destinations</h4>
+          </div>
+          <p class="text-xs text-gray-600">Cultural insights & local experiences</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--Booking-->
 <div class="bg-blue-600 text-white py-12 text-center rounded-lg mx-4 md:mx-32">
   <h2 class="text-3xl font-bold mb-4">Ready for Your Next Adventure?</h2>
