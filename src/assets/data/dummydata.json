@@ -45,8 +45,8 @@
                 "location": "Andhra Pradesh, India",
                 "price": 15000,
                 "days": 2,
-                "lat": 13.682,
-                "lng": 79.421,
+                "lat": 13.683333,
+                "lng": 79.421944,
                 "type": "Cultural"
             },
             {
@@ -55,8 +55,8 @@
                 "location": "Andhra Pradesh, India",
                 "price": 12000,
                 "days": 3,
-                "lat": 18.327,
-                "lng": 82.876,
+                "lat": 18.327778,
+                "lng": 82.876389,
                 "type": "Nature"
             },
             {
@@ -65,8 +65,8 @@
                 "location": "Andhra Pradesh, India",
                 "price": 13000,
                 "days": 2,
-                "lat": 18.283,
-                "lng": 83.043,
+                "lat": 18.283056,
+                "lng": 83.043611,
                 "type": "Adventure"
             }
         ],
@@ -77,8 +77,8 @@
                 "location": "Arunachal Pradesh, India",
                 "price": 20000,
                 "days": 4,
-                "lat": 27.586,
-                "lng": 91.859,
+                "lat": 27.586111,
+                "lng": 91.859444,
                 "type": "Cultural"
             },
             {
@@ -87,8 +87,8 @@
                 "location": "Arunachal Pradesh, India",
                 "price": 18000,
                 "days": 3,
-                "lat": 27.566,
-                "lng": 93.833,
+                "lat": 27.566667,
+                "lng": 93.833333,
                 "type": "Nature"
             },
             {
@@ -97,8 +97,8 @@
                 "location": "Arunachal Pradesh, India",
                 "price": 19000,
                 "days": 2,
-                "lat": 27.5,
-                "lng": 92.083,
+                "lat": 27.500000,
+                "lng": 92.083333,
                 "type": "Adventure"
             }
         ],
@@ -109,8 +109,8 @@
                 "location": "Assam, India",
                 "price": 17000,
                 "days": 3,
-                "lat": 26.577,
-                "lng": 93.171,
+                "lat": 26.577778,
+                "lng": 93.171667,
                 "type": "Nature"
             },
             {
@@ -119,8 +119,8 @@
                 "location": "Assam, India",
                 "price": 12000,
                 "days": 1,
-                "lat": 26.167,
-                "lng": 91.706,
+                "lat": 26.167222,
+                "lng": 91.706389,
                 "type": "Cultural"
             },
             {
@@ -129,8 +129,8 @@
                 "location": "Assam, India",
                 "price": 16000,
                 "days": 2,
-                "lat": 27.0,
-                "lng": 94.216,
+                "lat": 27.000000,
+                "lng": 94.216667,
                 "type": "Nature"
             }
         ],
@@ -141,8 +141,8 @@
                 "location": "Bihar, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 24.696,
-                "lng": 84.991,
+                "lat": 24.696111,
+                "lng": 84.991667,
                 "type": "Cultural"
             },
             {
@@ -151,8 +151,8 @@
                 "location": "Bihar, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 25.136,
-                "lng": 85.443,
+                "lat": 25.136111,
+                "lng": 85.443056,
                 "type": "Cultural"
             },
             {
@@ -161,8 +161,8 @@
                 "location": "Bihar, India",
                 "price": 13000,
                 "days": 1,
-                "lat": 25.3,
-                "lng": 87.033,
+                "lat": 25.300000,
+                "lng": 87.033333,
                 "type": "Cultural"
             }
         ],
@@ -173,8 +173,8 @@
                 "location": "Chhattisgarh, India",
                 "price": 17000,
                 "days": 2,
-                "lat": 18.982,
-                "lng": 81.96,
+                "lat": 18.982222,
+                "lng": 81.960000,
                 "type": "Nature"
             },
             {
@@ -183,8 +183,8 @@
                 "location": "Chhattisgarh, India",
                 "price": 15000,
                 "days": 2,
-                "lat": 21.492,
-                "lng": 82.08,
+                "lat": 21.492222,
+                "lng": 82.080000,
                 "type": "Nature"
             },
             {
@@ -193,8 +193,8 @@
                 "location": "Chhattisgarh, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 22.1,
-                "lng": 81.0,
+                "lat": 22.100000,
+                "lng": 81.000000,
                 "type": "Cultural"
             }
         ],
@@ -205,8 +205,8 @@
                 "location": "Goa, India",
                 "price": 15000,
                 "days": 2,
-                "lat": 15.552,
-                "lng": 73.7545,
+                "lat": 15.552778,
+                "lng": 73.754444,
                 "type": "Nature"
             },
             {
@@ -215,8 +215,8 @@
                 "location": "Goa, India",
                 "price": 12000,
                 "days": 1,
-                "lat": 15.497,
-                "lng": 73.771,
+                "lat": 15.497222,
+                "lng": 73.771111,
                 "type": "Cultural"
             },
             {
@@ -225,8 +225,8 @@
                 "location": "Goa, India",
                 "price": 18000,
                 "days": 2,
-                "lat": 15.3143,
-                "lng": 74.3132,
+                "lat": 15.314306,
+                "lng": 74.313194,
                 "type": "Adventure"
             }
         ],
@@ -237,8 +237,8 @@
                 "location": "Gujarat, India",
                 "price": 20000,
                 "days": 3,
-                "lat": 21.124,
-                "lng": 70.824,
+                "lat": 21.124444,
+                "lng": 70.824167,
                 "type": "Nature"
             },
             {
@@ -247,8 +247,8 @@
                 "location": "Gujarat, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 20.888,
-                "lng": 70.401,
+                "lat": 20.888889,
+                "lng": 70.401111,
                 "type": "Cultural"
             },
             {
@@ -257,8 +257,8 @@
                 "location": "Gujarat, India",
                 "price": 25000,
                 "days": 1,
-                "lat": 21.838,
-                "lng": 73.719,
+                "lat": 21.838333,
+                "lng": 73.719444,
                 "type": "Cultural"
             }
         ],
@@ -269,8 +269,8 @@
                 "location": "Haryana, India",
                 "price": 12000,
                 "days": 1,
-                "lat": 28.47,
-                "lng": 77.068,
+                "lat": 28.470000,
+                "lng": 77.068056,
                 "type": "Cultural"
             },
             {
@@ -279,8 +279,8 @@
                 "location": "Haryana, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 28.463,
-                "lng": 76.895,
+                "lat": 28.463333,
+                "lng": 76.895000,
                 "type": "Nature"
             },
             {
@@ -289,8 +289,8 @@
                 "location": "Haryana, India",
                 "price": 16000,
                 "days": 1,
-                "lat": 29.967,
-                "lng": 76.817,
+                "lat": 29.967222,
+                "lng": 76.817222,
                 "type": "Cultural"
             }
         ],
@@ -301,8 +301,8 @@
                 "location": "Himachal Pradesh, India",
                 "price": 20000,
                 "days": 3,
-                "lat": 32.2432,
-                "lng": 77.1892,
+                "lat": 32.243200,
+                "lng": 77.189200,
                 "type": "Adventure"
             },
             {
@@ -311,8 +311,8 @@
                 "location": "Himachal Pradesh, India",
                 "price": 17000,
                 "days": 2,
-                "lat": 31.1048,
-                "lng": 77.1734,
+                "lat": 31.104800,
+                "lng": 77.173400,
                 "type": "Nature"
             },
             {
@@ -321,8 +321,8 @@
                 "location": "Himachal Pradesh, India",
                 "price": 19000,
                 "days": 2,
-                "lat": 32.5376,
-                "lng": 75.973,
+                "lat": 32.537600,
+                "lng": 75.973000,
                 "type": "Nature"
             }
         ],
@@ -333,8 +333,8 @@
                 "location": "Jharkhand, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 23.25,
-                "lng": 85.55,
+                "lat": 23.250000,
+                "lng": 85.550000,
                 "type": "Nature"
             },
             {
@@ -343,8 +343,8 @@
                 "location": "Jharkhand, India",
                 "price": 15000,
                 "days": 2,
-                "lat": 23.833,
-                "lng": 84.217,
+                "lat": 23.833333,
+                "lng": 84.217222,
                 "type": "Nature"
             },
             {
@@ -353,8 +353,8 @@
                 "location": "Jharkhand, India",
                 "price": 13000,
                 "days": 1,
-                "lat": 23.95,
-                "lng": 86.15,
+                "lat": 23.950000,
+                "lng": 86.150000,
                 "type": "Adventure"
             }
         ],
@@ -365,8 +365,8 @@
                 "location": "Karnataka, India",
                 "price": 20000,
                 "days": 2,
-                "lat": 12.305,
-                "lng": 76.655,
+                "lat": 12.305556,
+                "lng": 76.655278,
                 "type": "Cultural"
             },
             {
@@ -375,8 +375,8 @@
                 "location": "Karnataka, India",
                 "price": 22000,
                 "days": 3,
-                "lat": 15.335,
-                "lng": 76.462,
+                "lat": 15.335000,
+                "lng": 76.462222,
                 "type": "Cultural"
             },
             {
@@ -385,8 +385,8 @@
                 "location": "Karnataka, India",
                 "price": 19000,
                 "days": 2,
-                "lat": 12.337,
-                "lng": 75.806,
+                "lat": 12.337222,
+                "lng": 75.806111,
                 "type": "Nature"
             }
         ],
@@ -397,8 +397,8 @@
                 "location": "Kerala, India",
                 "price": 14000,
                 "days": 2,
-                "lat": 9.4981,
-                "lng": 76.3388,
+                "lat": 9.498100,
+                "lng": 76.338800,
                 "type": "Nature"
             },
             {
@@ -407,8 +407,8 @@
                 "location": "Kerala, India",
                 "price": 16000,
                 "days": 2,
-                "lat": 10.0889,
-                "lng": 77.0595,
+                "lat": 10.088900,
+                "lng": 77.059500,
                 "type": "Nature"
             },
             {
@@ -417,8 +417,8 @@
                 "location": "Kerala, India",
                 "price": 13000,
                 "days": 1,
-                "lat": 8.4012,
-                "lng": 76.978,
+                "lat": 8.401200,
+                "lng": 76.978000,
                 "type": "Nature"
             }
         ],
@@ -429,8 +429,8 @@
                 "location": "Madhya Pradesh, India",
                 "price": 20000,
                 "days": 2,
-                "lat": 24.852,
-                "lng": 79.922,
+                "lat": 24.852222,
+                "lng": 79.922222,
                 "type": "Cultural"
             },
             {
@@ -439,8 +439,8 @@
                 "location": "Madhya Pradesh, India",
                 "price": 18000,
                 "days": 3,
-                "lat": 22.333,
-                "lng": 80.633,
+                "lat": 22.333333,
+                "lng": 80.633333,
                 "type": "Nature"
             },
             {
@@ -449,8 +449,8 @@
                 "location": "Madhya Pradesh, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 23.176,
-                "lng": 75.787,
+                "lat": 23.176111,
+                "lng": 75.787222,
                 "type": "Cultural"
             }
         ],
@@ -461,8 +461,8 @@
                 "location": "Maharashtra, India",
                 "price": 25000,
                 "days": 1,
-                "lat": 18.922,
-                "lng": 72.834,
+                "lat": 18.922000,
+                "lng": 72.834444,
                 "type": "Cultural"
             },
             {
@@ -471,8 +471,8 @@
                 "location": "Maharashtra, India",
                 "price": 20000,
                 "days": 2,
-                "lat": 20.551,
-                "lng": 75.703,
+                "lat": 20.551111,
+                "lng": 75.703333,
                 "type": "Cultural"
             },
             {
@@ -481,8 +481,8 @@
                 "location": "Maharashtra, India",
                 "price": 18000,
                 "days": 1,
-                "lat": 17.923,
-                "lng": 73.658,
+                "lat": 17.923333,
+                "lng": 73.658333,
                 "type": "Nature"
             }
         ],
@@ -493,8 +493,8 @@
                 "location": "Manipur, India",
                 "price": 16000,
                 "days": 1,
-                "lat": 24.517,
-                "lng": 93.783,
+                "lat": 24.517222,
+                "lng": 93.783333,
                 "type": "Nature"
             },
             {
@@ -503,8 +503,8 @@
                 "location": "Manipur, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 24.817,
-                "lng": 93.95,
+                "lat": 24.817222,
+                "lng": 93.950000,
                 "type": "Cultural"
             },
             {
@@ -513,8 +513,8 @@
                 "location": "Manipur, India",
                 "price": 15000,
                 "days": 2,
-                "lat": 25.0,
-                "lng": 94.5,
+                "lat": 25.000000,
+                "lng": 94.500000,
                 "type": "Nature"
             }
         ],
@@ -525,8 +525,8 @@
                 "location": "Meghalaya, India",
                 "price": 17000,
                 "days": 2,
-                "lat": 25.3,
-                "lng": 91.7,
+                "lat": 25.300000,
+                "lng": 91.700000,
                 "type": "Nature"
             },
             {
@@ -535,8 +535,8 @@
                 "location": "Meghalaya, India",
                 "price": 16000,
                 "days": 2,
-                "lat": 25.3,
-                "lng": 91.67,
+                "lat": 25.300000,
+                "lng": 91.670000,
                 "type": "Nature"
             },
             {
@@ -545,8 +545,8 @@
                 "location": "Meghalaya, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 25.567,
-                "lng": 91.883,
+                "lat": 25.567222,
+                "lng": 91.883333,
                 "type": "Nature"
             }
         ],
@@ -557,8 +557,8 @@
                 "location": "Mizoram, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 23.727,
-                "lng": 92.717,
+                "lat": 23.727222,
+                "lng": 92.717222,
                 "type": "Cultural"
             },
             {
@@ -567,8 +567,8 @@
                 "location": "Mizoram, India",
                 "price": 16000,
                 "days": 2,
-                "lat": 22.5,
-                "lng": 93.0,
+                "lat": 22.500000,
+                "lng": 93.000000,
                 "type": "Nature"
             },
             {
@@ -577,8 +577,8 @@
                 "location": "Mizoram, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 23.75,
-                "lng": 92.75,
+                "lat": 23.750000,
+                "lng": 92.750000,
                 "type": "Nature"
             }
         ],
@@ -589,8 +589,8 @@
                 "location": "Nagaland, India",
                 "price": 13000,
                 "days": 1,
-                "lat": 25.667,
-                "lng": 94.117,
+                "lat": 25.667222,
+                "lng": 94.117222,
                 "type": "Cultural"
             },
             {
@@ -599,8 +599,8 @@
                 "location": "Nagaland, India",
                 "price": 15000,
                 "days": 2,
-                "lat": 25.5,
-                "lng": 93.75,
+                "lat": 25.500000,
+                "lng": 93.750000,
                 "type": "Nature"
             },
             {
@@ -609,8 +609,8 @@
                 "location": "Nagaland, India",
                 "price": 12000,
                 "days": 1,
-                "lat": 25.417,
-                "lng": 94.167,
+                "lat": 25.417222,
+                "lng": 94.167222,
                 "type": "Nature"
             }
         ],
@@ -621,8 +621,8 @@
                 "location": "Odisha, India",
                 "price": 20000,
                 "days": 2,
-                "lat": 19.804,
-                "lng": 85.818,
+                "lat": 19.804444,
+                "lng": 85.818333,
                 "type": "Cultural"
             },
             {
@@ -631,8 +631,8 @@
                 "location": "Odisha, India",
                 "price": 18000,
                 "days": 1,
-                "lat": 19.887,
-                "lng": 86.094,
+                "lat": 19.887500,
+                "lng": 86.094444,
                 "type": "Cultural"
             },
             {
@@ -641,8 +641,8 @@
                 "location": "Odisha, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 19.84,
-                "lng": 85.47,
+                "lat": 19.840000,
+                "lng": 85.470000,
                 "type": "Nature"
             }
         ],
@@ -653,8 +653,8 @@
                 "location": "Punjab, India",
                 "price": 22000,
                 "days": 1,
-                "lat": 31.62,
-                "lng": 74.876,
+                "lat": 31.620000,
+                "lng": 74.876111,
                 "type": "Cultural"
             },
             {
@@ -663,8 +663,8 @@
                 "location": "Punjab, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 31.62,
-                "lng": 74.879,
+                "lat": 31.620000,
+                "lng": 74.879444,
                 "type": "Cultural"
             },
             {
@@ -673,8 +673,8 @@
                 "location": "Punjab, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 31.6,
-                "lng": 74.574,
+                "lat": 31.600000,
+                "lng": 74.574444,
                 "type": "Cultural"
             }
         ],
@@ -685,8 +685,8 @@
                 "location": "Rajasthan, India",
                 "price": 25000,
                 "days": 2,
-                "lat": 26.9258,
-                "lng": 75.8239,
+                "lat": 26.925800,
+                "lng": 75.823900,
                 "type": "Cultural"
             },
             {
@@ -695,8 +695,8 @@
                 "location": "Rajasthan, India",
                 "price": 26000,
                 "days": 2,
-                "lat": 24.5749,
-                "lng": 73.6754,
+                "lat": 24.574900,
+                "lng": 73.675400,
                 "type": "Cultural"
             },
             {
@@ -705,8 +705,8 @@
                 "location": "Rajasthan, India",
                 "price": 24000,
                 "days": 1,
-                "lat": 26.296,
-                "lng": 73.036,
+                "lat": 26.296000,
+                "lng": 73.036000,
                 "type": "Cultural"
             }
         ],
@@ -717,8 +717,8 @@
                 "location": "Sikkim, India",
                 "price": 20000,
                 "days": 2,
-                "lat": 27.338,
-                "lng": 88.606,
+                "lat": 27.338000,
+                "lng": 88.606000,
                 "type": "Cultural"
             },
             {
@@ -727,8 +727,8 @@
                 "location": "Sikkim, India",
                 "price": 18000,
                 "days": 1,
-                "lat": 27.375,
-                "lng": 88.76,
+                "lat": 27.375000,
+                "lng": 88.760000,
                 "type": "Nature"
             },
             {
@@ -737,8 +737,8 @@
                 "location": "Sikkim, India",
                 "price": 19000,
                 "days": 1,
-                "lat": 27.386,
-                "lng": 88.764,
+                "lat": 27.386000,
+                "lng": 88.764000,
                 "type": "Adventure"
             }
         ],
@@ -749,8 +749,8 @@
                 "location": "Tamil Nadu, India",
                 "price": 18000,
                 "days": 1,
-                "lat": 9.919,
-                "lng": 78.12,
+                "lat": 9.919000,
+                "lng": 78.120000,
                 "type": "Cultural"
             },
             {
@@ -759,8 +759,8 @@
                 "location": "Tamil Nadu, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 13.05,
-                "lng": 80.282,
+                "lat": 13.050000,
+                "lng": 80.282222,
                 "type": "Nature"
             },
             {
@@ -769,8 +769,8 @@
                 "location": "Tamil Nadu, India",
                 "price": 16000,
                 "days": 2,
-                "lat": 11.406,
-                "lng": 76.693,
+                "lat": 11.406000,
+                "lng": 76.693000,
                 "type": "Nature"
             }
         ],
@@ -781,8 +781,8 @@
                 "location": "Telangana, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 17.361,
-                "lng": 78.474,
+                "lat": 17.361000,
+                "lng": 78.474000,
                 "type": "Cultural"
             },
             {
@@ -791,8 +791,8 @@
                 "location": "Telangana, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 17.383,
-                "lng": 78.401,
+                "lat": 17.383000,
+                "lng": 78.401000,
                 "type": "Cultural"
             },
             {
@@ -801,8 +801,8 @@
                 "location": "Telangana, India",
                 "price": 20000,
                 "days": 2,
-                "lat": 17.254,
-                "lng": 78.681,
+                "lat": 17.254000,
+                "lng": 78.681000,
                 "type": "Adventure"
             }
         ],
@@ -813,8 +813,8 @@
                 "location": "Tripura, India",
                 "price": 12000,
                 "days": 1,
-                "lat": 23.833,
-                "lng": 91.267,
+                "lat": 23.833000,
+                "lng": 91.267000,
                 "type": "Cultural"
             },
             {
@@ -823,8 +823,8 @@
                 "location": "Tripura, India",
                 "price": 13000,
                 "days": 1,
-                "lat": 23.5,
-                "lng": 91.5,
+                "lat": 23.500000,
+                "lng": 91.500000,
                 "type": "Cultural"
             },
             {
@@ -833,8 +833,8 @@
                 "location": "Tripura, India",
                 "price": 14000,
                 "days": 2,
-                "lat": 23.92,
-                "lng": 92.2,
+                "lat": 23.920000,
+                "lng": 92.200000,
                 "type": "Nature"
             }
         ],
@@ -845,8 +845,8 @@
                 "location": "Uttar Pradesh, India",
                 "price": 30000,
                 "days": 1,
-                "lat": 27.175,
-                "lng": 78.042,
+                "lat": 27.175000,
+                "lng": 78.042222,
                 "type": "Cultural"
             },
             {
@@ -855,8 +855,8 @@
                 "location": "Uttar Pradesh, India",
                 "price": 18000,
                 "days": 2,
-                "lat": 25.317,
-                "lng": 83.007,
+                "lat": 25.317000,
+                "lng": 83.007000,
                 "type": "Cultural"
             },
             {
@@ -865,8 +865,8 @@
                 "location": "Uttar Pradesh, India",
                 "price": 16000,
                 "days": 1,
-                "lat": 27.092,
-                "lng": 77.667,
+                "lat": 27.092000,
+                "lng": 77.667000,
                 "type": "Cultural"
             }
         ],
@@ -877,8 +877,8 @@
                 "location": "Uttarakhand, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 30.086,
-                "lng": 78.267,
+                "lat": 30.086000,
+                "lng": 78.267000,
                 "type": "Adventure"
             },
             {
@@ -887,8 +887,8 @@
                 "location": "Uttarakhand, India",
                 "price": 16000,
                 "days": 2,
-                "lat": 29.391,
-                "lng": 79.454,
+                "lat": 29.391000,
+                "lng": 79.454000,
                 "type": "Nature"
             },
             {
@@ -897,8 +897,8 @@
                 "location": "Uttarakhand, India",
                 "price": 20000,
                 "days": 2,
-                "lat": 30.735,
-                "lng": 79.067,
+                "lat": 30.735000,
+                "lng": 79.067000,
                 "type": "Cultural"
             }
         ],
@@ -909,8 +909,8 @@
                 "location": "West Bengal, India",
                 "price": 17000,
                 "days": 1,
-                "lat": 22.5448,
-                "lng": 88.3426,
+                "lat": 22.544800,
+                "lng": 88.342600,
                 "type": "Cultural"
             },
             {
@@ -919,8 +919,8 @@
                 "location": "West Bengal, India",
                 "price": 20000,
                 "days": 2,
-                "lat": 21.9497,
-                "lng": 89.1833,
+                "lat": 21.949700,
+                "lng": 89.183300,
                 "type": "Nature"
             },
             {
@@ -929,8 +929,8 @@
                 "location": "West Bengal, India",
                 "price": 18000,
                 "days": 2,
-                "lat": 27.041,
-                "lng": 88.263,
+                "lat": 27.041000,
+                "lng": 88.263000,
                 "type": "Nature"
             }
         ],
@@ -941,8 +941,8 @@
                 "location": "Port Blair, Andaman",
                 "price": 20000,
                 "days": 1,
-                "lat": 11.675,
-                "lng": 92.745,
+                "lat": 11.675000,
+                "lng": 92.745000,
                 "type": "Cultural"
             },
             {
@@ -951,8 +951,8 @@
                 "location": "Andaman Islands",
                 "price": 22000,
                 "days": 2,
-                "lat": 11.979,
-                "lng": 92.987,
+                "lat": 11.979000,
+                "lng": 92.987000,
                 "type": "Nature"
             },
             {
@@ -961,8 +961,8 @@
                 "location": "Andaman Islands",
                 "price": 23000,
                 "days": 2,
-                "lat": 11.982,
-                "lng": 92.987,
+                "lat": 11.982000,
+                "lng": 92.987000,
                 "type": "Nature"
             }
         ],
@@ -973,8 +973,8 @@
                 "location": "Chandigarh, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 30.739,
-                "lng": 76.779,
+                "lat": 30.739000,
+                "lng": 76.779000,
                 "type": "Cultural"
             },
             {
@@ -983,8 +983,8 @@
                 "location": "Chandigarh, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 30.742,
-                "lng": 76.818,
+                "lat": 30.742000,
+                "lng": 76.818000,
                 "type": "Nature"
             },
             {
@@ -993,8 +993,8 @@
                 "location": "Chandigarh, India",
                 "price": 13000,
                 "days": 1,
-                "lat": 30.741,
-                "lng": 76.773,
+                "lat": 30.741000,
+                "lng": 76.773000,
                 "type": "Nature"
             }
         ],
@@ -1005,8 +1005,8 @@
                 "location": "Daman and Diu, India",
                 "price": 16000,
                 "days": 1,
-                "lat": 20.715,
-                "lng": 70.985,
+                "lat": 20.715000,
+                "lng": 70.985000,
                 "type": "Cultural"
             },
             {
@@ -1015,8 +1015,8 @@
                 "location": "Daman, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 20.397,
-                "lng": 72.832,
+                "lat": 20.397000,
+                "lng": 72.832000,
                 "type": "Nature"
             },
             {
@@ -1025,8 +1025,8 @@
                 "location": "Silvassa, India",
                 "price": 12000,
                 "days": 1,
-                "lat": 20.273,
-                "lng": 73.008,
+                "lat": 20.273000,
+                "lng": 73.008000,
                 "type": "Cultural"
             }
         ],
@@ -1037,8 +1037,8 @@
                 "location": "Delhi, India",
                 "price": 18000,
                 "days": 1,
-                "lat": 28.656,
-                "lng": 77.241,
+                "lat": 28.656000,
+                "lng": 77.241000,
                 "type": "Cultural"
             },
             {
@@ -1047,8 +1047,8 @@
                 "location": "Delhi, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 28.6139,
-                "lng": 77.2295,
+                "lat": 28.613900,
+                "lng": 77.229500,
                 "type": "Cultural"
             },
             {
@@ -1057,8 +1057,8 @@
                 "location": "Delhi, India",
                 "price": 17000,
                 "days": 1,
-                "lat": 28.524,
-                "lng": 77.185,
+                "lat": 28.524000,
+                "lng": 77.185000,
                 "type": "Cultural"
             }
         ],
@@ -1069,8 +1069,8 @@
                 "location": "Srinagar, Jammu & Kashmir",
                 "price": 22000,
                 "days": 2,
-                "lat": 34.0837,
-                "lng": 74.7973,
+                "lat": 34.083700,
+                "lng": 74.797300,
                 "type": "Nature"
             },
             {
@@ -1079,8 +1079,8 @@
                 "location": "Jammu & Kashmir",
                 "price": 25000,
                 "days": 2,
-                "lat": 34.05,
-                "lng": 74.38,
+                "lat": 34.050000,
+                "lng": 74.380000,
                 "type": "Nature"
             },
             {
@@ -1089,8 +1089,8 @@
                 "location": "Jammu & Kashmir",
                 "price": 20000,
                 "days": 1,
-                "lat": 33.03,
-                "lng": 74.95,
+                "lat": 33.030000,
+                "lng": 74.950000,
                 "type": "Cultural"
             }
         ],
@@ -1101,8 +1101,8 @@
                 "location": "Ladakh, India",
                 "price": 25000,
                 "days": 2,
-                "lat": 33.749,
-                "lng": 78.421,
+                "lat": 33.749000,
+                "lng": 78.421000,
                 "type": "Nature"
             },
             {
@@ -1111,8 +1111,8 @@
                 "location": "Ladakh, India",
                 "price": 20000,
                 "days": 1,
-                "lat": 34.165,
-                "lng": 77.586,
+                "lat": 34.165000,
+                "lng": 77.586000,
                 "type": "Cultural"
             },
             {
@@ -1121,8 +1121,8 @@
                 "location": "Ladakh, India",
                 "price": 21000,
                 "days": 1,
-                "lat": 34.171,
-                "lng": 77.582,
+                "lat": 34.171000,
+                "lng": 77.582000,
                 "type": "Adventure"
             }
         ],
@@ -1133,8 +1133,8 @@
                 "location": "Lakshadweep, India",
                 "price": 23000,
                 "days": 2,
-                "lat": 10.86,
-                "lng": 72.2,
+                "lat": 10.860000,
+                "lng": 72.200000,
                 "type": "Nature"
             },
             {
@@ -1143,8 +1143,8 @@
                 "location": "Lakshadweep, India",
                 "price": 24000,
                 "days": 2,
-                "lat": 11.13,
-                "lng": 72.7,
+                "lat": 11.130000,
+                "lng": 72.700000,
                 "type": "Nature"
             },
             {
@@ -1153,8 +1153,8 @@
                 "location": "Lakshadweep, India",
                 "price": 22000,
                 "days": 2,
-                "lat": 10.57,
-                "lng": 72.64,
+                "lat": 10.570000,
+                "lng": 72.640000,
                 "type": "Nature"
             }
         ],
@@ -1165,8 +1165,8 @@
                 "location": "Puducherry, India",
                 "price": 14000,
                 "days": 1,
-                "lat": 11.93,
-                "lng": 79.83,
+                "lat": 11.930000,
+                "lng": 79.830000,
                 "type": "Nature"
             },
             {
@@ -1175,8 +1175,8 @@
                 "location": "Puducherry, India",
                 "price": 15000,
                 "days": 1,
-                "lat": 12.0,
-                "lng": 79.81,
+                "lat": 12.000000,
+                "lng": 79.810000,
                 "type": "Cultural"
             },
             {
@@ -1185,8 +1185,8 @@
                 "location": "Puducherry, India",
                 "price": 16000,
                 "days": 1,
-                "lat": 11.89,
-                "lng": 79.83,
+                "lat": 11.890000,
+                "lng": 79.830000,
                 "type": "Nature"
             }
         ]
@@ -1197,8 +1197,8 @@
             "name": "Taj Mahal",
             "location": "Uttar Pradesh, India",
             "price": 30000,
-            "lat": 27.175,
-            "lng": 78.042,
+            "lat": 27.175000,
+            "lng": 78.042222,
             "type": "Cultural"
         },
         {
@@ -1206,8 +1206,8 @@
             "name": "Parasnath Hill",
             "location": "Jharkhand, India",
             "price": 13000,
-            "lat": 23.95,
-            "lng": 86.15,
+            "lat": 23.950000,
+            "lng": 86.150000,
             "type": "Adventure"
         },
         {
@@ -1215,8 +1215,8 @@
             "name": "Dal Lake",
             "location": "Jammu & Kashmir",
             "price": 22000,
-            "lat": 34.0837,
-            "lng": 74.7973,
+            "lat": 34.083700,
+            "lng": 74.797300,
             "type": "Adventure"
         }
     ]

@@ -1,7 +1,7 @@
-import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import * as L from 'leaflet';
-import { UserSessionService } from 'src/app/services/user-session.service';
+import { Component, OnInit, AfterViewChecked, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
+import * as L from "leaflet";
+import { UserSessionService } from "src/app/services/user-session.service";
 
 export interface Place {
   id: number;
@@ -12,15 +12,17 @@ export interface Place {
   image?: string;
   lat?: number;
   lng?: number;
-  type?: 'Adventure' | 'Cultural' | 'Food' | 'Nature';
+  type?: "Adventure" | "Cultural" | "Food" | "Nature";
 }
 
 @Component({
-  selector: 'app-destinations',
-  templateUrl: './destinations.component.html',
-  styleUrls: ['./destinations.component.scss']
+  selector: "app-destinations",
+  templateUrl: "./destinations.component.html",
+  styleUrls: ["./destinations.component.scss"],
 })
-export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class DestinationsComponent
+  implements OnInit, AfterViewChecked, OnDestroy
+{
   destinations: string[] = [];
   placesMap: Record<string, Place[]> = {};
   selectedDestination: string | null = null;
@@ -31,10 +33,11 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   private mapsInitialized: Record<number, boolean> = {};
   private mapsInstances: Record<number, L.Map> = {};
 
-  email: string = '';
+  email: string = "";
   subscribed: boolean = false;
 
-  private readonly PEXELS_API_KEY = 'lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq';
+  private readonly PEXELS_API_KEY =
+    "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq";
 
   ngOnInit(): void {
     this.setCustomMarker();
@@ -43,29 +46,29 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   private async loadDestinations(): Promise<void> {
     try {
-      const res = await fetch('assets/data/dummydata.json');
+      const res = await fetch("assets/data/dummydata.json");
       const data = await res.json();
       this.destinations = data.destinations || [];
       this.placesMap = data.placesMap || {};
       this.trendingPlaces = data.trending || [];
       this.loadTrendingImages();
     } catch (err) {
-      console.error('Error loading destinations:', err);
+      console.error("Error loading destinations:", err);
     }
   }
 
   private async loadTrendingImages(): Promise<void> {
-  const promises = this.trendingPlaces.map(async (place, index) => {
-    place.image = null; // start with no image so skeleton shows
-    const img = await this.fetchImage(`${place.name} ${place.location}`);
-    setTimeout(() => place.image = img, 100 * index);
-  });
-  await Promise.allSettled(promises);
-}
+    const promises = this.trendingPlaces.map(async (place, index) => {
+      place.image = null; // start with no image so skeleton shows
+      const img = await this.fetchImage(`${place.name} ${place.location}`);
+      setTimeout(() => (place.image = img), 100 * index);
+    });
+    await Promise.allSettled(promises);
+  }
 
   private setCustomMarker(): void {
     const customIcon = L.divIcon({
-      className: 'custom-marker',
+      className: "custom-marker",
       html: `
         <div style="
           width: 26px;
@@ -90,7 +93,7 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
       `,
       iconSize: [26, 36],
       iconAnchor: [13, 36],
-      popupAnchor: [0, -36]
+      popupAnchor: [0, -36],
     });
 
     // Apply as default icon
@@ -107,9 +110,9 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
       const data = await res.json();
       if (data.photos?.length > 0) return data.photos[0].src.medium;
     } catch (err) {
-      console.error('Error fetching image for:', query, err);
+      console.error("Error fetching image for:", query, err);
     }
-    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(query.split(' ')[0])}`;
+    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(query.split(" ")[0])}`;
   }
 
   async onSelectDestination(destination: string): Promise<void> {
@@ -121,10 +124,10 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
     // Fetch images for popular places
     const imagePromises = this.popularPlaces.map(async (place, index) => {
-  place.image = undefined; // 👈 no broken URL anymore
-  const img = await this.fetchImage(`${place.name} ${place.location}`);
-  setTimeout(() => (place.image = img), 100 * index);
-});
+      place.image = undefined; // 👈 no broken URL anymore
+      const img = await this.fetchImage(`${place.name} ${place.location}`);
+      setTimeout(() => (place.image = img), 100 * index);
+    });
 
     await Promise.allSettled(imagePromises);
 
@@ -133,7 +136,9 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   filterByType(type: string): void {
-    this.filteredPlaces = type ? this.popularPlaces.filter(p => p.type === type) : [...this.popularPlaces];
+    this.filteredPlaces = type
+      ? this.popularPlaces.filter((p) => p.type === type)
+      : [...this.popularPlaces];
     this.cleanupMaps();
   }
 
@@ -142,7 +147,7 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   private initializeMaps(): void {
-    this.filteredPlaces.forEach(place => {
+    this.filteredPlaces.forEach((place) => {
       if (!place.lat || !place.lng) return;
 
       const mapId = `mini-map-${place.id}`;
@@ -155,13 +160,18 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
         delete this.mapsInstances[place.id];
       }
 
-      const map = L.map(mapId, { center: [place.lat, place.lng], zoom: 13, scrollWheelZoom: false });
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
-        maxZoom: 18
+      const map = L.map(mapId, {
+        center: [place.lat, place.lng],
+        zoom: 13,
+        scrollWheelZoom: false,
+      });
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+        maxZoom: 18,
       }).addTo(map);
 
-      L.marker([place.lat, place.lng]).addTo(map)
+      L.marker([place.lat, place.lng])
+        .addTo(map)
         .bindPopup(`<strong>${place.name}</strong><br>${place.location}`);
 
       this.mapsInstances[place.id] = map;
@@ -173,7 +183,7 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   private cleanupMaps(): void {
-    Object.values(this.mapsInstances).forEach(map => map.remove());
+    Object.values(this.mapsInstances).forEach((map) => map.remove());
     this.mapsInstances = {};
     this.mapsInitialized = {};
   }
@@ -185,24 +195,26 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   subscribe(): void {
     if (!this.email.trim()) return;
     this.subscribed = true;
-    this.email = '';
-    setTimeout(() => this.subscribed = false, 3000);
+    this.email = "";
+    setTimeout(() => (this.subscribed = false), 3000);
   }
 
   constructor(
-  private router: Router,
-  private sessionService: UserSessionService
-) {}
+    private router: Router,
+    private sessionService: UserSessionService
+  ) {}
   onBookNow(placeId: number) {
-  this.sessionService.user$.subscribe(user => {
-    if (user) {
-      // User is logged in, navigate to booking page
-      this.router.navigate(['/booking'], { queryParams: { placeId } });
-    } else {
-      // User not logged in
-      alert('You need to login first to book.');
-      this.router.navigate(['/login']);
-    }
-  }).unsubscribe(); // Unsubscribe immediately to avoid memory leaks
-}
+    this.sessionService.user$
+      .subscribe((user) => {
+        if (user) {
+          // User is logged in, navigate to booking page
+          this.router.navigate(["/booking"], { queryParams: { placeId } });
+        } else {
+          // User not logged in
+          alert("You need to login first to book.");
+          this.router.navigate(["/login"]);
+        }
+      })
+      .unsubscribe(); // Unsubscribe immediately to avoid memory leaks
+  }
 }
