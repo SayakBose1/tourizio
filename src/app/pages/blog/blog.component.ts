@@ -5,7 +5,7 @@ interface BlogPost {
   id: number;
   title: string;
   excerpt: string;
-  content: string;   // 👈 add this line
+  content: string;
   image: string;
   author: string;
   authorImage: string;
@@ -15,6 +15,7 @@ interface BlogPost {
   likes: number;
   location: string;
   tags: string[];
+  liked?: boolean;
 }
 
 @Component({
@@ -35,8 +36,7 @@ export class BlogComponent implements OnInit {
       excerpt:
         "Discover the untold stories and secret locations that make Kerala a paradise for adventurous travelers.",
       content: "Kerala, known as 'God's Own Country'...",
-      image:
-        "https://images.pexels.com/photos/169647/pexels-photo-169647.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: "",
       author: "Priya Sharma",
       authorImage: "https://i.pravatar.cc/100?img=12",
       date: "2025-09-10",
@@ -52,8 +52,7 @@ export class BlogComponent implements OnInit {
       excerpt: "A culinary journey through the narrow lanes of Chandni Chowk.",
       content:
         "The bustling streets of Old Delhi are a food lover's paradise...",
-      image:
-        "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: "",
       author: "Rajesh Kumar",
       authorImage: "https://i.pravatar.cc/100?img=15",
       date: "2025-09-08",
@@ -69,8 +68,7 @@ export class BlogComponent implements OnInit {
       excerpt: "Essential tips and insights for first-time trekkers.",
       content:
         "The Himalayas offer some of the world's most breathtaking trekking experiences...",
-      image:
-        "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: "",
       author: "Amit Singh",
       authorImage: "https://i.pravatar.cc/100?img=7",
       date: "2025-09-05",
@@ -87,8 +85,7 @@ export class BlogComponent implements OnInit {
         "Exploring the intricate art and spiritual significance of South India's temples.",
       content:
         "Tamil Nadu's temples are masterpieces of Dravidian architecture...",
-      image:
-        "https://images.pexels.com/photos/2086753/pexels-photo-2086753.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: "",
       author: "Lakshmi Iyer",
       authorImage: "https://i.pravatar.cc/100?img=8",
       date: "2025-09-03",
@@ -104,8 +101,7 @@ export class BlogComponent implements OnInit {
       excerpt: "How to explore India without breaking the bank.",
       content:
         "Traveling in India on a budget doesn’t mean compromising on experiences...",
-      image:
-        "https://images.pexels.com/photos/163185/travel-map-trip-tourism-163185.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: "",
       author: "Sarah Johnson",
       authorImage: "https://i.pravatar.cc/100?img=32",
       date: "2025-09-01",
@@ -121,8 +117,7 @@ export class BlogComponent implements OnInit {
       excerpt: "Experience the raw beauty and biodiversity of the Amazon.",
       content:
         "The Amazon rainforest is home to countless species and untouched natural wonders...",
-      image:
-        "https://images.pexels.com/photos/325807/pexels-photo-325807.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: "",
       author: "Carlos Mendes",
       authorImage: "https://i.pravatar.cc/100?img=21",
       date: "2025-08-28",
@@ -153,36 +148,34 @@ export class BlogComponent implements OnInit {
       Authorization: "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq",
     });
 
-    // Featured images
-    this.http
-      .get<any>(API_URL, {
-        headers,
-        params: { query: "india travel", per_page: 3 },
-      })
-      .subscribe((res) => {
-        this.featuredPosts = this.blogPosts.slice(0, 3).map((post, i) => ({
-          ...post,
-          image:
-            res.photos[i]?.src.large || "https://via.placeholder.com/800x600",
-        }));
-      });
+    // Map post IDs to better search queries
+    const queries: { [key: number]: string } = {
+      1: "kerala travel",
+      2: "delhi street food",
+      3: "himalaya trekking",
+      4: "tamil nadu temples",
+      5: "budget travel india",
+      6: "amazon rainforest",
+    };
 
-    // Blog images
-    this.http
-      .get<any>(API_URL, {
-        headers,
-        params: {
-          query: "indian adventure culture",
-          per_page: this.blogPosts.length,
-        },
-      })
-      .subscribe((res) => {
-        this.blogPosts = this.blogPosts.map((post, i) => ({
-          ...post,
-          image:
-            res.photos[i]?.src.medium || "https://via.placeholder.com/600x400",
-        }));
-      });
+    // Fetch images per blog post
+    this.blogPosts.forEach((post, index) => {
+      const query = queries[post.id] || "india travel";
+
+      this.http
+        .get<any>(API_URL, {
+          headers,
+          params: { query, per_page: 1 },
+        })
+        .subscribe((res) => {
+          const newImage =
+            res.photos[0]?.src.medium || "https://via.placeholder.com/600x400";
+          this.blogPosts[index].image = newImage;
+        });
+    });
+
+    // ✅ Use ALL posts in carousel instead of only 3
+    this.featuredPosts = [...this.blogPosts];
   }
 
   get filteredPosts() {
@@ -204,5 +197,15 @@ export class BlogComponent implements OnInit {
     this.currentFeaturedIndex =
       (this.currentFeaturedIndex - 1 + this.featuredPosts.length) %
       this.featuredPosts.length;
+  }
+
+  toggleLike(post: BlogPost) {
+    if (post.liked) {
+      post.likes--;
+      post.liked = false;
+    } else {
+      post.likes++;
+      post.liked = true;
+    }
   }
 }

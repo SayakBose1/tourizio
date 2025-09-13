@@ -50,7 +50,12 @@ const routes: Routes = [
     component: ProfileComponent,
     data: { animation: "ProfilePage" },
   },
-  { path: 'blog', component: BlogComponent  },
+  {
+    path: "blog",
+    loadChildren: () =>
+      import("./pages/blog/blog.module").then((m) => m.BlogModule),
+    data: { animation: "BlogPage" },
+  },
 
   { path: "**", redirectTo: "" },
 ];
