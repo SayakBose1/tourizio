@@ -2,21 +2,7 @@
   <!-- Header -->
   <header class="text-center mb-10">
     <h1 class="text-4xl font-bold flex items-center justify-center gap-2">
-      <!-- Blue Book Icon -->
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="w-10 h-10 text-blue-600"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-        />
-      </svg>
+      <i class="fas fa-book text-blue-600"></i>
       Travel Blog
     </h1>
     <p class="text-gray-600 mt-2">
@@ -46,7 +32,7 @@
     </div>
   </header>
 
-  <!-- Featured Stories -->
+  <!-- Featured Stories Carousel -->
   <section class="mb-12">
     <h2 class="text-2xl font-semibold mb-6">Featured Stories</h2>
 
@@ -57,7 +43,7 @@
       <img
         [src]="featuredPosts[currentFeaturedIndex].image"
         [alt]="featuredPosts[currentFeaturedIndex].title"
-        class="w-full h-72 object-cover"
+        class="w-full h-72 object-cover transition duration-700"
       />
 
       <!-- Overlay -->
@@ -79,15 +65,16 @@
           {{ featuredPosts[currentFeaturedIndex].excerpt }}
         </p>
 
-        <!-- ✅ dynamic author + read time -->
+        <!-- author -->
         <div class="flex items-center mt-3">
           <img
             [src]="featuredPosts[currentFeaturedIndex].authorImage"
-            [alt]="featuredPosts[currentFeaturedIndex].author"
-            class="w-8 h-8 rounded-full mr-2 border border-white"
+            class="w-8 h-8 rounded-full mr-2"
           />
-          <span class="text-gray-200 text-xs">
+          <span class="text-gray-200 text-xs flex items-center gap-2">
+            <i class="fas fa-user"></i>
             {{ featuredPosts[currentFeaturedIndex].author }} •
+            <i class="far fa-clock"></i>
             {{ featuredPosts[currentFeaturedIndex].readTime }}
           </span>
         </div>
@@ -103,100 +90,54 @@
       <!-- Carousel Controls -->
       <button
         (click)="prevFeatured()"
-        class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/90 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow hover:bg-blue-600 hover:text-white transition"
+        class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white"
       >
-        ‹
+        <i class="fas fa-chevron-left"></i>
       </button>
       <button
         (click)="nextFeatured()"
-        class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/90 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow hover:bg-blue-600 hover:text-white transition"
+        class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white"
       >
-        ›
+        <i class="fas fa-chevron-right"></i>
       </button>
+
+      <!-- Dot Indicators -->
+      <div
+        class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2"
+      >
+        <span
+          *ngFor="let post of featuredPosts; let i = index"
+          (click)="currentFeaturedIndex = i"
+          class="w-3 h-3 rounded-full cursor-pointer"
+          [class.bg-white]="i === currentFeaturedIndex"
+          [class.bg-gray-400]="i !== currentFeaturedIndex"
+        ></span>
+      </div>
     </div>
   </section>
 
   <!-- Latest Articles -->
   <section>
     <h2 class="text-2xl font-semibold mb-6">Latest Articles</h2>
-
     <div class="grid md:grid-cols-3 gap-6">
       <article
         *ngFor="let post of filteredPosts"
-        class="rounded-xl overflow-hidden shadow hover:shadow-lg transition bg-white"
+        class="rounded-xl overflow-hidden shadow hover:shadow-lg transition"
       >
-        <!-- Article Image -->
-        <img
-          [src]="post.image"
-          [alt]="post.title"
-          class="w-full h-48 object-cover"
-        />
-
-        <!-- Article Content -->
+        <img [src]="post.image" [alt]="post.title" class="w-full h-48 object-cover" />
         <div class="p-4">
-          <!-- Location + Read Time -->
-          <div class="flex items-center text-gray-500 text-xs mb-2 space-x-4">
-            <!-- Place -->
-            <div class="flex items-center space-x-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3
-           -3 1.343-3 3 1.343 3 3 3z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 22s8-4.5 8-11.5S16.627 2 12 2
-           4 6.5 4 10.5 12 22 12 22z"
-                />
-              </svg>
-              <span>{{ post.location }}</span>
-            </div>
+          <span
+            class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded mb-2"
+          >
+            {{ post.category }}
+          </span>
+          <h3 class="text-lg font-semibold">{{ post.title }}</h3>
+          <p class="text-gray-600 text-sm mt-2">{{ post.excerpt }}</p>
 
-            <!-- Clock -->
-            <div class="flex items-center space-x-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 6v6l4 2"
-                />
-                <circle cx="12" cy="12" r="9" />
-              </svg>
-              <span>{{ post.readTime }}</span>
-            </div>
-          </div>
-
-          <!-- Title -->
-          <h3 class="text-lg font-semibold text-gray-800">
-            {{ post.title }}
-          </h3>
-          <p class="text-gray-600 text-sm mt-1">{{ post.excerpt }}</p>
-
-          <!-- Tags -->
-          <div class="mt-3 flex flex-wrap gap-2">
-            <span
-              *ngFor="let tag of post.tags"
-              class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded"
-            >
-              #{{ tag }}
-            </span>
+          <!-- location + readTime -->
+          <div class="flex items-center text-xs text-gray-500 mt-2 gap-3">
+            <span><i class="fas fa-map-marker-alt"></i> {{ post.location }}</span>
+            <span><i class="far fa-clock"></i> {{ post.readTime }}</span>
           </div>
 
           <!-- Author + Date + Likes -->
@@ -256,11 +197,15 @@
               <span>{{ post.likes }}</span>
             </button>
           </div>
+          <button class="mt-3 text-blue-600 font-medium hover:underline">
+            Read More →
+          </button>
         </div>
       </article>
     </div>
+  </section>
 
-    <!-- Load More Button -->
+  <!-- Load More Button -->
     <div class="text-center mt-8">
       <button
         class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition"
@@ -268,5 +213,4 @@
         Load More Articles
       </button>
     </div>
-  </section>
 </div>
