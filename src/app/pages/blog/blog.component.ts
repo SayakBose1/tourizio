@@ -16,6 +16,7 @@ interface BlogPost {
   location: string;
   tags: string[];
   liked?: boolean;
+  imageLoaded?: boolean; // ✅ new property for skeleton loader
 }
 
 @Component({
@@ -45,13 +46,13 @@ export class BlogComponent implements OnInit {
       likes: 124,
       location: "Kerala, India",
       tags: ["Kerala", "Culture", "Hidden Gems", "Travel Tips"],
+      imageLoaded: false, // ✅ initialize skeleton
     },
     {
       id: 2,
       title: "Street Food Adventures in Old Delhi",
       excerpt: "A culinary journey through the narrow lanes of Chandni Chowk.",
-      content:
-        "The bustling streets of Old Delhi are a food lover's paradise...",
+      content: "The bustling streets of Old Delhi are a food lover's paradise...",
       image: "",
       author: "Rajesh Kumar",
       authorImage: "https://i.pravatar.cc/100?img=15",
@@ -61,6 +62,7 @@ export class BlogComponent implements OnInit {
       likes: 89,
       location: "Delhi, India",
       tags: ["Delhi", "Street Food", "Culture", "Photography"],
+      imageLoaded: false,
     },
     {
       id: 3,
@@ -77,14 +79,14 @@ export class BlogComponent implements OnInit {
       likes: 203,
       location: "Himalayas, India",
       tags: ["Himalaya", "Trekking", "Adventure", "Mountains"],
+      imageLoaded: false,
     },
     {
       id: 4,
       title: "Temple Architecture of Tamil Nadu",
       excerpt:
         "Exploring the intricate art and spiritual significance of South India's temples.",
-      content:
-        "Tamil Nadu's temples are masterpieces of Dravidian architecture...",
+      content: "Tamil Nadu's temples are masterpieces of Dravidian architecture...",
       image: "",
       author: "Lakshmi Iyer",
       authorImage: "https://i.pravatar.cc/100?img=8",
@@ -94,6 +96,7 @@ export class BlogComponent implements OnInit {
       likes: 156,
       location: "Tamil Nadu, India",
       tags: ["Tamil Nadu", "Temples", "Architecture", "History"],
+      imageLoaded: false,
     },
     {
       id: 5,
@@ -110,6 +113,7 @@ export class BlogComponent implements OnInit {
       likes: 267,
       location: "India",
       tags: ["Budget Travel", "Tips", "Backpacking", "India"],
+      imageLoaded: false,
     },
     {
       id: 6,
@@ -126,6 +130,7 @@ export class BlogComponent implements OnInit {
       likes: 312,
       location: "Amazon, Brazil",
       tags: ["Amazon", "Rainforest", "Wildlife", "Nature"],
+      imageLoaded: false,
     },
   ];
 
@@ -137,9 +142,7 @@ export class BlogComponent implements OnInit {
     this.loadImages();
 
     // Auto-rotate carousel every 5 seconds
-    setInterval(() => {
-      this.nextFeatured();
-    }, 5000);
+    setInterval(() => this.nextFeatured(), 5000);
   }
 
   loadImages() {
@@ -148,7 +151,6 @@ export class BlogComponent implements OnInit {
       Authorization: "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq",
     });
 
-    // Map post IDs to better search queries
     const queries: { [key: number]: string } = {
       1: "kerala travel",
       2: "delhi street food",
@@ -158,7 +160,6 @@ export class BlogComponent implements OnInit {
       6: "amazon rainforest",
     };
 
-    // Fetch images per blog post
     this.blogPosts.forEach((post, index) => {
       const query = queries[post.id] || "india travel";
 
@@ -171,10 +172,11 @@ export class BlogComponent implements OnInit {
           const newImage =
             res.photos[0]?.src.medium || "https://via.placeholder.com/600x400";
           this.blogPosts[index].image = newImage;
+          // ✅ mark image as loaded after a short delay for skeleton
+          setTimeout(() => (this.blogPosts[index].imageLoaded = true), 50);
         });
     });
 
-    // ✅ Use ALL posts in carousel instead of only 3
     this.featuredPosts = [...this.blogPosts];
   }
 

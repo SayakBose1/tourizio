@@ -36,28 +36,24 @@
   <section class="mb-12">
     <h2 class="text-2xl font-semibold mb-6">Featured Stories</h2>
 
-    <div
-      *ngIf="featuredPosts.length > 0"
-      class="relative rounded-xl overflow-hidden shadow-lg"
-    >
+    <div *ngIf="featuredPosts.length > 0" class="relative rounded-xl overflow-hidden shadow-lg">
+      <!-- Skeleton loader -->
+      <div *ngIf="!featuredPosts[currentFeaturedIndex]?.imageLoaded" class="w-full h-72 skeleton"></div>
+
       <img
+        *ngIf="featuredPosts[currentFeaturedIndex]?.imageLoaded"
         [src]="featuredPosts[currentFeaturedIndex].image"
         [alt]="featuredPosts[currentFeaturedIndex].title"
         class="w-full h-72 object-cover transition duration-700"
+        (load)="featuredPosts[currentFeaturedIndex].imageLoaded = true"
       />
 
       <!-- Overlay -->
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-6 flex flex-col justify-end"
-      >
-        <!-- category pill -->
-        <span
-          class="self-start bg-blue-600 text-white px-3 py-1 rounded-full text-xs mb-2"
-        >
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-6 flex flex-col justify-end">
+        <span class="self-start bg-blue-600 text-white px-3 py-1 rounded-full text-xs mb-2">
           {{ featuredPosts[currentFeaturedIndex].category }}
         </span>
 
-        <!-- title + excerpt -->
         <h3 class="text-white text-2xl font-bold">
           {{ featuredPosts[currentFeaturedIndex].title }}
         </h3>
@@ -65,46 +61,32 @@
           {{ featuredPosts[currentFeaturedIndex].excerpt }}
         </p>
 
-        <!-- author -->
         <div class="flex items-center mt-3">
           <img
             [src]="featuredPosts[currentFeaturedIndex].authorImage"
             class="w-8 h-8 rounded-full mr-2"
           />
           <span class="text-gray-200 text-xs flex items-center gap-2">
-            <i class="fas fa-user"></i>
-            {{ featuredPosts[currentFeaturedIndex].author }} •
-            <i class="far fa-clock"></i>
-            {{ featuredPosts[currentFeaturedIndex].readTime }}
+            <i class="fas fa-user"></i> {{ featuredPosts[currentFeaturedIndex].author }} •
+            <i class="far fa-clock"></i> {{ featuredPosts[currentFeaturedIndex].readTime }}
           </span>
         </div>
 
-        <!-- read more button -->
-        <button
-          class="mt-4 self-start bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 text-sm"
-        >
+        <button class="mt-4 self-start bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 text-sm">
           Read More
         </button>
       </div>
 
       <!-- Carousel Controls -->
-      <button
-        (click)="prevFeatured()"
-        class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white"
-      >
+      <button (click)="prevFeatured()" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white">
         <i class="fas fa-chevron-left"></i>
       </button>
-      <button
-        (click)="nextFeatured()"
-        class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white"
-      >
+      <button (click)="nextFeatured()" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow hover:bg-white">
         <i class="fas fa-chevron-right"></i>
       </button>
 
       <!-- Dot Indicators -->
-      <div
-        class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2"
-      >
+      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
         <span
           *ngFor="let post of featuredPosts; let i = index"
           (click)="currentFeaturedIndex = i"
@@ -120,80 +102,49 @@
   <section>
     <h2 class="text-2xl font-semibold mb-6">Latest Articles</h2>
     <div class="grid md:grid-cols-3 gap-6">
-      <article
-        *ngFor="let post of filteredPosts"
-        class="rounded-xl overflow-hidden shadow hover:shadow-lg transition"
-      >
-        <img [src]="post.image" [alt]="post.title" class="w-full h-48 object-cover" />
+      <article *ngFor="let post of filteredPosts" class="rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+        <!-- Skeleton loader for article image -->
+        <div *ngIf="!post.imageLoaded" class="w-full h-48 skeleton"></div>
+
+        <img
+          *ngIf="post.imageLoaded"
+          [src]="post.image"
+          [alt]="post.title"
+          class="w-full h-48 object-cover"
+          (load)="post.imageLoaded = true"
+        />
+
         <div class="p-4">
-          <span
-            class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded mb-2"
-          >
+          <span class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded mb-2">
             {{ post.category }}
           </span>
           <h3 class="text-lg font-semibold">{{ post.title }}</h3>
           <p class="text-gray-600 text-sm mt-2">{{ post.excerpt }}</p>
 
-          <!-- location + readTime -->
           <div class="flex items-center text-xs text-gray-500 mt-2 gap-3">
             <span><i class="fas fa-map-marker-alt"></i> {{ post.location }}</span>
             <span><i class="far fa-clock"></i> {{ post.readTime }}</span>
           </div>
 
-          <!-- Author + Date + Likes -->
           <div class="mt-4 flex items-center justify-between border-t pt-3">
-            <!-- Author Info -->
             <div class="flex items-center space-x-2">
-              <img
-                [src]="post.authorImage"
-                [alt]="post.author"
-                class="w-8 h-8 rounded-full"
-              />
+              <img [src]="post.authorImage" [alt]="post.author" class="w-8 h-8 rounded-full" />
               <div class="text-sm">
                 <p class="font-medium text-gray-800">{{ post.author }}</p>
                 <p class="text-gray-500 text-xs">{{ post.date }}</p>
               </div>
             </div>
 
-            <!-- Likes -->
             <button
               (click)="toggleLike(post)"
               class="flex items-center text-gray-500 text-sm hover:text-red-500 transition"
             >
-              <svg
-                *ngIf="!post.liked"
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0
-         116.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0
-         010-6.364z"
-                />
+              <svg *ngIf="!post.liked" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
               </svg>
-
-              <svg
-                *ngIf="post.liked"
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5 mr-1 text-red-500"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-         2 5.42 4.42 3 7.5 3c1.74 0 3.41.81
-         4.5 2.09C13.09 3.81 14.76 3 16.5 3
-         19.58 3 22 5.42 22 8.5c0 3.78-3.4
-         6.86-8.55 11.54L12 21.35z"
-                />
+              <svg *ngIf="post.liked" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
               </svg>
-
               <span>{{ post.likes }}</span>
             </button>
           </div>
@@ -206,11 +157,9 @@
   </section>
 
   <!-- Load More Button -->
-    <div class="text-center mt-8">
-      <button
-        class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition"
-      >
-        Load More Articles
-      </button>
-    </div>
+  <div class="text-center mt-8">
+    <button class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition">
+      Load More Articles
+    </button>
+  </div>
 </div>
