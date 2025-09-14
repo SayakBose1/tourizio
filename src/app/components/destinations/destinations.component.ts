@@ -97,9 +97,10 @@ export class DestinationsComponent
 
       if (scrollTop + windowHeight - revealPoint > elementTop) {
         if (!htmlElement.classList.contains("show")) {
+          const delay = htmlElement.classList.contains("title-reveal") ? 0 : index * 50;
           setTimeout(() => {
-            htmlElement.classList.add("show");
-          }, index * 150); // staggered delay
+            htmlElement.classList.add("show"),delay;
+          }, index * 50); // staggered delay
         }
       }
     });
