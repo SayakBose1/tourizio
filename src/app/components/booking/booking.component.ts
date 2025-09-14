@@ -24,9 +24,10 @@ export class BookingComponent implements OnInit {
   selectedPlace: Place | null = null;
   placesMap: Record<string, Place[]> = {};
 
-  // ✅ New property for showing success/error message
+  // ✅ New properties
   successMessage = '';
   errorMessage = '';
+  isBooking = false; // loading state for button
 
   constructor(
     private route: ActivatedRoute,
@@ -55,11 +56,16 @@ export class BookingComponent implements OnInit {
 
   async confirmBooking() {
     if (!this.selectedPlace) return alert('Please select a destination.');
+    if (this.isBooking) return; // prevent multiple clicks
 
     const currentUser = await this.afAuth.currentUser;
     if (!currentUser) {
       return alert('You must be logged in to confirm a booking.');
     }
+
+    this.isBooking = true;
+    this.successMessage = '';
+    this.errorMessage = '';
 
     const bookingData: BookingData & { userId: string; email?: string } = {
       userId: currentUser.uid,
@@ -68,18 +74,15 @@ export class BookingComponent implements OnInit {
       date: this.booking.date,
       people: this.booking.people,
       price: this.selectedPlace.price,
-      email: currentUser.email || '' // ✅ capture user email
+      email: currentUser.email || ''
     };
 
     try {
       await this.bookingService.addBooking(bookingData);
-
-      // ✅ Send confirmation email
       await this.bookingService.sendBookingMail(bookingData);
 
-       alert('Booking successful! Please check your mail for booking details.');
+      alert('Booking successful! Please check your mail for booking details.');
 
-      // ✅ Show success message in green text
       this.successMessage = 'Booking successful! A confirmation email has been sent.';
       this.errorMessage = '';
 
@@ -91,9 +94,11 @@ export class BookingComponent implements OnInit {
       this.router.navigate(['/profile']);
     } catch (err) {
       console.error('Booking failed', err);
-      alert('Booking failed. Please try again.');  
+      alert('Booking failed. Please try again.');
       this.errorMessage = 'Booking failed. Please try again.';
       this.successMessage = '';
+    } finally {
+      this.isBooking = false;
     }
   }
 }
