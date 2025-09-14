@@ -19,7 +19,7 @@
 .leaflet-control-zoom-out {
   background-image: none !important;
   text-indent: 0 !important;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 18px !important;
   line-height: 30px !important;
@@ -87,3 +87,32 @@
   }
 }
 
+/* Scroll reveal animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-reveal.show:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Title reveal */
+.title-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+}
+
+.title-reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}

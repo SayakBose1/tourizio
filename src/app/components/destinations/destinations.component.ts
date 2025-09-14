@@ -39,11 +39,73 @@ export class DestinationsComponent
   private readonly PEXELS_API_KEY =
     "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq";
 
+  // ===== Scroll Reveal =====
+  private scrollRevealElements: NodeListOf<Element> | null = null;
+  private scrollListener: (() => void) | null = null;
+  private resizeListener: (() => void) | null = null;
+  private ticking = false;
+  private animationFrame: number | null = null;
+
+  constructor(
+    private router: Router,
+    private sessionService: UserSessionService
+  ) {}
+
   ngOnInit(): void {
     this.setCustomMarker();
     this.loadDestinations();
+    this.initScrollReveal();
   }
 
+  // ===== SCROLL REVEAL METHODS =====
+  private initScrollReveal(): void {
+    this.scrollRevealElements = document.querySelectorAll(
+      ".scroll-reveal, .title-reveal"
+    );
+
+    this.scrollListener = () => this.optimizedScrollReveal();
+    this.resizeListener = () => this.optimizedScrollReveal();
+
+    window.addEventListener("scroll", this.scrollListener, { passive: true });
+    window.addEventListener("resize", this.resizeListener, { passive: true });
+
+    // Initial check
+    this.revealOnScroll();
+  }
+
+  private optimizedScrollReveal(): void {
+    if (!this.ticking) {
+      this.animationFrame = requestAnimationFrame(() => {
+        this.revealOnScroll();
+        this.ticking = false;
+      });
+      this.ticking = true;
+    }
+  }
+
+  private revealOnScroll(): void {
+    if (!this.scrollRevealElements) return;
+
+    const windowHeight = window.innerHeight;
+    const scrollTop = window.pageYOffset;
+
+    this.scrollRevealElements.forEach((element: Element, index: number) => {
+      const htmlElement = element as HTMLElement;
+      const elementTop =
+        htmlElement.getBoundingClientRect().top + window.pageYOffset;
+      const revealPoint = 100;
+
+      if (scrollTop + windowHeight - revealPoint > elementTop) {
+        if (!htmlElement.classList.contains("show")) {
+          setTimeout(() => {
+            htmlElement.classList.add("show");
+          }, index * 150); // staggered delay
+        }
+      }
+    });
+  }
+
+  // ===== DATA LOADING =====
   private async loadDestinations(): Promise<void> {
     try {
       const res = await fetch("assets/data/dummydata.json");
@@ -59,13 +121,33 @@ export class DestinationsComponent
 
   private async loadTrendingImages(): Promise<void> {
     const promises = this.trendingPlaces.map(async (place, index) => {
-      place.image = null; // start with no image so skeleton shows
+      place.image = null;
       const img = await this.fetchImage(`${place.name} ${place.location}`);
       setTimeout(() => (place.image = img), 100 * index);
     });
     await Promise.allSettled(promises);
   }
 
+  private async fetchImage(query: string): Promise<string> {
+    try {
+      const res = await fetch(
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+          query
+        )}&per_page=1`,
+        { headers: { Authorization: this.PEXELS_API_KEY } }
+      );
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      if (data.photos?.length > 0) return data.photos[0].src.medium;
+    } catch (err) {
+      console.error("Error fetching image for:", query, err);
+    }
+    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
+      query.split(" ")[0]
+    )}`;
+  }
+
+  // ===== MAPS =====
   private setCustomMarker(): void {
     const customIcon = L.divIcon({
       className: "custom-marker",
@@ -96,54 +178,7 @@ export class DestinationsComponent
       popupAnchor: [0, -36],
     });
 
-    // Apply as default icon
     (L.Marker.prototype.options.icon as any) = customIcon;
-  }
-
-  private async fetchImage(query: string): Promise<string> {
-    try {
-      const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1`,
-        { headers: { Authorization: this.PEXELS_API_KEY } }
-      );
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
-      if (data.photos?.length > 0) return data.photos[0].src.medium;
-    } catch (err) {
-      console.error("Error fetching image for:", query, err);
-    }
-    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(query.split(" ")[0])}`;
-  }
-
-  async onSelectDestination(destination: string): Promise<void> {
-    this.selectedDestination = destination;
-    this.popularPlaces = [...(this.placesMap[destination] || [])];
-    this.filteredPlaces = [...this.popularPlaces];
-
-    this.cleanupMaps();
-
-    // Fetch images for popular places
-    const imagePromises = this.popularPlaces.map(async (place, index) => {
-      place.image = undefined; // 👈 no broken URL anymore
-      const img = await this.fetchImage(`${place.name} ${place.location}`);
-      setTimeout(() => (place.image = img), 100 * index);
-    });
-
-    await Promise.allSettled(imagePromises);
-
-    // Reset map initialization flags
-    this.mapsInitialized = {};
-  }
-
-  filterByType(type: string): void {
-    this.filteredPlaces = type
-      ? this.popularPlaces.filter((p) => p.type === type)
-      : [...this.popularPlaces];
-    this.cleanupMaps();
-  }
-
-  ngAfterViewChecked(): void {
-    this.initializeMaps();
   }
 
   private initializeMaps(): void {
@@ -154,7 +189,6 @@ export class DestinationsComponent
       const mapEl = document.getElementById(mapId);
       if (!mapEl || this.mapsInitialized[place.id]) return;
 
-      // Remove old map instance if it exists
       if (this.mapsInstances[place.id]) {
         this.mapsInstances[place.id].remove();
         delete this.mapsInstances[place.id];
@@ -177,7 +211,6 @@ export class DestinationsComponent
       this.mapsInstances[place.id] = map;
       this.mapsInitialized[place.id] = true;
 
-      // Ensure map renders correctly
       setTimeout(() => map.invalidateSize(), 100);
     });
   }
@@ -188,7 +221,27 @@ export class DestinationsComponent
     this.mapsInitialized = {};
   }
 
-  ngOnDestroy(): void {
+  // ===== UI ACTIONS =====
+  async onSelectDestination(destination: string): Promise<void> {
+    this.selectedDestination = destination;
+    this.popularPlaces = [...(this.placesMap[destination] || [])];
+    this.filteredPlaces = [...this.popularPlaces];
+    this.cleanupMaps();
+
+    const imagePromises = this.popularPlaces.map(async (place, index) => {
+      place.image = undefined;
+      const img = await this.fetchImage(`${place.name} ${place.location}`);
+      setTimeout(() => (place.image = img), 100 * index);
+    });
+    await Promise.allSettled(imagePromises);
+
+    this.mapsInitialized = {};
+  }
+
+  filterByType(type: string): void {
+    this.filteredPlaces = type
+      ? this.popularPlaces.filter((p) => p.type === type)
+      : [...this.popularPlaces];
     this.cleanupMaps();
   }
 
@@ -199,22 +252,32 @@ export class DestinationsComponent
     setTimeout(() => (this.subscribed = false), 3000);
   }
 
-  constructor(
-    private router: Router,
-    private sessionService: UserSessionService
-  ) {}
   onBookNow(placeId: number) {
     this.sessionService.user$
       .subscribe((user) => {
         if (user) {
-          // User is logged in, navigate to booking page
           this.router.navigate(["/booking"], { queryParams: { placeId } });
         } else {
-          // User not logged in
           alert("You need to login first to book.");
           this.router.navigate(["/login"]);
         }
       })
-      .unsubscribe(); // Unsubscribe immediately to avoid memory leaks
+      .unsubscribe();
+  }
+
+  // ===== LIFECYCLE =====
+  ngAfterViewChecked(): void {
+    this.initializeMaps();
+    this.optimizedScrollReveal(); // keep checking
+  }
+
+  ngOnDestroy(): void {
+    this.cleanupMaps();
+
+    if (this.scrollListener)
+      window.removeEventListener("scroll", this.scrollListener);
+    if (this.resizeListener)
+      window.removeEventListener("resize", this.resizeListener);
+    if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
   }
 }
