@@ -1,4 +1,5 @@
-<div class="text-center py-12">
+<!--Header--> 
+ <div class="text-center py-12">
   <h1 class="text-4xl font-bold text-blue-600 mb-4">
     {{ title }}
   </h1>
@@ -70,13 +71,13 @@
 <div class="max-w-6xl mx-auto py-12 px-4">
   <h2 class="text-3xl font-bold text-center mb-8">Featured Destinations</h2>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Taj Mahal -->
     <div
+      *ngFor="let place of featuredDestinations"
       class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
     >
       <img
-        src="assets/images/taj-mehel.webp"
-        alt="Taj Mahal"
+        [src]="place.image"
+        [alt]="place.name"
         loading="lazy"
         decoding="async"
         class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
@@ -84,141 +85,8 @@
       <div
         class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
       >
-        <h3 class="text-xl font-semibold text-white">Taj Mahal</h3>
-        <p class="text-gray-300 text-center">
-          Marvel at the iconic white marble mausoleum in Agra.
-        </p>
-        <button
-          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
-        >
-          View Details
-        </button>
-      </div>
-    </div>
-
-    <!-- Jaipur -->
-    <div
-      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
-    >
-      <img
-        src="assets/images/jaipur.webp"
-        alt="Jaipur"
-        loading="lazy"
-        decoding="async"
-        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
-      />
-      <div
-        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
-      >
-        <h3 class="text-xl font-semibold text-white">Jaipur</h3>
-        <p class="text-gray-300 text-center">
-          Explore the Pink City with its stunning palaces and forts.
-        </p>
-        <button
-          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
-        >
-          View Details
-        </button>
-      </div>
-    </div>
-
-    <!-- Kerala Backwaters -->
-    <div
-      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
-    >
-      <img
-        src="assets/images/kerala.webp"
-        alt="Kerala Backwaters"
-        loading="lazy"
-        decoding="async"
-        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
-      />
-      <div
-        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
-      >
-        <h3 class="text-xl font-semibold text-white">Kerala Backwaters</h3>
-        <p class="text-gray-300 text-center">
-          Relax in the serene backwaters of God’s Own Country.
-        </p>
-        <button
-          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
-        >
-          View Details
-        </button>
-      </div>
-    </div>
-
-    <!-- Goa Beaches -->
-    <div
-      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
-    >
-      <img
-        src="assets/images/goa.webp"
-        alt="Goa Beaches"
-        loading="lazy"
-        decoding="async"
-        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
-      />
-      <div
-        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
-      >
-        <h3 class="text-xl font-semibold text-white">Goa Beaches</h3>
-        <p class="text-gray-300 text-center">
-          Relax on the sunny beaches and enjoy vibrant nightlife.
-        </p>
-        <button
-          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
-        >
-          View Details
-        </button>
-      </div>
-    </div>
-
-    <!-- Varanasi Ghats -->
-    <div
-      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
-    >
-      <img
-        src="assets/images/Varanasi.webp"
-        alt="Varanasi Ghats"
-        loading="lazy"
-        decoding="async"
-        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
-      />
-      <div
-        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
-      >
-        <h3 class="text-xl font-semibold text-white">Varanasi Ghats</h3>
-        <p class="text-gray-300 text-center">
-          Witness the spiritual rituals along the sacred Ganges.
-        </p>
-        <button
-          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
-        >
-          View Details
-        </button>
-      </div>
-    </div>
-
-    <!-- Hampi -->
-    <div
-      class="relative group rounded-lg overflow-hidden shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl"
-    >
-      <img
-        src="assets/images/hampi.webp"
-        alt="Hampi"
-        loading="lazy"
-        decoding="async"
-        class="w-full h-48 object-cover transition-all duration-700 ease-in-out group-hover:brightness-75"
-      />
-      <div
-        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-all duration-700 ease-in-out flex flex-col items-center space-y-4"
-      >
-        <h3 class="text-xl font-semibold text-white">Hampi</h3>
-        <p class="text-gray-300 text-center">
-          Explore the ancient ruins, temples, and boulder-strewn landscapes of
-          the UNESCO World Heritage site.
-        </p>
+        <h3 class="text-xl font-semibold text-white">{{ place.name }}</h3>
+        <p class="text-gray-300 text-center">{{ place.description }}</p>
         <button
           class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg shadow-md transform transition-all duration-500 ease-in-out hover:translate-y-[-4px] hover:opacity-90"
         >
@@ -677,4 +545,4 @@
   >
     Explore Now
   </button>
-</div>
+</div> 

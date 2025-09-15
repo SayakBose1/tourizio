@@ -1,0 +1,40 @@
+{
+  "featuredDestinations": [
+    {
+      "name": "Taj Mahal",
+      "location": "Agra",
+      "image": "assets/images/taj-mehel.webp",
+      "description": "Marvel at the iconic white marble mausoleum in Agra."
+    },
+    {
+      "name": "Jaipur",
+      "location": "Rajasthan",
+      "image": "assets/images/jaipur.webp",
+      "description": "Explore the Pink City with its stunning palaces and forts."
+    },
+    {
+      "name": "Kerala Backwaters",
+      "location": "Kerala",
+      "image": "assets/images/kerala.webp",
+      "description": "Relax in the serene backwaters of God’s Own Country."
+    },
+    {
+      "name": "Goa Beaches",
+      "location": "Goa",
+      "image": "assets/images/goa.webp",
+      "description": "Relax on the sunny beaches and enjoy vibrant nightlife."
+    },
+    {
+      "name": "Varanasi Ghats",
+      "location": "Varanasi",
+      "image": "assets/images/Varanasi.webp",
+      "description": "Witness the spiritual rituals along the sacred Ganges."
+    },
+    {
+      "name": "Hampi",
+      "location": "Karnataka",
+      "image": "assets/images/hampi.webp",
+      "description": "Explore the ancient ruins, temples, and boulder-strewn landscapes of the UNESCO World Heritage site."
+    }
+  ]
+}

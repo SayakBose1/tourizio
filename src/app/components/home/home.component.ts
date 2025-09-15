@@ -50,15 +50,27 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     "assets/images/img6.jpg",
   ];
 
+  // ✅ Featured destinations from JSON
+  featuredDestinations: any[] = [];
+
   constructor(
     private router: Router,
     private elementRef: ElementRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.startTypingLoop();
+    }
+
+    // ✅ Load featured destinations from JSON
+    try {
+      const res = await fetch("assets/data/featured-destinations.json");
+      const data = await res.json();
+      this.featuredDestinations = data.featuredDestinations;
+    } catch (error) {
+      console.error("Error loading featured destinations:", error);
     }
   }
 
@@ -268,10 +280,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // ===== UTILITY METHODS =====
-
-  /**
-   * Method to manually trigger scroll reveal for dynamically added content
-   */
   refreshScrollReveal() {
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
@@ -280,16 +288,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * Method to pause/resume typing animation
-   */
   pauseTypingAnimation() {
     this.cleanupTypingAnimation();
   }
 
-  /**
-   * Method to resume typing animation
-   */
   resumeTypingAnimation() {
     if (isPlatformBrowser(this.platformId)) {
       this.startTypingLoop();
@@ -297,6 +299,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goToBlog() {
-  this.router.navigate(['/blog']);
-}
+    this.router.navigate(["/blog"]);
+  }
 }
