@@ -40,10 +40,5 @@ firebase-debug.log
 *.tmp
 *.swp
 
-# Environment files (keep secrets safe)
-/src/environments/
-src/environments/environment.ts
-src/environments/environment.prod.ts
-
 # Ignore Netlify local folder
 .netlify/
