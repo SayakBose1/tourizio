@@ -41,7 +41,7 @@ firebase-debug.log
 *.swp
 
 # Environment files (keep secrets safe)
-src/environments/
+/src/environments/
 src/environments/environment.ts
 src/environments/environment.prod.ts
 

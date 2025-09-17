@@ -103,17 +103,17 @@ Now open 👉 http://localhost:4200
 ## 📸 Screenshots
 
 ### 🏠 Homepage
-![Homepage](public/screenshots/homepage.png)
+![Homepage](public/homepage.png)
 
 ### 🏖️ Destinations
-![Destinations](public/screenshots/destinations.png)
+![Destinations](public/destinations.png)
 
 ### 📰 Blog
-![Blog](public/screenshots/blog.png)
+![Blog](public/blog.png)
 
 ### 🔐 Auth (Login / Signup)
-![login](public/screenshots/login.png)
-![signup](public/screenshots/signup.png)
+![login](public/login.png)
+![signup](public/signup.png)
 
 ---
 
