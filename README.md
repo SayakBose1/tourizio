@@ -117,7 +117,7 @@ Now open 👉 http://localhost:4200
 
 ---
 
-## Deployment
+## 📦 Deployment
 
 ### 🚀 Vercel
 Auto-deployment via GitHub integration.
