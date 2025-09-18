@@ -1,140 +1,152 @@
-<div class="max-w-md mx-auto mt-6 p-6 bg-white rounded-lg shadow">
-  <h2 class="text-2xl font-bold mb-4 text-center">Book Your Trip</h2>
-  <p class="text-gray-600 mb-4 text-center">
-    Visit destinations page to book your dream destination.
-  </p>
-
-  <form (ngSubmit)="confirmBooking()" class="space-y-4">
-    <!-- Name -->
-    <div>
-      <label class="block font-medium mb-1">Name</label>
-      <div class="relative">
-        <span class="absolute left-3 top-3 text-gray-400">
-          <i class="fas fa-user"></i>
-        </span>
-        <input
-          type="text"
-          [(ngModel)]="booking.name"
-          name="name"
-          class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
-          placeholder="Enter your full name"
-          required
-        />
-      </div>
-    </div>
-
-    <!-- Destination -->
-    <div>
-      <label class="block font-medium mb-1">Destination</label>
-      <div class="relative">
-        <span class="absolute left-3 top-3 text-gray-400">
-          <i class="fas fa-map-marker-alt"></i>
-        </span>
-        <input
-          type="text"
-          [(ngModel)]="booking.destination"
-          name="destination"
-          class="w-full border rounded p-2 pl-10 bg-gray-100"
-          placeholder="select destination from destinations page"
-          readonly
-        />
-      </div>
-    </div>
-
-    <!-- Price -->
-    <div>
-      <label class="block font-medium mb-1">Price (per person)</label>
-      <div class="relative">
-        <span class="absolute left-3 top-3 text-gray-400">
-          <i class="fas fa-tag"></i>
-        </span>
-        <input
-          type="text"
-          [value]="selectedPlace?.price | currency: 'INR'"
-          name="price"
-          class="w-full border rounded p-2 pl-10 bg-gray-100"
-          placeholder="check price from destinations page"
-          readonly
-        />
-      </div>
-    </div>
-
-    <!-- Date -->
-    <div>
-      <label class="block font-medium mb-1">Date</label>
-      <div class="relative">
-        <span class="absolute left-3 top-3 text-gray-400">
-          <i class="fas fa-calendar-alt"></i>
-        </span>
-        <input
-          type="date"
-          [(ngModel)]="booking.date"
-          name="date"
-          class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
-          required
-        />
-      </div>
-    </div>
-
-    <!-- People -->
-    <div>
-      <label class="block font-medium mb-1">People</label>
-      <div class="relative">
-        <span class="absolute left-3 top-3 text-gray-400">
-          <i class="fas fa-users"></i>
-        </span>
-        <input
-          type="number"
-          [(ngModel)]="booking.people"
-          name="people"
-          min="1"
-          class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
-          required
-        />
-      </div>
-    </div>
-
-    <!-- Total Price -->
-    <div *ngIf="selectedPlace">
-      <label class="block font-medium mb-1">Total Price</label>
-      <div class="relative">
-        <span class="absolute left-3 top-3 text-gray-400">
-          <i class="fas fa-wallet"></i>
-        </span>
-        <input
-          type="text"
-          [value]="selectedPlace.price * booking.people | currency: 'INR'"
-          readonly
-          class="w-full border rounded p-2 pl-10 bg-gray-100"
-        />
-      </div>
-    </div>
-
-    <!-- Confirm Booking Button -->
-    <button
-  type="submit"
-  [disabled]="isBooking || !booking.name || !booking.destination || !booking.date || booking.people < 1"
-  class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed font-semibold flex items-center justify-center"
->
-  <span *ngIf="!isBooking">Confirm Booking</span>
-  <span *ngIf="isBooking" class="flex items-center justify-center">
-    <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>
-    Booking...
-  </span>
-</button>
-
-  </form>
-
-  <!-- ✅ Success/Error Messages -->
-  <div class="mt-4 text-center">
-    <p *ngIf="successMessage" class="text-green-600 font-semibold">
-      {{ successMessage }}
+  <div class="max-w-md mx-auto mt-6 mb-6 p-6 bg-white rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4 text-center">Book Your Trip</h2>
+    <p class="text-gray-600 mb-4 text-center">
+      Visit destinations page to book your dream destination.
     </p>
-    <p *ngIf="errorMessage" class="text-red-600 font-semibold">
-      {{ errorMessage }}
-    </p>
-  </div>
-</div>
+
+    <form (ngSubmit)="confirmBooking()" class="space-y-4">
+      <!-- Name -->
+      <div>
+        <label class="block font-medium mb-1">Name</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-user"></i>
+          </span>
+          <input
+            type="text"
+            [(ngModel)]="booking.name"
+            name="name"
+            class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
+            placeholder="Enter your full name"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Destination -->
+      <div>
+        <label class="block font-medium mb-1">Destination</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-map-marker-alt"></i>
+          </span>
+          <input
+            type="text"
+            [(ngModel)]="booking.destination"
+            name="destination"
+            class="w-full border rounded p-2 pl-10 bg-gray-100"
+            placeholder="select destination from destinations page"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div>
+        <label class="block font-medium mb-1">Price (per person)</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-tag"></i>
+          </span>
+          <input
+            type="text"
+            [value]="selectedPlace?.price | currency: 'INR'"
+            name="price"
+            class="w-full border rounded p-2 pl-10 bg-gray-100"
+            placeholder="check price from destinations page"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div>
+        <label class="block font-medium mb-1">Date</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-calendar-alt"></i>
+          </span>
+          <input
+            type="date"
+            [(ngModel)]="booking.date"
+            name="date"
+            class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- People -->
+      <div>
+        <label class="block font-medium mb-1">People</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-users"></i>
+          </span>
+          <input
+            type="number"
+            [(ngModel)]="booking.people"
+            name="people"
+            placeholder="No. of people"
+            class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Total Price -->
+      <div *ngIf="selectedPlace">
+        <label class="block font-medium mb-1">Total Price</label>
+        <div class="relative">
+          <span class="absolute left-3 top-3 text-gray-400">
+            <i class="fas fa-wallet"></i>
+          </span>
+          <input
+            type="text"
+            [value]="selectedPlace.price * booking.people | currency: 'INR'"
+            readonly
+            class="w-full border rounded p-2 pl-10 bg-gray-100"
+          />
+        </div>
+      </div>
+
+      <!-- Confirm Booking Button -->
+      <button
+        type="submit"
+        [disabled]="
+          isBooking ||
+          !booking.name ||
+          !booking.destination ||
+          !booking.date ||
+          booking.people < 1
+        "
+        class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed font-semibold flex items-center justify-center"
+      >
+        <span *ngIf="!isBooking">Confirm Booking</span>
+        <span *ngIf="isBooking" class="flex items-center justify-center">
+          <svg
+            class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          Booking...
+        </span>
+      </button>
+    </form>
+
+

@@ -1,0 +1,95 @@
+<div class="max-w-md mx-auto mt-10 mb-10 p-6 border rounded-lg shadow-lg bg-white">
+  <h2 class="text-xl font-semibold mb-4">Payment Details</h2>
+
+  <!-- Card Number -->
+  <div class="mb-4">
+    <label class="block mb-1 font-medium">Card Number</label>
+    <div class="flex items-center border rounded px-3">
+      <input
+        type="text"
+        [(ngModel)]="cardNumber"
+        maxlength="16"
+        placeholder="XXXX XXXX XXXX XXXX"
+        class="flex-1 py-2 outline-none"
+      />
+      <!-- Card icons -->
+      <div class="flex gap-1 ml-2">
+        <img src="https://img.icons8.com/color/32/000000/visa.png" alt="Visa" />
+        <img src="https://img.icons8.com/color/32/000000/mastercard-logo.png" alt="MasterCard" />
+        <img src="https://img.icons8.com/color/32/000000/amex.png" alt="Amex" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Expiry + CVV -->
+  <div class="grid grid-cols-3 gap-4 mb-4">
+    <div>
+      <label class="block mb-1 font-medium">Expiry Date</label>
+      <select [(ngModel)]="expiryMonth" class="w-full border rounded px-2 py-2">
+        <option value="">Month</option>
+        <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+      </select>
+    </div>
+    <div>
+      <label class="block mb-1 font-medium">&nbsp;</label>
+      <select [(ngModel)]="expiryYear" class="w-full border rounded px-2 py-2">
+        <option value="">Year</option>
+        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+      </select>
+    </div>
+    <div>
+      <label class="block mb-1 font-medium">CVV</label>
+      <input
+        type="password"
+        [(ngModel)]="cvv"
+        maxlength="3"
+        placeholder="•••"
+        class="w-full border rounded px-2 py-2"
+      />
+    </div>
+  </div>
+
+  <!-- Save Card -->
+  <div class="flex items-center mb-4">
+    <input type="checkbox" [(ngModel)]="saveCard" class="mr-2" />
+    <span class="text-sm">Save your cards with CCAvenue Checkout for future payments (Note: We do not store your CVV/CVC number).</span>
+  </div>
+
+  <!-- Amount -->
+  <div class="mb-4 text-lg font-semibold text-blue-700">
+    INR {{ totalAmount | number }}.00 <span class="text-sm text-gray-600">(Total Amount Payable)</span>
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex gap-3">
+    <button
+      (click)="makePayment()"
+      [disabled]="loading"
+      class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded flex items-center justify-center"
+    >
+      <span *ngIf="!loading">Make Payment</span>
+      <span *ngIf="loading" class="flex items-center">
+        <svg
+          class="animate-spin h-5 w-5 mr-2 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+          </path>
+        </svg>
+        Processing...
+      </span>
+    </button>
+
+    <button
+      (click)="cancelPayment()"
+      [disabled]="loading"
+      class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
+    >
+      Cancel
+    </button>
+  </div>
+</div> 

@@ -40,7 +40,8 @@ export class AppComponent {
     return (
       url.startsWith('/login') ||
       url.startsWith('/signup') ||
-      url.startsWith('/profile')
+      url.startsWith('/profile') ||
+      url.startsWith('/payment')
     );
   }
 
