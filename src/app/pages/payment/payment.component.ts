@@ -24,7 +24,8 @@ export class PaymentComponent implements OnInit {
   years: number[] = [];
   bookingData: any = null;
 
-  loading = false; // ✅ Added for button animation
+  loading = false; // ✅ For button animation
+  cardType: string = ''; // ✅ Visa / MasterCard / Rupay
 
   constructor(
     private router: Router,
@@ -44,45 +45,46 @@ export class PaymentComponent implements OnInit {
     }
   }
 
-  async makePayment() {
-    if (!this.bookingData) {
-      alert('No booking found!');
+  async makePayment(paymentForm: any) {
+  if (!paymentForm.valid) {
+    
+    return;
+  }
+
+  if (!this.bookingData) {
+    alert('No booking found!');
+    return;
+  }
+
+  this.loading = true;
+  try {
+    const currentUser = await this.afAuth.currentUser;
+    if (!currentUser) {
+      alert('You must be logged in to make payment.');
+      this.loading = false;
       return;
     }
 
-    this.loading = true; // ✅ Start loading
+    await this.bookingService.addBooking(this.bookingData);
+    await this.bookingService.sendBookingMail(this.bookingData);
 
-    try {
-      const currentUser = await this.afAuth.currentUser;
-      if (!currentUser) {
-        alert('You must be logged in to make payment.');
-        this.loading = false;
-        return;
-      }
+    alert(`✅ Payment Successful! INR ${this.totalAmount} Paid. Please check your mail for booking details.`);
 
-      // ✅ Save booking in Firestore
-      await this.bookingService.addBooking(this.bookingData);
-
-      // ✅ Send booking confirmation email
-      await this.bookingService.sendBookingMail(this.bookingData);
-
-      alert(`✅ Payment Successful! INR ${this.totalAmount} Paid. Please check your mail for booking details.`);
-
-      // Clear storage
-      localStorage.removeItem('pendingBooking');
-
-      // Redirect to profile
-      this.router.navigate(['/profile']);
-    } catch (err) {
-      console.error('Payment/Booking failed:', err);
-      alert('❌ Payment succeeded but booking could not be saved. Try again.');
-    } finally {
-      this.loading = false; // ✅ Stop loading
-    }
+    localStorage.removeItem('pendingBooking');
+    this.router.navigate(['/profile']);
+  } catch (err) {
+    console.error('Payment/Booking failed:', err);
+    alert('❌ Payment succeeded but booking could not be saved. Try again.');
+  } finally {
+    this.loading = false;
   }
+}
 
   cancelPayment() {
-    alert('❌ Payment cancelled.');
-    this.router.navigate(['/destinations']);
-  }
+  // ❌ Clear pending booking
+  localStorage.removeItem('pendingBooking');
+
+  alert('❌ Payment cancelled.');
+  this.router.navigate(['/destinations']);
+}
 }
