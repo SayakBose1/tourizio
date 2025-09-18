@@ -1,4 +1,6 @@
-<div class="max-w-md mx-auto mt-10 mb-10 p-6 border rounded-lg shadow-lg bg-white">
+<div
+  class="max-w-md mx-auto mt-10 mb-10 p-6 border rounded-lg shadow-lg bg-white"
+>
   <h2 class="text-xl font-semibold mb-4">Payment Details</h2>
 
   <!-- Card Number -->
@@ -12,11 +14,24 @@
         placeholder="XXXX XXXX XXXX XXXX"
         class="flex-1 py-2 outline-none"
       />
+
       <!-- Card icons -->
-      <div class="flex gap-1 ml-2">
-        <img src="https://img.icons8.com/color/32/000000/visa.png" alt="Visa" />
-        <img src="https://img.icons8.com/color/32/000000/mastercard-logo.png" alt="MasterCard" />
-        <img src="https://img.icons8.com/color/32/000000/amex.png" alt="Amex" />
+      <div class="flex gap-1 ml-2 items-center">
+        <img
+          src="https://img.icons8.com/color/48/000000/visa.png"
+          alt="Visa"
+          class="h-6 md:h-8 w-auto"
+        />
+        <img
+          src="https://img.icons8.com/color/48/000000/mastercard-logo.png"
+          alt="MasterCard"
+          class="h-6 md:h-8 w-auto"
+        />
+        <img
+          src="https://img.icons8.com/color/48/000000/amex.png"
+          alt="Amex"
+          class="h-6 md:h-8 w-auto"
+        />
       </div>
     </div>
   </div>
@@ -52,12 +67,16 @@
   <!-- Save Card -->
   <div class="flex items-center mb-4">
     <input type="checkbox" [(ngModel)]="saveCard" class="mr-2" />
-    <span class="text-sm">Save your cards with CCAvenue Checkout for future payments (Note: We do not store your CVV/CVC number).</span>
+    <span class="text-sm"
+      >Save your cards with CCAvenue Checkout for future payments (Note: We do
+      not store your CVV/CVC number).</span
+    >
   </div>
 
   <!-- Amount -->
   <div class="mb-4 text-lg font-semibold text-blue-700">
-    INR {{ totalAmount | number }}.00 <span class="text-sm text-gray-600">(Total Amount Payable)</span>
+    INR {{ totalAmount | number }}.00
+    <span class="text-sm text-gray-600">(Total Amount Payable)</span>
   </div>
 
   <!-- Buttons -->
@@ -75,10 +94,19 @@
           fill="none"
           viewBox="0 0 24 24"
         >
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor"
-            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
-          </path>
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
         </svg>
         Processing...
       </span>
