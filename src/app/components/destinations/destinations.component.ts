@@ -20,48 +20,42 @@ export interface Place {
   templateUrl: "./destinations.component.html",
   styleUrls: ["./destinations.component.scss"],
 })
-export class DestinationsComponent
-  implements OnInit, AfterViewChecked, OnDestroy
-{
+export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestroy {
   destinations: string[] = [];
   placesMap: Record<string, Place[]> = {};
   selectedDestination: string | null = null;
   popularPlaces: Place[] = [];
   filteredPlaces: Place[] = [];
   trendingPlaces: Place[] = [];
-
-  private mapsInitialized: Record<number, boolean> = {};
-  private mapsInstances: Record<number, L.Map> = {};
+  favoritePlaces: Place[] = [];
 
   email: string = "";
   subscribed: boolean = false;
 
-  private readonly PEXELS_API_KEY =
-    "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq";
+  private mapsInitialized: Record<number, boolean> = {};
+  private mapsInstances: Record<number, L.Map> = {};
 
-  // ===== Scroll Reveal =====
+  private readonly PEXELS_API_KEY = "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq";
+
+  // Scroll Reveal
   private scrollRevealElements: NodeListOf<Element> | null = null;
   private scrollListener: (() => void) | null = null;
   private resizeListener: (() => void) | null = null;
   private ticking = false;
   private animationFrame: number | null = null;
 
-  constructor(
-    private router: Router,
-    private sessionService: UserSessionService
-  ) {}
+  constructor(private router: Router, private sessionService: UserSessionService) {}
 
   ngOnInit(): void {
     this.setCustomMarker();
     this.loadDestinations();
     this.initScrollReveal();
+    this.loadFavorites(); // load saved favorites
   }
 
-  // ===== SCROLL REVEAL METHODS =====
+  // ===== SCROLL REVEAL =====
   private initScrollReveal(): void {
-    this.scrollRevealElements = document.querySelectorAll(
-      ".scroll-reveal, .title-reveal"
-    );
+    this.scrollRevealElements = document.querySelectorAll(".scroll-reveal, .title-reveal");
 
     this.scrollListener = () => this.optimizedScrollReveal();
     this.resizeListener = () => this.optimizedScrollReveal();
@@ -69,8 +63,7 @@ export class DestinationsComponent
     window.addEventListener("scroll", this.scrollListener, { passive: true });
     window.addEventListener("resize", this.resizeListener, { passive: true });
 
-    // Initial check
-    this.revealOnScroll();
+    this.revealOnScroll(); // initial
   }
 
   private optimizedScrollReveal(): void {
@@ -91,16 +84,12 @@ export class DestinationsComponent
 
     this.scrollRevealElements.forEach((element: Element, index: number) => {
       const htmlElement = element as HTMLElement;
-      const elementTop =
-        htmlElement.getBoundingClientRect().top + window.pageYOffset;
+      const elementTop = htmlElement.getBoundingClientRect().top + window.pageYOffset;
       const revealPoint = 100;
 
       if (scrollTop + windowHeight - revealPoint > elementTop) {
         if (!htmlElement.classList.contains("show")) {
-          const delay = htmlElement.classList.contains("title-reveal") ? 0 : index * 50;
-          setTimeout(() => {
-            htmlElement.classList.add("show"),delay;
-          }, index * 50); // staggered delay
+          setTimeout(() => htmlElement.classList.add("show"), index * 50);
         }
       }
     });
@@ -132,9 +121,7 @@ export class DestinationsComponent
   private async fetchImage(query: string): Promise<string> {
     try {
       const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-          query
-        )}&per_page=1`,
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1`,
         { headers: { Authorization: this.PEXELS_API_KEY } }
       );
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -143,42 +130,20 @@ export class DestinationsComponent
     } catch (err) {
       console.error("Error fetching image for:", query, err);
     }
-    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
-      query.split(" ")[0]
-    )}`;
+    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(query.split(" ")[0])}`;
   }
 
   // ===== MAPS =====
   private setCustomMarker(): void {
     const customIcon = L.divIcon({
       className: "custom-marker",
-      html: `
-        <div style="
-          width: 26px;
-          height: 36px;
-          background: #3b82f6;
-          border-radius: 50% 50% 50% 0;
-          border: 2px solid #fff;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-          transform: rotate(-45deg);
-          position: relative;">
-          <div style="
-            width: 12px;
-            height: 12px;
-            background: #fff;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-          "></div>
-        </div>
-      `,
+      html: `<div style="width:26px;height:36px;background:#3b82f6;border-radius:50% 50% 50% 0;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.4);transform:rotate(-45deg);position:relative;">
+              <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
+             </div>`,
       iconSize: [26, 36],
       iconAnchor: [13, 36],
       popupAnchor: [0, -36],
     });
-
     (L.Marker.prototype.options.icon as any) = customIcon;
   }
 
@@ -195,23 +160,16 @@ export class DestinationsComponent
         delete this.mapsInstances[place.id];
       }
 
-      const map = L.map(mapId, {
-        center: [place.lat, place.lng],
-        zoom: 13,
-        scrollWheelZoom: false,
-      });
+      const map = L.map(mapId, { center: [place.lat, place.lng], zoom: 13, scrollWheelZoom: false });
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
         maxZoom: 18,
       }).addTo(map);
 
-      L.marker([place.lat, place.lng])
-        .addTo(map)
-        .bindPopup(`<strong>${place.name}</strong><br>${place.location}`);
+      L.marker([place.lat, place.lng]).addTo(map).bindPopup(`<strong>${place.name}</strong><br>${place.location}`);
 
       this.mapsInstances[place.id] = map;
       this.mapsInitialized[place.id] = true;
-
       setTimeout(() => map.invalidateSize(), 100);
     });
   }
@@ -240,10 +198,19 @@ export class DestinationsComponent
   }
 
   filterByType(type: string): void {
-    this.filteredPlaces = type
-      ? this.popularPlaces.filter((p) => p.type === type)
-      : [...this.popularPlaces];
+    this.filteredPlaces = type ? this.popularPlaces.filter((p) => p.type === type) : [...this.popularPlaces];
     this.cleanupMaps();
+  }
+
+  onBookNow(placeId: number) {
+    this.sessionService.user$.subscribe((user) => {
+      if (user) {
+        this.router.navigate(["/booking"], { queryParams: { placeId } });
+      } else {
+        alert("You need to login first to book.");
+        this.router.navigate(["/login"]);
+      }
+    }).unsubscribe();
   }
 
   subscribe(): void {
@@ -253,32 +220,47 @@ export class DestinationsComponent
     setTimeout(() => (this.subscribed = false), 3000);
   }
 
-  onBookNow(placeId: number) {
-    this.sessionService.user$
-      .subscribe((user) => {
-        if (user) {
-          this.router.navigate(["/booking"], { queryParams: { placeId } });
-        } else {
-          alert("You need to login first to book.");
-          this.router.navigate(["/login"]);
-        }
-      })
-      .unsubscribe();
+  // ===== FAVORITES =====
+  toggleFavorite(place: Place) {
+    if (this.isFavorite(place)) {
+      this.favoritePlaces = this.favoritePlaces.filter((p) => p.id !== place.id);
+    } else {
+      this.favoritePlaces.push(place);
+    }
+    this.saveFavorites();
+  }
+
+  isFavorite(place: Place): boolean {
+    return this.favoritePlaces.some((p) => p.id === place.id);
+  }
+
+  private saveFavorites() {
+    try {
+      localStorage.setItem("favoritePlaces", JSON.stringify(this.favoritePlaces));
+    } catch (err) {
+      console.error("Error saving favorites:", err);
+    }
+  }
+
+  private loadFavorites() {
+    try {
+      const favs = localStorage.getItem("favoritePlaces");
+      if (favs) this.favoritePlaces = JSON.parse(favs);
+    } catch (err) {
+      console.error("Error loading favorites:", err);
+    }
   }
 
   // ===== LIFECYCLE =====
   ngAfterViewChecked(): void {
     this.initializeMaps();
-    this.optimizedScrollReveal(); // keep checking
+    this.optimizedScrollReveal();
   }
 
   ngOnDestroy(): void {
     this.cleanupMaps();
-
-    if (this.scrollListener)
-      window.removeEventListener("scroll", this.scrollListener);
-    if (this.resizeListener)
-      window.removeEventListener("resize", this.resizeListener);
+    if (this.scrollListener) window.removeEventListener("scroll", this.scrollListener);
+    if (this.resizeListener) window.removeEventListener("resize", this.resizeListener);
     if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
   }
 }
