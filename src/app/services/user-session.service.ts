@@ -41,18 +41,7 @@ export class UserSessionService {
       }
     });
   }
-
-  /**
-   * Manually set user session after signup/login
-   * Example usage after Google login or email/password signup:
-   * this.session.setUser({
-   *   uid: userCredential.user.uid,
-   *   displayName: userCredential.user.displayName || '',
-   *   email: userCredential.user.email || '',
-   *   isGoogleUser: true,
-   *   photoURL: userCredential.user.photoURL || ''
-   * });
-   */
+  
   setUser(user: UserSession) {
     this.userSubject.next(user);
   }
