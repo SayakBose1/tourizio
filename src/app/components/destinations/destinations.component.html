@@ -3,7 +3,7 @@
   class="relative bg-cover bg-center h-64 md:h-96 rounded-b-lg"
   style="background-image: url(&quot;assets/images/bg.webp&quot;)"
 >
-<!-- Dark overlay for readability -->
+  <!-- Dark overlay for readability -->
   <div
     class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center text-white px-4"
   >
@@ -45,46 +45,87 @@
   </div>
 </div>
 
-<!-- Destinations Section -->
+<!-- Popular Places Section (6 Random Places) -->
 <div class="bg-grey-50 py-12 px-4">
   <div class="max-w-6xl mx-auto">
     <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">
       Choose Your Destination
     </h2>
 
-    <!-- Destination Dropdown -->
-    <div class="flex justify-center mb-6">
-      <select
-        (change)="onSelectDestination($event.target.value)"
-        class="mb-6 p-4 border-2 border-blue-600 rounded-xl shadow-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    <!-- Show 6 Random Places -->
+    <div class="grid md:grid-cols-3 gap-8 mb-10">
+      <div
+        *ngFor="let p of popularPlaces"
+        class="bg-white rounded-xl shadow-lg overflow-hidden relative hover:shadow-2xl transform transition duration-300 hover:-translate-y-1"
       >
-        <option value="">-- Select a Destination --</option>
-        <option *ngFor="let d of destinations" [value]="d">{{ d }}</option>
-      </select>
-    </div>
+        <!-- Image -->
+        <div class="relative w-full h-56 rounded-t-xl overflow-hidden">
+          <img
+            [src]="p.image"
+            [alt]="p.name"
+            class="w-full h-full object-cover"
+          />
+        </div>
 
-    <!-- Type Filter Dropdown -->
-    <div class="flex justify-center mb-10 gap-4">
-      <label class="text-gray-700 font-semibold mt-2">Filter by Type:</label>
-      <select
-        (change)="filterByType($event.target.value)"
-        class="p-3 border-2 border-blue-600 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value="">All Types</option>
-        <option value="Adventure">Adventure</option>
-        <option value="Cultural">Cultural</option>
-        <option value="Food">Food</option>
-        <option value="Nature">Nature</option>
-      </select>
-    </div>
+        <!-- Details -->
+        <div class="p-6 flex flex-col">
+          <h4 class="text-xl font-semibold mb-1">{{ p.name }}</h4>
+          <p class="text-gray-600 mb-4">{{ p.description }}</p>
 
-    <!-- Popular Places Heading -->
-    <div *ngIf="selectedDestination">
-      <h3 class="text-2xl font-semibold mb-6 text-gray-700 text-center">
-        Popular Places in {{ selectedDestination }}
-      </h3>
+          <p class="text-green-600 font-bold mb-4">
+            ₹{{ p.price }}
+            <span *ngIf="p.days" class="ml-3">
+              <span class="text-gray-400">•&nbsp;</span>
+              <span class="text-green-600">{{ p.days }}</span>
+              <span class="text-green-600 font-bold">
+                {{ p.days === 1 ? " day" : " days" }}
+              </span>
+            </span>
+          </p>
+
+          <div class="flex gap-3">
+            <button
+              (click)="onBookNow(p.id)"
+              class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+            >
+              Book Now
+            </button>
+            <button
+              class="flex-1 bg-gray-200 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 font-semibold transition"
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- Destination Dropdown -->
+<div class="flex justify-center mb-6">
+  <select
+    (change)="onSelectDestination($event.target.value)"
+    class="mb-6 p-4 border-2 border-blue-600 rounded-xl shadow-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="">-- View More Destinations --</option>
+    <option *ngFor="let d of destinations" [value]="d">{{ d }}</option>
+  </select>
+</div>
+
+<!-- Type Filter Dropdown -->
+<div class="flex justify-center mb-10 gap-4" *ngIf="selectedDestination">
+  <label class="text-gray-700 font-semibold mt-2">Filter by Type:</label>
+  <select
+    (change)="filterByType($event.target.value)"
+    class="p-3 border-2 border-blue-600 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="">All Types</option>
+    <option value="Adventure">Adventure</option>
+    <option value="Cultural">Cultural</option>
+    <option value="Food">Food</option>
+    <option value="Nature">Nature</option>
+  </select>
 </div>
 
 <!-- Places Grid (after selecting/filtering destination) -->
@@ -102,7 +143,7 @@
         class="fa"
         [ngClass]="{
           'fa-heart': isFavorite(p),
-          'fa-heart-o': !isFavorite(p)
+          'fa-heart-o': !isFavorite(p),
         }"
       ></i>
     </button>
@@ -110,7 +151,11 @@
     <!-- Image wrapper with skeleton -->
     <div class="relative w-full h-56 rounded-t-xl overflow-hidden">
       <ng-container *ngIf="p.image; else loadingSkeleton">
-        <img [src]="p.image" [alt]="p.name" class="w-full h-full object-cover" />
+        <img
+          [src]="p.image"
+          [alt]="p.name"
+          class="w-full h-full object-cover"
+        />
       </ng-container>
       <ng-template #loadingSkeleton>
         <div class="skeleton w-full h-full"></div>
@@ -175,7 +220,11 @@
       <!-- Image wrapper -->
       <div class="relative w-full h-56 rounded-t-xl overflow-hidden">
         <ng-container *ngIf="fav.image; else loadingSkeleton">
-          <img [src]="fav.image" [alt]="fav.name" class="w-full h-full object-cover" />
+          <img
+            [src]="fav.image"
+            [alt]="fav.name"
+            class="w-full h-full object-cover"
+          />
         </ng-container>
         <ng-template #loadingSkeleton>
           <div class="skeleton w-full h-full"></div>

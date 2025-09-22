@@ -9,7 +9,8 @@ export interface Place {
   location: string;
   price: number;
   days?: number;
-  image?: string;
+  description?: string;
+  image?: string | null;
   lat?: number;
   lng?: number;
   type?: "Adventure" | "Cultural" | "Food" | "Nature";
@@ -21,21 +22,25 @@ export interface Place {
   styleUrls: ["./destinations.component.scss"],
 })
 export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestroy {
+  // DATA
   destinations: string[] = [];
   placesMap: Record<string, Place[]> = {};
   selectedDestination: string | null = null;
-  popularPlaces: Place[] = [];
-  filteredPlaces: Place[] = [];
+
+  // UI lists
+  popularPlaces: Place[] = [];    // always 6 random cards
+  filteredPlaces: Place[] = [];   // destination-specific cards
   trendingPlaces: Place[] = [];
   favoritePlaces: Place[] = [];
 
   email: string = "";
   subscribed: boolean = false;
 
-  private mapsInitialized: Record<number, boolean> = {};
-  private mapsInstances: Record<number, L.Map> = {};
+  private mapsInitialized: Record<string, boolean> = {};
+  private mapsInstances: Record<string, L.Map> = {};
 
-  private readonly PEXELS_API_KEY = "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq";
+  private readonly PEXELS_API_KEY =
+    "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq";
 
   // Scroll Reveal
   private scrollRevealElements: NodeListOf<Element> | null = null;
@@ -44,26 +49,33 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   private ticking = false;
   private animationFrame: number | null = null;
 
-  constructor(private router: Router, private sessionService: UserSessionService) {}
+  constructor(
+    private router: Router,
+    private sessionService: UserSessionService
+  ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.setCustomMarker();
-    this.loadDestinations();
+    await this.loadDestinations();
     this.initScrollReveal();
-    this.loadFavorites(); // load saved favorites
+    this.loadFavorites();
+
+    // Pick 6 random places once on init
+    this.showRandomPlaces();
   }
 
   // ===== SCROLL REVEAL =====
   private initScrollReveal(): void {
-    this.scrollRevealElements = document.querySelectorAll(".scroll-reveal, .title-reveal");
-
+    this.scrollRevealElements = document.querySelectorAll(
+      ".scroll-reveal, .title-reveal"
+    );
     this.scrollListener = () => this.optimizedScrollReveal();
     this.resizeListener = () => this.optimizedScrollReveal();
 
     window.addEventListener("scroll", this.scrollListener, { passive: true });
     window.addEventListener("resize", this.resizeListener, { passive: true });
 
-    this.revealOnScroll(); // initial
+    this.revealOnScroll();
   }
 
   private optimizedScrollReveal(): void {
@@ -78,15 +90,14 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   private revealOnScroll(): void {
     if (!this.scrollRevealElements) return;
-
     const windowHeight = window.innerHeight;
     const scrollTop = window.pageYOffset;
 
     this.scrollRevealElements.forEach((element: Element, index: number) => {
       const htmlElement = element as HTMLElement;
-      const elementTop = htmlElement.getBoundingClientRect().top + window.pageYOffset;
+      const elementTop =
+        htmlElement.getBoundingClientRect().top + window.pageYOffset;
       const revealPoint = 100;
-
       if (scrollTop + windowHeight - revealPoint > elementTop) {
         if (!htmlElement.classList.contains("show")) {
           setTimeout(() => htmlElement.classList.add("show"), index * 50);
@@ -103,14 +114,14 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
       this.destinations = data.destinations || [];
       this.placesMap = data.placesMap || {};
       this.trendingPlaces = data.trending || [];
-      this.loadTrendingImages();
+      await this.loadTrendingImages();
     } catch (err) {
       console.error("Error loading destinations:", err);
     }
   }
 
   private async loadTrendingImages(): Promise<void> {
-    const promises = this.trendingPlaces.map(async (place, index) => {
+    const promises = (this.trendingPlaces || []).map(async (place, index) => {
       place.image = null;
       const img = await this.fetchImage(`${place.name} ${place.location}`);
       setTimeout(() => (place.image = img), 100 * index);
@@ -121,7 +132,9 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   private async fetchImage(query: string): Promise<string> {
     try {
       const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1`,
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+          query
+        )}&per_page=1`,
         { headers: { Authorization: this.PEXELS_API_KEY } }
       );
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -130,10 +143,34 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
     } catch (err) {
       console.error("Error fetching image for:", query, err);
     }
-    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(query.split(" ")[0])}`;
+    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
+      query.split(" ")[0]
+    )}`;
   }
 
-  // ===== MAPS =====
+  // ===== RANDOM PLACES =====
+  private showRandomPlaces(): void {
+    const allPlaces: Place[] = Object.values(this.placesMap).flat();
+    if (!allPlaces || allPlaces.length === 0) return;
+    this.popularPlaces = this.shuffleArray(allPlaces).slice(0, 6);
+
+    this.popularPlaces.forEach(async (place, idx) => {
+      place.image = undefined;
+      const img = await this.fetchImage(`${place.name} ${place.location}`);
+      setTimeout(() => (place.image = img), 80 * idx);
+    });
+  }
+
+  private shuffleArray<T>(arr: T[]): T[] {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // ===== MAPS (only for filteredPlaces) =====
   private setCustomMarker(): void {
     const customIcon = L.divIcon({
       className: "custom-marker",
@@ -150,47 +187,64 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   private initializeMaps(): void {
     this.filteredPlaces.forEach((place) => {
       if (!place.lat || !place.lng) return;
-
       const mapId = `mini-map-${place.id}`;
       const mapEl = document.getElementById(mapId);
-      if (!mapEl || this.mapsInitialized[place.id]) return;
+      if (!mapEl || this.mapsInitialized[mapId]) return;
 
-      if (this.mapsInstances[place.id]) {
-        this.mapsInstances[place.id].remove();
-        delete this.mapsInstances[place.id];
+      if (this.mapsInstances[mapId]) {
+        this.mapsInstances[mapId].remove();
+        delete this.mapsInstances[mapId];
       }
 
-      const map = L.map(mapId, { center: [place.lat, place.lng], zoom: 13, scrollWheelZoom: false });
+      const map = L.map(mapId, {
+        center: [place.lat, place.lng],
+        zoom: 13,
+        scrollWheelZoom: false,
+      });
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
         maxZoom: 18,
       }).addTo(map);
 
-      L.marker([place.lat, place.lng]).addTo(map).bindPopup(`<strong>${place.name}</strong><br>${place.location}`);
+      L.marker([place.lat, place.lng])
+        .addTo(map)
+        .bindPopup(`<strong>${place.name}</strong><br>${place.location}`);
 
-      this.mapsInstances[place.id] = map;
-      this.mapsInitialized[place.id] = true;
+      this.mapsInstances[mapId] = map;
+      this.mapsInitialized[mapId] = true;
+
       setTimeout(() => map.invalidateSize(), 100);
     });
   }
 
   private cleanupMaps(): void {
-    Object.values(this.mapsInstances).forEach((map) => map.remove());
+    Object.values(this.mapsInstances).forEach((m) => {
+      try {
+        m.remove();
+      } catch {}
+    });
     this.mapsInstances = {};
     this.mapsInitialized = {};
   }
 
   // ===== UI ACTIONS =====
   async onSelectDestination(destination: string): Promise<void> {
-    this.selectedDestination = destination;
-    this.popularPlaces = [...(this.placesMap[destination] || [])];
-    this.filteredPlaces = [...this.popularPlaces];
+    this.selectedDestination = destination || null;
+
+    if (!this.selectedDestination) {
+      this.filteredPlaces = [];
+      this.cleanupMaps();
+      return;
+    }
+
+    const places = [...(this.placesMap[this.selectedDestination] || [])];
+    this.filteredPlaces = this.shuffleArray(places);
     this.cleanupMaps();
 
-    const imagePromises = this.popularPlaces.map(async (place, index) => {
+    const imagePromises = this.filteredPlaces.map(async (place, idx) => {
       place.image = undefined;
       const img = await this.fetchImage(`${place.name} ${place.location}`);
-      setTimeout(() => (place.image = img), 100 * index);
+      setTimeout(() => (place.image = img), 80 * idx);
     });
     await Promise.allSettled(imagePromises);
 
@@ -198,7 +252,10 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   filterByType(type: string): void {
-    this.filteredPlaces = type ? this.popularPlaces.filter((p) => p.type === type) : [...this.popularPlaces];
+    if (!this.selectedDestination) return;
+    this.filteredPlaces = type
+      ? this.placesMap[this.selectedDestination].filter((p) => p.type === type)
+      : [...this.placesMap[this.selectedDestination]];
     this.cleanupMaps();
   }
 
@@ -222,11 +279,10 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   // ===== FAVORITES =====
   toggleFavorite(place: Place) {
-    if (this.isFavorite(place)) {
-      this.favoritePlaces = this.favoritePlaces.filter((p) => p.id !== place.id);
-    } else {
-      this.favoritePlaces.push(place);
-    }
+    const exists = this.favoritePlaces.some((p) => p.id === place.id);
+    this.favoritePlaces = exists
+      ? this.favoritePlaces.filter((p) => p.id !== place.id)
+      : [...this.favoritePlaces, { ...place }];
     this.saveFavorites();
   }
 
@@ -253,14 +309,16 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   // ===== LIFECYCLE =====
   ngAfterViewChecked(): void {
-    this.initializeMaps();
+    if (this.filteredPlaces.length) this.initializeMaps();
     this.optimizedScrollReveal();
   }
 
   ngOnDestroy(): void {
     this.cleanupMaps();
-    if (this.scrollListener) window.removeEventListener("scroll", this.scrollListener);
-    if (this.resizeListener) window.removeEventListener("resize", this.resizeListener);
+    if (this.scrollListener)
+      window.removeEventListener("scroll", this.scrollListener);
+    if (this.resizeListener)
+      window.removeEventListener("resize", this.resizeListener);
     if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
   }
 }
