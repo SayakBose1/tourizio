@@ -3,7 +3,6 @@
   class="relative bg-cover bg-center h-64 md:h-96 rounded-b-lg"
   style="background-image: url(&quot;assets/images/bg.webp&quot;)"
 >
-  <!-- Dark overlay for readability -->
   <div
     class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center text-white px-4"
   >
@@ -45,19 +44,142 @@
   </div>
 </div>
 
-<!-- Popular Places Section (6 Random Places) -->
+<!-- Popular Places Section -->
 <div class="bg-grey-50 py-12 px-4">
-  <div class="max-w-6xl mx-auto">
+  <div class="max-w-8xl mx-auto">
     <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">
       Choose Your Destination
     </h2>
 
-    <!-- Show 6 Random Places -->
-    <div class="grid md:grid-cols-3 gap-8 mb-10">
+    <!-- Search & Filters -->
+    <div
+      class="flex justify-center items-center gap-4 mb-8 flex-wrap md:flex-nowrap"
+    >
+      <!-- Search Input -->
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+        placeholder="Search destinations..."
+        class="p-4 border-2 border-blue-600 rounded-xl shadow-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <!-- Popularity Dropdown -->
+      <select
+        [(ngModel)]="popularityFilter"
+        (change)="onFilterChange()"
+        class="p-4 border-2 border-blue-600 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="">Popularity</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+
+      <!-- Price Dropdown -->
+      <select
+        [(ngModel)]="priceFilter"
+        (change)="onFilterChange()"
+        class="p-4 border-2 border-blue-600 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="">Price</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+    </div>
+
+    <!-- Show Searched Places -->
+    <div
+      *ngIf="searchedPlaces.length > 0"
+      class="grid md:grid-cols-3 gap-8 mb-12"
+    >
+      <div
+        *ngFor="let sp of searchedPlaces"
+        class="bg-white rounded-xl shadow-lg overflow-hidden relative hover:shadow-2xl transition"
+      >
+        <!-- Favorite Button -->
+        <button
+          (click)="toggleFavorite(sp)"
+          class="absolute top-2 right-2 z-10 text-red-400 hover:text-red-500 transition text-xl md:text-2xl"
+        >
+          <i
+            class="fa"
+            [ngClass]="{
+              'fa-heart': isFavorite(sp),
+              'fa-heart-o': !isFavorite(sp),
+            }"
+          ></i>
+        </button>
+
+        <!-- Image -->
+        <div class="relative w-full h-56 rounded-t-xl overflow-hidden">
+          <img
+            [src]="sp.image || 'https://via.placeholder.com/400x250'"
+            [alt]="sp.name"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- Details -->
+        <div class="p-6 flex flex-col">
+          <h4 class="text-2xl font-semibold mb-2">{{ sp.name }}</h4>
+          <p class="text-gray-600 mb-4">{{ sp.location }}</p>
+
+          <p class="text-green-600 font-bold mb-4">
+            ₹{{ sp.price }}
+            <span *ngIf="sp.days" class="ml-3">
+              <span class="text-gray-400">•&nbsp;</span>
+              <span class="text-green-600">{{ sp.days }}</span>
+              <span class="text-green-600 font-bold">
+                {{ sp.days === 1 ? " day" : " days" }}
+              </span>
+            </span>
+          </p>
+
+          <div class="flex gap-3 mb-4">
+            <button
+              (click)="onBookNow(sp.id)"
+              class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+            >
+              Book Now
+            </button>
+            <button
+              class="flex-1 bg-gray-200 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 font-semibold transition"
+            >
+              View Details
+            </button>
+          </div>
+
+          <!-- Mini Map -->
+          <div
+            class="w-full h-48 md:h-64 rounded-lg shadow-inner overflow-hidden relative"
+            [id]="'mini-map-' + sp.id"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Show 6 Random Places only when NO search -->
+    <div *ngIf="!searchedPlaces.length" class="grid md:grid-cols-3 gap-8 mb-10">
       <div
         *ngFor="let p of popularPlaces"
         class="bg-white rounded-xl shadow-lg overflow-hidden relative hover:shadow-2xl transform transition duration-300 hover:-translate-y-1"
       >
+        <!-- Favorite Button -->
+        <button
+          (click)="toggleFavorite(p)"
+          class="absolute top-2 right-2 z-10 text-red-400 hover:text-red-500 transition text-xl md:text-2xl"
+        >
+          <i
+            class="fa"
+            [ngClass]="{
+              'fa-heart': isFavorite(p),
+              'fa-heart-o': !isFavorite(p),
+            }"
+          ></i>
+        </button>
+
         <!-- Image -->
         <div class="relative w-full h-56 rounded-t-xl overflow-hidden">
           <img
@@ -102,8 +224,8 @@
   </div>
 </div>
 
-<!-- Destination Dropdown -->
-<div class="flex justify-center mb-6">
+<!-- Destination Dropdown (Hidden when searching) -->
+<div *ngIf="!searchedPlaces.length" class="flex justify-center mb-6">
   <select
     (change)="onSelectDestination($event.target.value)"
     class="mb-6 p-4 border-2 border-blue-600 rounded-xl shadow-lg w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -113,8 +235,11 @@
   </select>
 </div>
 
-<!-- Type Filter Dropdown -->
-<div class="flex justify-center mb-10 gap-4" *ngIf="selectedDestination">
+<!-- Type Filter Dropdown (Hidden when searching) -->
+<div
+  class="flex justify-center mb-10 gap-4"
+  *ngIf="selectedDestination && !searchedPlaces.length"
+>
   <label class="text-gray-700 font-semibold mt-2">Filter by Type:</label>
   <select
     (change)="filterByType($event.target.value)"
@@ -128,8 +253,11 @@
   </select>
 </div>
 
-<!-- Places Grid (after selecting/filtering destination) -->
-<div class="grid md:grid-cols-3 gap-8 pb-6 mt-6">
+<!-- Places Grid (after selecting/filtering destination, hidden when searching) -->
+<div
+  class="grid md:grid-cols-3 gap-8 pb-6 mt-6"
+  *ngIf="filteredPlaces.length && !searchedPlaces.length"
+>
   <div
     *ngFor="let p of filteredPlaces"
     class="bg-white rounded-xl shadow-lg overflow-hidden relative hover:shadow-2xl transform transition duration-300 hover:-translate-y-1"

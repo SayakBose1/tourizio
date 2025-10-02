@@ -4,8 +4,8 @@
   <div *ngIf="user; else notLoggedIn" class="bg-white rounded-xl shadow-lg p-6">
     <div class="flex items-center space-x-4">
       <img
-        *ngIf="user.photoURL"
-        [src]="user.photoURL"
+        [src]="user.photoURL || 'assets/default-avatar.png'"
+        (error)="onImgError($event)"
         alt="Profile Photo"
         class="w-16 h-16 rounded-full shadow"
       />
@@ -26,18 +26,30 @@
     </div>
 
     <ul *ngIf="!loading && bookings.length > 0" class="mt-2 space-y-2">
-      <li *ngFor="let b of bookings" class="border rounded p-2">
-        <p><strong>Destination:</strong> {{ b.destination }}</p>
-        <p><strong>Date:</strong> {{ b.date }}</p>
-        <p><strong>People:</strong> {{ b.people }}</p>
-        <p><strong>Price:</strong> ₹{{ b.price }}</p>
+      <li *ngFor="let b of bookings" class="border rounded p-4 flex justify-between items-center">
+        <!-- Left side: booking details -->
+        <div>
+          <p><strong>Destination:</strong> {{ b.destination }}</p>
+          <p><strong>Date:</strong> {{ b.date }}</p>
+          <p><strong>People:</strong> {{ b.people }}</p>
+          <p><strong>Price:</strong> ₹{{ b.price }}</p>
+        </div>
+
+        <!-- ✅ Right side: Check Mail button -->
+        <button
+          (click)="checkMail()"
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          View Booking Details
+        </button>
       </li>
     </ul>
   </div>
 
   <ng-template #notLoggedIn>
     <p class="text-center text-gray-500">
-      You are not logged in. <a routerLink="/login" class="text-blue-600">Login here</a>
+      You are not logged in.
+      <a routerLink="/login" class="text-blue-600">Login here</a>
     </p>
   </ng-template>
 </div>

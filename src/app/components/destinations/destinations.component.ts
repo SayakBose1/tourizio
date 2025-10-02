@@ -1,7 +1,7 @@
-import { Component, OnInit, AfterViewChecked, OnDestroy } from "@angular/core";
-import { Router } from "@angular/router";
-import * as L from "leaflet";
-import { UserSessionService } from "src/app/services/user-session.service";
+import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import * as L from 'leaflet';
+import { UserSessionService } from 'src/app/services/user-session.service';
 
 export interface Place {
   id: number;
@@ -13,34 +13,36 @@ export interface Place {
   image?: string | null;
   lat?: number;
   lng?: number;
-  type?: "Adventure" | "Cultural" | "Food" | "Nature";
+  type?: 'Adventure' | 'Cultural' | 'Food' | 'Nature';
 }
 
 @Component({
-  selector: "app-destinations",
-  templateUrl: "./destinations.component.html",
-  styleUrls: ["./destinations.component.scss"],
+  selector: 'app-destinations',
+  templateUrl: './destinations.component.html',
+  styleUrls: ['./destinations.component.scss'],
 })
-export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class DestinationsComponent
+  implements OnInit, AfterViewChecked, OnDestroy
+{
   // DATA
   destinations: string[] = [];
   placesMap: Record<string, Place[]> = {};
   selectedDestination: string | null = null;
 
   // UI lists
-  popularPlaces: Place[] = [];    // always 6 random cards
-  filteredPlaces: Place[] = [];   // destination-specific cards
+  popularPlaces: Place[] = []; // always 6 random cards
+  filteredPlaces: Place[] = []; // destination-specific cards
   trendingPlaces: Place[] = [];
   favoritePlaces: Place[] = [];
 
-  email: string = "";
+  email: string = '';
   subscribed: boolean = false;
 
   private mapsInitialized: Record<string, boolean> = {};
   private mapsInstances: Record<string, L.Map> = {};
 
   private readonly PEXELS_API_KEY =
-    "lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq";
+    'lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq';
 
   // Scroll Reveal
   private scrollRevealElements: NodeListOf<Element> | null = null;
@@ -51,7 +53,7 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   constructor(
     private router: Router,
-    private sessionService: UserSessionService
+    private sessionService: UserSessionService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -67,13 +69,13 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   // ===== SCROLL REVEAL =====
   private initScrollReveal(): void {
     this.scrollRevealElements = document.querySelectorAll(
-      ".scroll-reveal, .title-reveal"
+      '.scroll-reveal, .title-reveal',
     );
     this.scrollListener = () => this.optimizedScrollReveal();
     this.resizeListener = () => this.optimizedScrollReveal();
 
-    window.addEventListener("scroll", this.scrollListener, { passive: true });
-    window.addEventListener("resize", this.resizeListener, { passive: true });
+    window.addEventListener('scroll', this.scrollListener, { passive: true });
+    window.addEventListener('resize', this.resizeListener, { passive: true });
 
     this.revealOnScroll();
   }
@@ -99,8 +101,8 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
         htmlElement.getBoundingClientRect().top + window.pageYOffset;
       const revealPoint = 100;
       if (scrollTop + windowHeight - revealPoint > elementTop) {
-        if (!htmlElement.classList.contains("show")) {
-          setTimeout(() => htmlElement.classList.add("show"), index * 50);
+        if (!htmlElement.classList.contains('show')) {
+          setTimeout(() => htmlElement.classList.add('show'), index * 50);
         }
       }
     });
@@ -109,14 +111,14 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   // ===== DATA LOADING =====
   private async loadDestinations(): Promise<void> {
     try {
-      const res = await fetch("assets/data/dummydata.json");
+      const res = await fetch('assets/data/dummydata.json');
       const data = await res.json();
       this.destinations = data.destinations || [];
       this.placesMap = data.placesMap || {};
       this.trendingPlaces = data.trending || [];
       await this.loadTrendingImages();
     } catch (err) {
-      console.error("Error loading destinations:", err);
+      console.error('Error loading destinations:', err);
     }
   }
 
@@ -133,18 +135,18 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
     try {
       const res = await fetch(
         `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-          query
+          query,
         )}&per_page=1`,
-        { headers: { Authorization: this.PEXELS_API_KEY } }
+        { headers: { Authorization: this.PEXELS_API_KEY } },
       );
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
       if (data.photos?.length > 0) return data.photos[0].src.medium;
     } catch (err) {
-      console.error("Error fetching image for:", query, err);
+      console.error('Error fetching image for:', query, err);
     }
     return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
-      query.split(" ")[0]
+      query.split(' ')[0],
     )}`;
   }
 
@@ -173,7 +175,7 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   // ===== MAPS (only for filteredPlaces) =====
   private setCustomMarker(): void {
     const customIcon = L.divIcon({
-      className: "custom-marker",
+      className: 'custom-marker',
       html: `<div style="width:26px;height:36px;background:#3b82f6;border-radius:50% 50% 50% 0;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.4);transform:rotate(-45deg);position:relative;">
               <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);"></div>
              </div>`,
@@ -201,8 +203,8 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
         zoom: 13,
         scrollWheelZoom: false,
       });
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap contributors",
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 18,
       }).addTo(map);
 
@@ -260,20 +262,22 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   onBookNow(placeId: number) {
-    this.sessionService.user$.subscribe((user) => {
-      if (user) {
-        this.router.navigate(["/booking"], { queryParams: { placeId } });
-      } else {
-        alert("You need to login first to book.");
-        this.router.navigate(["/login"]);
-      }
-    }).unsubscribe();
+    this.sessionService.user$
+      .subscribe((user) => {
+        if (user) {
+          this.router.navigate(['/booking'], { queryParams: { placeId } });
+        } else {
+          alert('You need to login first to book.');
+          this.router.navigate(['/login']);
+        }
+      })
+      .unsubscribe();
   }
 
   subscribe(): void {
     if (!this.email.trim()) return;
     this.subscribed = true;
-    this.email = "";
+    this.email = '';
     setTimeout(() => (this.subscribed = false), 3000);
   }
 
@@ -292,18 +296,21 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   private saveFavorites() {
     try {
-      localStorage.setItem("favoritePlaces", JSON.stringify(this.favoritePlaces));
+      localStorage.setItem(
+        'favoritePlaces',
+        JSON.stringify(this.favoritePlaces),
+      );
     } catch (err) {
-      console.error("Error saving favorites:", err);
+      console.error('Error saving favorites:', err);
     }
   }
 
   private loadFavorites() {
     try {
-      const favs = localStorage.getItem("favoritePlaces");
+      const favs = localStorage.getItem('favoritePlaces');
       if (favs) this.favoritePlaces = JSON.parse(favs);
     } catch (err) {
-      console.error("Error loading favorites:", err);
+      console.error('Error loading favorites:', err);
     }
   }
 
@@ -316,9 +323,85 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   ngOnDestroy(): void {
     this.cleanupMaps();
     if (this.scrollListener)
-      window.removeEventListener("scroll", this.scrollListener);
+      window.removeEventListener('scroll', this.scrollListener);
     if (this.resizeListener)
-      window.removeEventListener("resize", this.resizeListener);
+      window.removeEventListener('resize', this.resizeListener);
     if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
   }
+
+  searchQuery: string = '';
+  searchedPlaces: Place[] = [];
+
+  onSearch(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+
+    if (!query) {
+      this.searchedPlaces = []; // show back random 6
+      this.selectedDestination = ''; // reset dropdown selection
+      this.filteredPlaces = []; // clear filtered list
+      return;
+    }
+
+    const allPlaces: Place[] = Object.values(this.placesMap).flat();
+    this.searchedPlaces = allPlaces.filter((p) =>
+      p.name.toLowerCase().startsWith(query),
+    );
+
+    // Fetch images dynamically for each result
+    this.searchedPlaces.forEach((place, idx) => {
+      this.fetchImage(`${place.name} ${place.location}`).then((img) => {
+        place.image = img;
+      });
+    });
+
+    // Initialize maps for searched places after render
+    setTimeout(() => {
+      this.cleanupMaps();
+      this.filteredPlaces = [...this.searchedPlaces]; // so map init still works
+      this.initializeMaps();
+    }, 200);
+  }
+
+  popularityFilter: 'high' | 'medium' | 'low' | '' = '';
+  priceFilter: 'high' | 'medium' | 'low' | '' = '';
+
+  onFilterChange(): void {
+  let allPlaces: Place[] = Object.values(this.placesMap).flat();
+
+  // Start with search query if present
+  if (this.searchQuery.trim()) {
+    const query = this.searchQuery.trim().toLowerCase();
+    allPlaces = allPlaces.filter((p) =>
+      p.name.toLowerCase().startsWith(query),
+    );
+  }
+
+  // Apply popularity filter
+  if (this.popularityFilter) {
+    allPlaces = allPlaces.filter((p) => {
+      if (this.popularityFilter === 'high') return p.price >= 18000; // example
+      if (this.popularityFilter === 'medium') return p.price >= 13000 && p.price < 18000;
+      if (this.popularityFilter === 'low') return p.price < 13000;
+      return true;
+    });
+  }
+
+  // Apply price filter
+  if (this.priceFilter) {
+    allPlaces = allPlaces.sort((a, b) => {
+      if (this.priceFilter === 'high') return b.price - a.price;
+      if (this.priceFilter === 'medium') return a.price - b.price; // optional: adjust logic
+      if (this.priceFilter === 'low') return a.price - b.price;
+      return 0;
+    });
+  }
+
+  this.searchedPlaces = allPlaces;
+  setTimeout(() => {
+    this.cleanupMaps();
+    this.filteredPlaces = [...this.searchedPlaces];
+    this.initializeMaps();
+  }, 200);
+}
+
 }
