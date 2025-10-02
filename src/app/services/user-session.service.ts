@@ -8,6 +8,9 @@ export interface UserSession {
   email: string;
   isGoogleUser: boolean;
   photoURL?: string;
+   metadata?: {
+    creationTime?: string;
+  };
 }
 
 @Injectable({
@@ -31,7 +34,10 @@ export class UserSessionService {
             displayName: firebaseUser.displayName || '',
             email: firebaseUser.email || '',
             isGoogleUser,
-            photoURL: firebaseUser.photoURL || ''
+            photoURL: firebaseUser.photoURL || '',
+            metadata: {
+            creationTime: firebaseUser.metadata?.creationTime
+          }
           });
         } else {
           this.userSubject.next(null);

@@ -1,3 +1,25 @@
+/* App Component Styles */
 .container {
   padding: 1rem;
+  // max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Ensure main content grows to push footer down */
+main {
+  flex: 1;
+}
+
+/* Optional: Smooth route animation container */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Optional responsive tweaks */
+@media (max-width: 768px) {
+  .container {
+    padding: 0.75rem;
+  }
 }

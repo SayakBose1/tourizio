@@ -87,4 +87,28 @@ export class ProfileComponent implements OnInit {
       window.open(webUrl, '_blank');
     }
   }
+
+  get memberSince(): Date | null {
+    return this.user?.metadata?.creationTime
+      ? new Date(this.user.metadata.creationTime)
+      : null;
+  }
+
+  cancelBooking(bookingId: string | undefined): void {
+    if (!bookingId) return;
+
+    if (!confirm('Are you sure you want to cancel this booking?')) return;
+
+    this.bookingService.deleteBooking(bookingId).subscribe({
+      next: () => {
+        // Remove the cancelled booking from local array
+        this.bookings = this.bookings.filter((b) => b.id !== bookingId);
+        alert('Booking cancelled successfully!');
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to cancel booking. Try again.');
+      },
+    });
+  }
 }
