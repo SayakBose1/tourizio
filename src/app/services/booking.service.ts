@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import emailjs from '@emailjs/browser';
 
 export interface BookingData {
-  id?: string;       // Firestore document ID
+  id?: string; // Firestore document ID
   userId: string;
   name: string;
   destination: string;
@@ -27,16 +27,18 @@ export class BookingService {
   // Get bookings for a specific user
   getUserBookings(userId: string): Observable<BookingData[]> {
     return this.firestore
-      .collection<BookingData>('bookings', ref => ref.where('userId', '==', userId))
+      .collection<BookingData>('bookings', (ref) =>
+        ref.where('userId', '==', userId),
+      )
       .snapshotChanges()
       .pipe(
-        map(actions =>
-          actions.map(a => {
+        map((actions) =>
+          actions.map((a) => {
             const data = a.payload.doc.data() as BookingData;
             const id = a.payload.doc.id;
             return { id, ...data };
-          })
-        )
+          }),
+        ),
       );
   }
 
@@ -62,22 +64,57 @@ export class BookingService {
       price_per_person: data.price,
       total_amount: data.price * data.people,
       booking_date: new Date().toLocaleDateString(),
-      booking_id: data.id || Math.random().toString(36).substring(2, 10).toUpperCase(),
+      booking_id:
+        data.id || Math.random().toString(36).substring(2, 10).toUpperCase(),
       company_name: 'Tourizio',
       support_email: 'support@tourizio.com',
-      support_phone: '+1 (555) 123-4567'
+      support_phone: '+1 (555) 123-4567',
     };
 
     try {
       await emailjs.send(
-        'service_ks2s0td',   
-        'template_emc74op',  
+        'service_ks2s0td',
+        'template_emc74op',
         templateParams,
-        'vEluSFRJDT2jlYQ1K' 
+        'vEluSFRJDT2jlYQ1K',
       );
       console.log('✅ Booking confirmation email sent!');
     } catch (err) {
       console.error('❌ Failed to send booking email:', err);
+    }
+  }
+
+  // Send cancellation email via EmailJS
+  async sendCancellationMail(data: BookingData) {
+    if (!data.email) {
+      console.warn('No email found for booking, skipping cancellation email.');
+      return;
+    }
+
+    const templateParams = {
+      customer_name: data.name,
+      customer_email: data.email,
+      destination: data.destination,
+      travel_date: data.date,
+      number_of_people: data.people,
+      price_per_person: data.price,
+      total_amount: data.price * data.people,
+      booking_id: data.id || 'N/A',
+      company_name: 'Tourizio',
+      support_email: 'support@tourizio.com',
+      support_phone: '+1 (555) 123-4567',
+    };
+
+    try {
+      await emailjs.send(
+        'service_rs0boy2',
+        'template_edlxt7p',
+        templateParams,
+        'BVW0cQud2ku73VgpN',
+      );
+      console.log('✅ Cancellation email sent!');
+    } catch (err) {
+      console.error('❌ Failed to send cancellation email:', err);
     }
   }
 }

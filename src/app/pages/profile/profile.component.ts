@@ -97,13 +97,25 @@ export class ProfileComponent implements OnInit {
   cancelBooking(bookingId: string | undefined): void {
     if (!bookingId) return;
 
+    const booking = this.bookings.find((b) => b.id === bookingId);
+    if (!booking) return;
+
     if (!confirm('Are you sure you want to cancel this booking?')) return;
 
     this.bookingService.deleteBooking(bookingId).subscribe({
       next: () => {
         // Remove the cancelled booking from local array
         this.bookings = this.bookings.filter((b) => b.id !== bookingId);
-        alert('Booking cancelled successfully!');
+
+        alert('✅ Booking cancelled successfully! Check your email for details.');
+
+        // Send cancellation email
+        this.bookingService
+          .sendCancellationMail(booking)
+          .then(() => console.log('Cancellation email sent'))
+          .catch((err) =>
+            console.error('Failed to send cancellation email', err),
+          );
       },
       error: (err) => {
         console.error(err);
