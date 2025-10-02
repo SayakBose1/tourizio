@@ -1,0 +1,17 @@
+<div
+  *ngIf="showPromo"
+  class="fixed bottom-4 right-4 bg-red-600 shadow-xl rounded-lg p-4 w-72 max-w-xs flex flex-col z-50 transition-transform duration-300"
+>
+  <div class="flex justify-between items-start">
+    <div>
+      <h4 class="font-bold text-lg text-white">Special Offer!</h4>
+      <p class="text-white text-sm mt-1">Get 20% off on your first booking!</p>
+    </div>
+    <button
+      (click)="closePromo()"
+      class="text-white hover:text-gray-200 font-bold text-xl ml-2"
+    >
+      &times;
+    </button>
+  </div>
+</div>
