@@ -131,26 +131,183 @@ export class DestinationsComponent
     await Promise.allSettled(promises);
   }
 
+  // private async fetchImage(query: string): Promise<string> {
+  //   try {
+  //     const res = await fetch(
+  //       `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+  //         query,
+  //       )}&per_page=1&orientation=landscape`,
+  //       { headers: { Authorization: this.PEXELS_API_KEY } },
+  //     );
+  //     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  //     const data = await res.json();
+  //     if (data.photos?.length > 0) return data.photos[0].src.medium;
+  //   } catch (err) {
+  //     console.error('Error fetching image for:', query, err);
+  //   }
+  //   return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
+  //     query.split(' ')[0],
+  //   )}`;
+  // }
+
+  // ===== RANDOM PLACES =====
+
+  // Replace your existing fetchImage method with this improved version:
+
   private async fetchImage(query: string): Promise<string> {
     try {
+      // Enhanced query with destination-focused keywords
+      const enhancedQuery = `${query} travel destination landmark`;
+
       const res = await fetch(
         `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-          query,
-        )}&per_page=1`,
+          enhancedQuery,
+        )}&per_page=15&orientation=landscape`,
         { headers: { Authorization: this.PEXELS_API_KEY } },
       );
+
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
-      if (data.photos?.length > 0) return data.photos[0].src.medium;
+
+      if (data.photos?.length > 0) {
+        // Score each photo based on quality indicators
+        const scoredPhotos = data.photos.map((photo: any) => {
+          const alt = (photo.alt || '').toLowerCase();
+          let score = 0;
+
+          // Heavily penalize people/vehicles
+          const strongExclude = [
+            'person',
+            'people',
+            'man',
+            'woman',
+            'men',
+            'women',
+            'car',
+            'vehicle',
+            'portrait',
+            'face',
+            'selfie',
+          ];
+          if (strongExclude.some((term) => alt.includes(term))) {
+            score -= 100;
+          }
+
+          // Lightly penalize indoor/closeup shots
+          const lightExclude = ['indoor', 'restaurant', 'closeup', 'close-up'];
+          if (lightExclude.some((term) => alt.includes(term))) {
+            score -= 30;
+          }
+
+          // Reward destination-related terms
+          const goodTerms = [
+            'landscape',
+            'city',
+            'architecture',
+            'building',
+            'monument',
+            'view',
+            'aerial',
+            'landmark',
+            'temple',
+            'beach',
+            'mountain',
+            'scenic',
+          ];
+          goodTerms.forEach((term) => {
+            if (alt.includes(term)) score += 20;
+          });
+
+          // Reward if query location name is in alt text
+          const locationParts = query.toLowerCase().split(' ');
+          locationParts.forEach((part) => {
+            if (part.length > 3 && alt.includes(part)) score += 30;
+          });
+
+          return { photo, score };
+        });
+
+        // Sort by score and pick the best one
+        scoredPhotos.sort((a, b) => b.score - a.score);
+
+        // Use the highest scoring photo if it's decent (score > -50)
+        if (scoredPhotos[0].score > -50) {
+          return scoredPhotos[0].photo.src.medium;
+        }
+
+        // If all photos have bad scores, try fallback search
+        return this.fetchSpecificDestinationImage(query);
+      }
     } catch (err) {
       console.error('Error fetching image for:', query, err);
     }
+
     return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
       query.split(' ')[0],
     )}`;
   }
 
-  // ===== RANDOM PLACES =====
+  // Add this new method to your component:
+  private async fetchSpecificDestinationImage(query: string): Promise<string> {
+    try {
+      // Extract just the place name (before any comma or 'in')
+      const placeName = query.split(',')[0].split(' in ')[0].trim();
+
+      // Try searching with just the place name + basic keywords
+      const specificQuery = `${placeName} tourist destination`;
+
+      const res = await fetch(
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+          specificQuery,
+        )}&per_page=8&orientation=landscape`,
+        { headers: { Authorization: this.PEXELS_API_KEY } },
+      );
+
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+
+      if (data.photos?.length > 0) {
+        // Pick a random photo from the results to add variety
+        const randomIndex = Math.floor(
+          Math.random() * Math.min(3, data.photos.length),
+        );
+        return data.photos[randomIndex].src.medium;
+      }
+    } catch (err) {
+      console.error('Fallback image search failed:', err);
+    }
+
+    // Last resort: use the original query without enhancements
+    return this.fetchBasicImage(query);
+  }
+
+  // Add this final fallback method:
+  private async fetchBasicImage(query: string): Promise<string> {
+    try {
+      const res = await fetch(
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+          query,
+        )}&per_page=5&orientation=landscape`,
+        { headers: { Authorization: this.PEXELS_API_KEY } },
+      );
+
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+
+      if (data.photos?.length > 0) {
+        // Pick second or third image to avoid most common result
+        const index = Math.min(1, data.photos.length - 1);
+        return data.photos[index].src.medium;
+      }
+    } catch (err) {
+      console.error('Basic image search failed:', err);
+    }
+
+    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
+      query.split(' ')[0],
+    )}`;
+  }
+
   private showRandomPlaces(): void {
     const allPlaces: Place[] = Object.values(this.placesMap).flat();
     if (!allPlaces || allPlaces.length === 0) return;
@@ -366,42 +523,42 @@ export class DestinationsComponent
   priceFilter: 'high' | 'medium' | 'low' | '' = '';
 
   onFilterChange(): void {
-  let allPlaces: Place[] = Object.values(this.placesMap).flat();
+    let allPlaces: Place[] = Object.values(this.placesMap).flat();
 
-  // Start with search query if present
-  if (this.searchQuery.trim()) {
-    const query = this.searchQuery.trim().toLowerCase();
-    allPlaces = allPlaces.filter((p) =>
-      p.name.toLowerCase().startsWith(query),
-    );
+    // Start with search query if present
+    if (this.searchQuery.trim()) {
+      const query = this.searchQuery.trim().toLowerCase();
+      allPlaces = allPlaces.filter((p) =>
+        p.name.toLowerCase().startsWith(query),
+      );
+    }
+
+    // Apply popularity filter
+    if (this.popularityFilter) {
+      allPlaces = allPlaces.filter((p) => {
+        if (this.popularityFilter === 'high') return p.price >= 18000; // example
+        if (this.popularityFilter === 'medium')
+          return p.price >= 13000 && p.price < 18000;
+        if (this.popularityFilter === 'low') return p.price < 13000;
+        return true;
+      });
+    }
+
+    // Apply price filter
+    if (this.priceFilter) {
+      allPlaces = allPlaces.sort((a, b) => {
+        if (this.priceFilter === 'high') return b.price - a.price;
+        if (this.priceFilter === 'medium') return a.price - b.price; // optional: adjust logic
+        if (this.priceFilter === 'low') return a.price - b.price;
+        return 0;
+      });
+    }
+
+    this.searchedPlaces = allPlaces;
+    setTimeout(() => {
+      this.cleanupMaps();
+      this.filteredPlaces = [...this.searchedPlaces];
+      this.initializeMaps();
+    }, 200);
   }
-
-  // Apply popularity filter
-  if (this.popularityFilter) {
-    allPlaces = allPlaces.filter((p) => {
-      if (this.popularityFilter === 'high') return p.price >= 18000; // example
-      if (this.popularityFilter === 'medium') return p.price >= 13000 && p.price < 18000;
-      if (this.popularityFilter === 'low') return p.price < 13000;
-      return true;
-    });
-  }
-
-  // Apply price filter
-  if (this.priceFilter) {
-    allPlaces = allPlaces.sort((a, b) => {
-      if (this.priceFilter === 'high') return b.price - a.price;
-      if (this.priceFilter === 'medium') return a.price - b.price; // optional: adjust logic
-      if (this.priceFilter === 'low') return a.price - b.price;
-      return 0;
-    });
-  }
-
-  this.searchedPlaces = allPlaces;
-  setTimeout(() => {
-    this.cleanupMaps();
-    this.filteredPlaces = [...this.searchedPlaces];
-    this.initializeMaps();
-  }, 200);
-}
-
 }
