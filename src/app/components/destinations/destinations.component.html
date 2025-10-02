@@ -141,6 +141,7 @@
             <button
               (click)="onBookNow(sp.id)"
               class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+              (click)="openWiki(sp.name)"
             >
               Book Now
             </button>
@@ -214,6 +215,7 @@
             </button>
             <button
               class="flex-1 bg-gray-200 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 font-semibold transition"
+              (click)="openWiki(p.name)"
             >
               View Details
             </button>
@@ -315,6 +317,7 @@
         </button>
         <button
           class="flex-1 bg-gray-200 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 font-semibold transition"
+          (click)="openWiki(p.name)"
         >
           View Details
         </button>
@@ -383,6 +386,7 @@
           </button>
           <button
             class="flex-1 bg-gray-200 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 font-semibold transition"
+            (click)="openWiki(fav.name)"
           >
             View Details
           </button>

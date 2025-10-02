@@ -6,20 +6,20 @@ import {
   OnDestroy,
   Inject,
   PLATFORM_ID,
-} from "@angular/core";
-import { Router } from "@angular/router";
-import { isPlatformBrowser } from "@angular/common";
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-  title = "Welcome to Tourizio, your ultimate tourism platform";
+  title = 'Welcome to Tourizio, your ultimate tourism platform';
 
   // Typing text properties
-  displaySubtitle = "";
+  displaySubtitle = '';
   showCursor = true;
   private typingSpeed = 100; // milliseconds per character
   private eraseSpeed = 50; // milliseconds per character for erasing
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private pauseAfterErasing = 1000; // pause before typing again
 
   private subtitle =
-    "Plan your next adventure with ease. Explore destinations, book trips, and more!";
+    'Plan your next adventure with ease. Explore destinations, book trips, and more!';
 
   // Scroll reveal properties
   private scrollRevealElements: NodeListOf<Element> | null = null;
@@ -42,12 +42,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private pauseTimer: any = null;
 
   carouselImages: string[] = [
-    "assets/images/img1.jpg",
-    "assets/images/img2.jpg",
-    "assets/images/img3.jpeg",
-    "assets/images/img4.jpg",
-    "assets/images/img5.jpg",
-    "assets/images/img6.jpg",
+    'assets/images/img1.jpg',
+    'assets/images/img2.jpg',
+    'assets/images/img3.jpeg',
+    'assets/images/img4.jpg',
+    'assets/images/img5.jpg',
+    'assets/images/img6.jpg',
   ];
 
   // ✅ Featured destinations from JSON
@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private router: Router,
     private elementRef: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   async ngOnInit() {
@@ -66,11 +66,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // ✅ Load featured destinations from JSON
     try {
-      const res = await fetch("assets/data/featured-destinations.json");
+      const res = await fetch('assets/data/featured-destinations.json');
       const data = await res.json();
       this.featuredDestinations = data.featuredDestinations;
     } catch (error) {
-      console.error("Error loading featured destinations:", error);
+      console.error('Error loading featured destinations:', error);
     }
   }
 
@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private typeText(text: string, callback?: () => void) {
     let i = 0;
-    this.displaySubtitle = "";
+    this.displaySubtitle = '';
     this.typingTimer = setInterval(() => {
       this.displaySubtitle += text.charAt(i);
       i++;
@@ -150,13 +150,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) return;
 
     this.scrollRevealElements =
-      this.elementRef.nativeElement.querySelectorAll(".scroll-reveal");
+      this.elementRef.nativeElement.querySelectorAll('.scroll-reveal');
 
     this.scrollListener = () => this.optimizedScrollReveal();
     this.resizeListener = () => this.optimizedScrollReveal();
 
-    window.addEventListener("scroll", this.scrollListener, { passive: true });
-    window.addEventListener("resize", this.resizeListener, { passive: true });
+    window.addEventListener('scroll', this.scrollListener, { passive: true });
+    window.addEventListener('resize', this.resizeListener, { passive: true });
 
     // Initial check
     this.revealOnScroll();
@@ -186,11 +186,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (scrollTop + windowHeight - revealPoint > elementTop) {
         // Add delay based on transition-delay style if present
-        const delay = htmlElement.style.transitionDelay || "0s";
+        const delay = htmlElement.style.transitionDelay || '0s';
         const delayMs = parseFloat(delay) * 1000;
 
         setTimeout(() => {
-          htmlElement.classList.add("show");
+          htmlElement.classList.add('show');
         }, delayMs);
       }
     });
@@ -201,32 +201,32 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) return;
 
     const cards = this.elementRef.nativeElement.querySelectorAll(
-      ".tourism-stat-card, .testimonial-card-hover"
+      '.tourism-stat-card, .testimonial-card-hover',
     );
 
     cards.forEach((card: HTMLElement) => {
       // Add subtle scale on click for mobile devices
       const touchStartHandler = () => {
-        card.style.transform = "scale(0.98)";
+        card.style.transform = 'scale(0.98)';
       };
 
       const touchEndHandler = () => {
-        card.style.transform = "";
+        card.style.transform = '';
       };
 
       const focusHandler = () => {
-        card.style.outline = "3px solid rgba(59, 130, 246, 0.5)";
-        card.style.outlineOffset = "2px";
+        card.style.outline = '3px solid rgba(59, 130, 246, 0.5)';
+        card.style.outlineOffset = '2px';
       };
 
       const blurHandler = () => {
-        card.style.outline = "none";
+        card.style.outline = 'none';
       };
 
-      card.addEventListener("touchstart", touchStartHandler, { passive: true });
-      card.addEventListener("touchend", touchEndHandler, { passive: true });
-      card.addEventListener("focus", focusHandler);
-      card.addEventListener("blur", blurHandler);
+      card.addEventListener('touchstart', touchStartHandler, { passive: true });
+      card.addEventListener('touchend', touchEndHandler, { passive: true });
+      card.addEventListener('focus', focusHandler);
+      card.addEventListener('blur', blurHandler);
 
       // Store references for cleanup
       (card as any).__tourizio_handlers = {
@@ -243,12 +243,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Remove event listeners
     if (this.scrollListener) {
-      window.removeEventListener("scroll", this.scrollListener);
+      window.removeEventListener('scroll', this.scrollListener);
       this.scrollListener = null;
     }
 
     if (this.resizeListener) {
-      window.removeEventListener("resize", this.resizeListener);
+      window.removeEventListener('resize', this.resizeListener);
       this.resizeListener = null;
     }
 
@@ -260,15 +260,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Clean up interaction effect handlers
     const cards = this.elementRef.nativeElement.querySelectorAll(
-      ".tourism-stat-card, .testimonial-card-hover"
+      '.tourism-stat-card, .testimonial-card-hover',
     );
     cards.forEach((card: HTMLElement) => {
       const handlers = (card as any).__tourizio_handlers;
       if (handlers) {
-        card.removeEventListener("touchstart", handlers.touchStartHandler);
-        card.removeEventListener("touchend", handlers.touchEndHandler);
-        card.removeEventListener("focus", handlers.focusHandler);
-        card.removeEventListener("blur", handlers.blurHandler);
+        card.removeEventListener('touchstart', handlers.touchStartHandler);
+        card.removeEventListener('touchend', handlers.touchEndHandler);
+        card.removeEventListener('focus', handlers.focusHandler);
+        card.removeEventListener('blur', handlers.blurHandler);
         delete (card as any).__tourizio_handlers;
       }
     });
@@ -276,7 +276,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // ===== NAVIGATION METHODS =====
   goToDestinations() {
-    this.router.navigate(["/destinations"]);
+    this.router.navigate(['/destinations']);
   }
 
   // ===== UTILITY METHODS =====
@@ -299,6 +299,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goToBlog() {
-    this.router.navigate(["/blog"]);
+    this.router.navigate(['/blog']);
+  }
+
+  openWiki(destinationName: string) {
+    if (!destinationName) return;
+
+    // Format the name for Wikipedia URL (spaces → underscores)
+    const wikiUrl = `https://en.wikipedia.org/wiki/${destinationName.replace(/\s+/g, '_')}`;
+
+    // Open in a new tab
+    window.open(wikiUrl, '_blank');
   }
 }

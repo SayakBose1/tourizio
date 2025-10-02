@@ -561,4 +561,14 @@ export class DestinationsComponent
       this.initializeMaps();
     }, 200);
   }
+
+  openWiki(destinationName: string) {
+    if (!destinationName) return;
+
+    // Format the name for Wikipedia URL (spaces → underscores)
+    const wikiUrl = `https://en.wikipedia.org/wiki/${destinationName.replace(/\s+/g, '_')}`;
+
+    // Open in a new tab
+    window.open(wikiUrl, '_blank');
+  }
 }
