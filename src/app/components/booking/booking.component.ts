@@ -17,10 +17,15 @@ interface Place {
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.scss']
+  styleUrls: ['./booking.component.scss'],
 })
 export class BookingComponent implements OnInit {
-  booking = { name: '', destination: '', date: '', people: null as number | null };
+  booking = {
+    name: '',
+    destination: '',
+    date: '',
+    people: null as number | null,
+  };
   selectedPlace: Place | null = null;
   placesMap: Record<string, Place[]> = {};
 
@@ -32,24 +37,24 @@ export class BookingComponent implements OnInit {
     private route: ActivatedRoute,
     private bookingService: BookingService,
     private afAuth: AngularFireAuth,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
     fetch('assets/data/dummydata.json')
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((data: any) => {
         this.placesMap = data.placesMap || {};
 
         const placeId = +this.route.snapshot.queryParams['placeId'];
         if (placeId) this.prefillBooking(placeId);
       })
-      .catch(err => console.error('Error loading places JSON', err));
+      .catch((err) => console.error('Error loading places JSON', err));
   }
 
   prefillBooking(placeId: number) {
     const allPlaces: Place[] = Object.values(this.placesMap).flat();
-    this.selectedPlace = allPlaces.find(p => p.id === placeId) || null;
+    this.selectedPlace = allPlaces.find((p) => p.id === placeId) || null;
     if (this.selectedPlace) {
       this.booking.destination = this.selectedPlace.name;
     }
@@ -77,7 +82,7 @@ export class BookingComponent implements OnInit {
       date: this.booking.date,
       people: this.booking.people,
       price: this.selectedPlace.price,
-      email: currentUser.email || ''
+      email: currentUser.email || '',
     };
 
     // Save pending booking in localStorage for Payment page
@@ -85,5 +90,17 @@ export class BookingComponent implements OnInit {
 
     // ✅ Redirect to payment page
     this.router.navigate(['/payment']);
+  }
+
+  calculateProgress(): number {
+    let progress = 0;
+    const totalFields = 4; // name, destination, date, people
+
+    if (this.booking.name) progress += 25;
+    if (this.booking.destination) progress += 25;
+    if (this.booking.date) progress += 25;
+    if (this.booking.people >= 1) progress += 25;
+
+    return progress;
   }
 }

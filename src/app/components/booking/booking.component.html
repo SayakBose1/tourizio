@@ -1,13 +1,30 @@
-  <div class="max-w-md mx-auto mt-6 mb-6 p-6 bg-white rounded-lg shadow">
-    <h2 class="text-2xl font-bold mb-4 text-center">Book Your Trip</h2>
-    <p class="text-gray-600 mb-4 text-center">
-      Visit destinations page to book your dream destination.
-    </p>
+ <div class="max-w-2xl mx-auto mt-6 mb-6 p-8 md:p-10 bg-white rounded-3xl shadow-2xl border border-gray-100">
+    <!-- Progress Bar -->
+    <div class="mb-6">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs font-semibold text-gray-600">Booking Progress</span>
+        <span class="text-xs font-semibold text-green-600">{{calculateProgress()}}% Complete</span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+        <div class="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full transition-all duration-500 ease-out" [style.width.%]="calculateProgress()"></div>
+      </div>
+    </div>
+
+    <!-- Header with Icon -->
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full mb-3 shadow-lg transform transition-transform hover:scale-110">
+       <i class="fas fa-umbrella-beach text-white text-2xl"></i>
+      </div>
+      <h2 class="text-2xl font-bold mb-2 bg-black bg-clip-text text-transparent">Book Your Destination</h2>
+      <p class="text-gray-600 text-sm">
+        Visit destinations page to book your dream destination.
+      </p>
+    </div>
 
     <form (ngSubmit)="confirmBooking()" class="space-y-4">
       <!-- Name -->
-      <div>
-        <label class="block font-medium mb-1">Name</label>
+      <div class="transform transition-all duration-200 hover:scale-[1.01]">
+        <label class="block font-medium mb-1 text-gray-700 text-sm">Full Name <span class="text-red-500">*</span></label>
         <div class="relative">
           <span class="absolute left-3 top-3 text-gray-400">
             <i class="fas fa-user"></i>
@@ -16,7 +33,7 @@
             type="text"
             [(ngModel)]="booking.name"
             name="name"
-            class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
+            class="w-full border border-gray-300 rounded-lg p-2 pl-10 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200"
             placeholder="Enter your full name"
             required
           />
@@ -24,8 +41,8 @@
       </div>
 
       <!-- Destination -->
-      <div>
-        <label class="block font-medium mb-1">Destination</label>
+      <div class="transform transition-all duration-200 hover:scale-[1.01]">
+        <label class="block font-medium mb-1 text-gray-700 text-sm">Destination <span class="text-red-500">*</span></label>
         <div class="relative">
           <span class="absolute left-3 top-3 text-gray-400">
             <i class="fas fa-map-marker-alt"></i>
@@ -34,7 +51,7 @@
             type="text"
             [(ngModel)]="booking.destination"
             name="destination"
-            class="w-full border rounded p-2 pl-10 bg-gray-100"
+            class="w-full border border-gray-300 rounded-lg p-2 pl-10 bg-gray-50 cursor-not-allowed"
             placeholder="select destination from destinations page"
             readonly
           />
@@ -42,8 +59,8 @@
       </div>
 
       <!-- Price -->
-      <div>
-        <label class="block font-medium mb-1">Price (per person)</label>
+      <div class="transform transition-all duration-200 hover:scale-[1.01]">
+        <label class="block font-medium mb-1 text-gray-700 text-sm">Price (per person)</label>
         <div class="relative">
           <span class="absolute left-3 top-3 text-gray-400">
             <i class="fas fa-tag"></i>
@@ -52,7 +69,7 @@
             type="text"
             [value]="selectedPlace?.price | currency: 'INR'"
             name="price"
-            class="w-full border rounded p-2 pl-10 bg-gray-100"
+            class="w-full border border-gray-300 rounded-lg p-2 pl-10 bg-gray-50 cursor-not-allowed"
             placeholder="check price from destinations page"
             readonly
           />
@@ -60,8 +77,8 @@
       </div>
 
       <!-- Date -->
-      <div>
-        <label class="block font-medium mb-1">Date</label>
+      <div class="transform transition-all duration-200 hover:scale-[1.01]">
+        <label class="block font-medium mb-1 text-gray-700 text-sm">Travel Date <span class="text-red-500">*</span></label>
         <div class="relative">
           <span class="absolute left-3 top-3 text-gray-400">
             <i class="fas fa-calendar-alt"></i>
@@ -70,15 +87,15 @@
             type="date"
             [(ngModel)]="booking.date"
             name="date"
-            class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
+            class="w-full border border-gray-300 rounded-lg p-2 pl-10 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200"
             required
           />
         </div>
       </div>
 
       <!-- People -->
-      <div>
-        <label class="block font-medium mb-1">People</label>
+      <div class="transform transition-all duration-200 hover:scale-[1.01]">
+        <label class="block font-medium mb-1 text-gray-700 text-sm">Number of Travelers <span class="text-red-500">*</span></label>
         <div class="relative">
           <span class="absolute left-3 top-3 text-gray-400">
             <i class="fas fa-users"></i>
@@ -88,25 +105,35 @@
             [(ngModel)]="booking.people"
             name="people"
             placeholder="No. of people"
-            class="w-full border rounded p-2 pl-10 focus:ring-2 focus:ring-green-400"
+            class="w-full border border-gray-300 rounded-lg p-2 pl-10 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200"
             required
           />
         </div>
       </div>
 
       <!-- Total Price -->
-      <div *ngIf="selectedPlace">
-        <label class="block font-medium mb-1">Total Price</label>
+      <div *ngIf="selectedPlace" class="transform transition-all duration-200 hover:scale-[1.01]">
+        <label class="block font-medium mb-1 text-gray-700 text-sm">Total Price</label>
         <div class="relative">
-          <span class="absolute left-3 top-3 text-gray-400">
+          <span class="absolute left-3 top-3 text-green-600">
             <i class="fas fa-wallet"></i>
           </span>
           <input
             type="text"
             [value]="selectedPlace.price * booking.people | currency: 'INR'"
             readonly
-            class="w-full border rounded p-2 pl-10 bg-gray-100"
+            class="w-full border-2 border-green-200 rounded-lg p-2 pl-10 bg-green-50 font-semibold text-green-700 cursor-not-allowed"
           />
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+        <div class="flex items-start">
+          <i class="fas fa-info-circle text-blue-400 mt-0.5 mr-2"></i>
+          <p class="text-xs text-blue-700">
+            Please ensure all details are correct before confirming your booking. A confirmation email will be sent to you.
+          </p>
         </div>
       </div>
 
@@ -120,9 +147,12 @@
           !booking.date ||
           booking.people < 1
         "
-        class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed font-semibold flex items-center justify-center"
+        class="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-3 px-4 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed font-semibold flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
       >
-        <span *ngIf="!isBooking">Confirm Booking</span>
+        <span *ngIf="!isBooking" class="flex items-center">
+          <i class="fas fa-check-circle mr-2"></i>
+          Confirm Booking
+        </span>
         <span *ngIf="isBooking" class="flex items-center justify-center">
           <svg
             class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
@@ -147,6 +177,11 @@
           Booking...
         </span>
       </button>
+
+      <!-- Security Badge -->
+      <div class="flex items-center justify-center mt-4 text-xs text-gray-500">
+        <i class="fas fa-lock mr-1"></i>
+        <span>Secure booking powered by SSL encryption</span>
+      </div>
     </form>
-
-
+  </div>

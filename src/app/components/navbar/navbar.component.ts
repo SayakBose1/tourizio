@@ -1,9 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { UserSessionService, UserSession } from '../../services/user-session.service';
+import { HostListener } from '@angular/core';
+import {
+  UserSessionService,
+  UserSession,
+} from '../../services/user-session.service';
 import { Observable } from 'rxjs';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase.config';
-import { Router, NavigationEnd } from '@angular/router';  // 👈 Import NavigationEnd
+import { Router, NavigationEnd } from '@angular/router'; // 👈 Import NavigationEnd
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +22,7 @@ export class NavbarComponent {
 
   constructor(private router: Router) {
     // 👇 Close mobile menu & profile menu whenever route changes
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.menuOpen = false;
         this.showProfileMenu = false;
@@ -47,6 +51,16 @@ export class NavbarComponent {
       this.router.navigate(['/']); // 👈 Optional: Redirect to home after logout
     } catch (err) {
       console.error('Logout failed', err);
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const clickedInside = target.closest('.profile-dropdown-container');
+
+    if (!clickedInside && this.showProfileMenu) {
+      this.showProfileMenu = false;
     }
   }
 }
