@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -59,7 +59,7 @@ const routes: Routes = [
     path: 'payment',
     loadChildren: () =>
       import('./pages/payment/payment.module').then((m) => m.PaymentModule),
-    data: { animation: 'PaymentPage' }, 
+    data: { animation: 'PaymentPage' },
   },
 
   { path: '**', redirectTo: '' },
@@ -70,6 +70,11 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
+      preloadingStrategy: PreloadAllModules,
+      initialNavigation: 'enabledBlocking', 
+      canceledNavigationResolution: 'replace', 
+      urlUpdateStrategy: 'eager', 
+      onSameUrlNavigation: 'reload',
     }),
   ],
   exports: [RouterModule],
