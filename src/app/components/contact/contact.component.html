@@ -1,366 +1,353 @@
-<div class="relative bg-grey-50 py-16 px-6 min-h-screen">
+<div
+  class="max-w-2xl mx-auto mt-6 mb-6 p-6 sm:p-8 md:p-10 bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/50 transform transition-all duration-300 hover:shadow-3xl"
+>
+  <!-- Header with Icon -->
+  <div class="text-center mb-8">
+    <div
+      class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-4 shadow-lg transform transition-transform hover:scale-110"
+    >
+      <i class="fas fa-paper-plane text-white text-3xl"></i>
+    </div>
+    <h2
+      class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2"
+    >
+      Contact Us
+    </h2>
+    <p class="text-gray-600 text-sm sm:text-lg">
+      We'd love to hear from you! Fill out the form below.
+    </p>
+    <div
+      class="flex items-center justify-center gap-2 mt-3 text-xs sm:text-sm text-gray-500"
+    >
+      <i class="fas fa-clock"></i>
+      <span>Response time: Within 24 hours</span>
+    </div>
+  </div>
+
+  <!-- Success Message -->
   <div
-    class="max-w-2xl mx-auto bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8 md:p-10 border border-white/50 relative z-10 transform transition-all duration-300 hover:shadow-3xl"
+    *ngIf="showSuccessMessage"
+    class="mb-6 flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 text-green-800 rounded-lg shadow-md animate-fade-in"
   >
-    <!-- Header with Icon -->
-    <div class="text-center mb-8">
-      <div
-        class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-4 shadow-lg transform transition-transform hover:scale-110"
+    <div
+      class="flex-shrink-0 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center"
+    >
+      <svg
+        class="w-6 h-6 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
       >
-        <i class="fas fa-paper-plane text-white text-3xl"></i>
-      </div>
-      <h2
-        class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-2"
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+    </div>
+    <div>
+      <p class="font-semibold text-lg">Thank you for your message!</p>
+      <p class="text-sm">We'll get back to you within 24 hours.</p>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div
+    *ngIf="showErrorMessage"
+    class="mb-6 flex items-center gap-3 p-4 bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 text-red-800 rounded-lg shadow-md animate-fade-in"
+  >
+    <div
+      class="flex-shrink-0 w-10 h-10 bg-red-500 rounded-full flex items-center justify-center"
+    >
+      <svg
+        class="w-6 h-6 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
       >
-        Contact Us
-      </h2>
-      <p class="text-gray-600 text-lg">
-        We'd love to hear from you! Fill out the form below.
-      </p>
-      <div
-        class="flex items-center justify-center gap-2 mt-3 text-sm text-gray-500"
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </div>
+    <div>
+      <p class="font-semibold text-lg">Something went wrong!</p>
+      <p class="text-sm">Please try again or contact us directly.</p>
+    </div>
+  </div>
+
+  <!-- Contact Form -->
+  <form (ngSubmit)="submitContact()" #contactForm="ngForm" class="space-y-5">
+    <input type="hidden" name="access_key" [value]="web3formsKey" />
+    <input
+      type="hidden"
+      name="subject"
+      value="New Contact Form Submission - Tourism App"
+    />
+    <input
+      type="hidden"
+      name="redirect"
+      value="https://web3forms.com/success"
+    />
+
+    <!-- Name -->
+    <div class="transform transition-all duration-200 hover:scale-[1.01]">
+      <label class="block font-semibold text-gray-700 mb-2 text-sm"
+        >Name <span class="text-red-500">*</span></label
       >
-        <i class="fas fa-clock"></i>
-        <span>Response time: Within 24 hours</span>
+      <div class="relative group">
+        <span
+          class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+        >
+          <i class="fas fa-user"></i>
+        </span>
+        <input
+          type="text"
+          [(ngModel)]="contact.name"
+          name="name"
+          class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+          placeholder="Your full name"
+          required
+        />
       </div>
     </div>
 
-    <!-- Success Message -->
+    <!-- Email -->
+    <div class="transform transition-all duration-200 hover:scale-[1.01]">
+      <label class="block font-semibold text-gray-700 mb-2 text-sm"
+        >Email <span class="text-red-500">*</span></label
+      >
+      <div class="relative group">
+        <span
+          class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+        >
+          <i class="fas fa-envelope"></i>
+        </span>
+        <input
+          type="email"
+          [(ngModel)]="contact.email"
+          name="email"
+          class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+          placeholder="your.email@example.com"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="transform transition-all duration-200 hover:scale-[1.01]">
+      <label class="block font-semibold text-gray-700 mb-2 text-sm"
+        >Phone
+        <span class="text-gray-400 text-xs font-normal">(Optional)</span></label
+      >
+      <div class="relative group">
+        <span
+          class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+        >
+          <i class="fas fa-phone"></i>
+        </span>
+        <input
+          type="tel"
+          [(ngModel)]="contact.phone"
+          name="phone"
+          class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+          placeholder="+1 (555) 123-4567"
+        />
+      </div>
+    </div>
+
+    <!-- Inquiry Type -->
+    <div class="transform transition-all duration-200 hover:scale-[1.01]">
+      <label class="block font-semibold text-gray-700 mb-2 text-sm"
+        >Inquiry Type</label
+      >
+      <div class="relative group">
+        <span
+          class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors pointer-events-none"
+        >
+          <i class="fas fa-list-alt"></i>
+        </span>
+        <select
+          [(ngModel)]="contact.inquiryType"
+          name="inquiry_type"
+          class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300 appearance-none bg-white cursor-pointer"
+        >
+          <option value="">Select inquiry type</option>
+          <option value="booking">🎫 Booking Inquiry</option>
+          <option value="information">ℹ️ General Information</option>
+          <option value="support">🛟 Customer Support</option>
+          <option value="feedback">💭 Feedback</option>
+          <option value="partnership">🤝 Partnership</option>
+        </select>
+        <span class="absolute right-3 top-3 text-gray-400 pointer-events-none">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class="transform transition-all duration-200 hover:scale-[1.01]">
+      <label class="block font-semibold text-gray-700 mb-2 text-sm"
+        >Message <span class="text-red-500">*</span></label
+      >
+      <div class="relative group">
+        <span
+          class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+        >
+          <i class="fas fa-comment-alt"></i>
+        </span>
+        <textarea
+          [(ngModel)]="contact.message"
+          name="message"
+          rows="5"
+          class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical transition-all duration-200 hover:border-gray-300"
+          placeholder="Tell us how we can help you with your travel plans..."
+          required
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Privacy Notice -->
     <div
-      *ngIf="showSuccessMessage"
-      class="mb-6 flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 text-green-800 rounded-lg shadow-md animate-fade-in"
+      class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-400 p-4 rounded-lg"
     >
-      <div
-        class="flex-shrink-0 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center"
+      <div class="flex items-start">
+        <i class="fas fa-shield-alt text-blue-500 mt-0.5 mr-3"></i>
+        <p class="text-xs text-gray-700">
+          <span class="font-semibold">Privacy Protected:</span> We respect your
+          privacy and will never share your information with third parties. Your
+          data is encrypted and secure.
+        </p>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      [disabled]="isSubmitting || !contactForm.valid"
+      class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed font-bold text-lg relative overflow-hidden group"
+    >
+      <span
+        *ngIf="!isSubmitting"
+        class="relative flex items-center justify-center"
+      >
+        <i class="fas fa-paper-plane mr-2"></i> Send Message
+      </span>
+      <span
+        *ngIf="isSubmitting"
+        class="relative flex items-center justify-center"
       >
         <svg
-          class="w-6 h-6 text-white"
+          class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+          xmlns="http://www.w3.org/2000/svg"
           fill="none"
-          stroke="currentColor"
           viewBox="0 0 24 24"
         >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 13l4 4L19 7"
-          />
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
         </svg>
-      </div>
-      <div>
-        <p class="font-semibold text-lg">Thank you for your message!</p>
-        <p class="text-sm">We'll get back to you within 24 hours.</p>
-      </div>
-    </div>
+        Sending...
+      </span>
+    </button>
+  </form>
 
-    <!-- Error Message -->
-    <div
-      *ngIf="showErrorMessage"
-      class="mb-6 flex items-center gap-3 p-4 bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 text-red-800 rounded-lg shadow-md animate-fade-in"
+  <!-- Alternative Contact Methods -->
+  <div class="mt-10 pt-8 border-t-2 border-gray-100">
+    <h3
+      class="text-xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-2"
     >
+      <i class="fas fa-headset text-blue-600"></i> Other Ways to Reach Us
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700 text-sm">
       <div
-        class="flex-shrink-0 w-10 h-10 bg-red-500 rounded-full flex items-center justify-center"
+        class="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl hover:shadow-md transition-all duration-200 transform hover:scale-105"
       >
-        <svg
-          class="w-6 h-6 text-white"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+        <div
+          class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </div>
-      <div>
-        <p class="font-semibold text-lg">Something went wrong!</p>
-        <p class="text-sm">Please try again or contact us directly.</p>
-      </div>
-    </div>
-
-    <!-- Contact Form -->
-    <form (ngSubmit)="submitContact()" #contactForm="ngForm" class="space-y-5">
-      <input type="hidden" name="access_key" [value]="web3formsKey" />
-      <input
-        type="hidden"
-        name="subject"
-        value="New Contact Form Submission - Tourism App"
-      />
-      <input
-        type="hidden"
-        name="redirect"
-        value="https://web3forms.com/success"
-      />
-
-      <!-- Name -->
-      <div class="transform transition-all duration-200 hover:scale-[1.01]">
-        <label class="block font-semibold text-gray-700 mb-2 text-sm"
-          >Name <span class="text-red-500">*</span></label
-        >
-        <div class="relative group">
-          <span
-            class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors"
-          >
-            <i class="fas fa-user"></i>
-          </span>
-          <input
-            type="text"
-            [(ngModel)]="contact.name"
-            name="name"
-            class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
-            placeholder="Your full name"
-            required
-          />
+          <i class="fas fa-envelope text-white"></i>
         </div>
-      </div>
-
-      <!-- Email -->
-      <div class="transform transition-all duration-200 hover:scale-[1.01]">
-        <label class="block font-semibold text-gray-700 mb-2 text-sm"
-          >Email <span class="text-red-500">*</span></label
-        >
-        <div class="relative group">
-          <span
-            class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors"
-          >
-            <i class="fas fa-envelope"></i>
-          </span>
-          <input
-            type="email"
-            [(ngModel)]="contact.email"
-            name="email"
-            class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
-            placeholder="your.email@example.com"
-            required
-          />
-        </div>
-      </div>
-
-      <!-- Phone -->
-      <div class="transform transition-all duration-200 hover:scale-[1.01]">
-        <label class="block font-semibold text-gray-700 mb-2 text-sm"
-          >Phone
-          <span class="text-gray-400 text-xs font-normal"
-            >(Optional)</span
-          ></label
-        >
-        <div class="relative group">
-          <span
-            class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors"
-          >
-            <i class="fas fa-phone"></i>
-          </span>
-          <input
-            type="tel"
-            [(ngModel)]="contact.phone"
-            name="phone"
-            class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
-            placeholder="+1 (555) 123-4567"
-          />
-        </div>
-      </div>
-
-      <!-- Inquiry Type -->
-      <div class="transform transition-all duration-200 hover:scale-[1.01]">
-        <label class="block font-semibold text-gray-700 mb-2 text-sm"
-          >Inquiry Type</label
-        >
-        <div class="relative group">
-          <span
-            class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors pointer-events-none"
-          >
-            <i class="fas fa-list-alt"></i>
-          </span>
-          <select
-            [(ngModel)]="contact.inquiryType"
-            name="inquiry_type"
-            class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300 appearance-none bg-white cursor-pointer"
-          >
-            <option value="">Select inquiry type</option>
-            <option value="booking">🎫 Booking Inquiry</option>
-            <option value="information">ℹ️ General Information</option>
-            <option value="support">🛟 Customer Support</option>
-            <option value="feedback">💭 Feedback</option>
-            <option value="partnership">🤝 Partnership</option>
-          </select>
-          <span
-            class="absolute right-3 top-3 text-gray-400 pointer-events-none"
-          >
-            <i class="fas fa-chevron-down"></i>
-          </span>
-        </div>
-      </div>
-
-      <!-- Message -->
-      <div class="transform transition-all duration-200 hover:scale-[1.01]">
-        <label class="block font-semibold text-gray-700 mb-2 text-sm"
-          >Message <span class="text-red-500">*</span></label
-        >
-        <div class="relative group">
-          <span
-            class="absolute left-3 top-3 text-gray-400 group-focus-within:text-blue-500 transition-colors"
-          >
-            <i class="fas fa-comment-alt"></i>
-          </span>
-          <textarea
-            [(ngModel)]="contact.message"
-            name="message"
-            rows="5"
-            class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical transition-all duration-200 hover:border-gray-300"
-            placeholder="Tell us how we can help you with your travel plans..."
-            required
-          ></textarea>
-        </div>
-      </div>
-
-      <!-- Privacy Notice -->
-      <div
-        class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-400 p-4 rounded-lg"
-      >
-        <div class="flex items-start">
-          <i class="fas fa-shield-alt text-blue-500 mt-0.5 mr-3"></i>
-          <p class="text-xs text-gray-700">
-            <span class="font-semibold">Privacy Protected:</span> We respect
-            your privacy and will never share your information with third
-            parties. Your data is encrypted and secure.
+        <div class="min-w-0 flex-1">
+          <p class="text-xs text-gray-500 font-medium">Email</p>
+          <p class="font-semibold text-gray-800 break-all text-sm">
+            support&#64;tourizio.com
           </p>
         </div>
       </div>
-
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        [disabled]="isSubmitting || !contactForm.valid"
-        class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-4 px-6 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed font-bold text-lg relative overflow-hidden group"
+      <div
+        class="flex items-center gap-3 p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl hover:shadow-md transition-all duration-200 transform hover:scale-105"
       >
-        <span
-          class="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        ></span>
-        <span
-          *ngIf="!isSubmitting"
-          class="relative flex items-center justify-center"
+        <div
+          class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0"
         >
-          <i class="fas fa-paper-plane mr-2"></i>
-          Send Message
-        </span>
-        <span
-          *ngIf="isSubmitting"
-          class="relative flex items-center justify-center"
-        >
-          <svg
-            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            ></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
-          Sending...
-        </span>
-      </button>
-    </form>
-
-    <!-- Alternative Contact Methods -->
-    <div class="mt-10 pt-8 border-t-2 border-gray-100">
-      <h3
-        class="text-xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-2"
+          <i class="fas fa-phone text-white"></i>
+        </div>
+        <div class="min-w-0 flex-1">
+          <p class="text-xs text-gray-500 font-medium">Phone</p>
+          <p class="font-semibold text-gray-800 text-sm">+1 (555) 123-4567</p>
+        </div>
+      </div>
+      <div
+        class="flex items-center gap-3 p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl hover:shadow-md transition-all duration-200 transform hover:scale-105"
       >
-        <i class="fas fa-headset text-blue-600"></i>
-        Other Ways to Reach Us
-      </h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700 text-sm">
         <div
-          class="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl hover:shadow-md transition-all duration-200 transform hover:scale-105"
+          class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0"
         >
-          <div
-            class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0"
-          >
-            <i class="fas fa-envelope text-white"></i>
-          </div>
-          <div class="min-w-0 flex-1">
-            <p class="text-xs text-gray-500 font-medium">Email</p>
-            <p class="font-semibold text-gray-800 break-all text-sm">
-              support&#64;tourizio.com
-            </p>
-          </div>
+          <i class="fas fa-map-marker-alt text-white"></i>
         </div>
-        <div
-          class="flex items-center gap-3 p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl hover:shadow-md transition-all duration-200 transform hover:scale-105"
-        >
-          <div
-            class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0"
-          >
-            <i class="fas fa-phone text-white"></i>
-          </div>
-          <div class="min-w-0 flex-1">
-            <p class="text-xs text-gray-500 font-medium">Phone</p>
-            <p class="font-semibold text-gray-800 text-sm">+1 (555) 123-4567</p>
-          </div>
-        </div>
-        <div
-          class="flex items-center gap-3 p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl hover:shadow-md transition-all duration-200 transform hover:scale-105 md:col-span-1"
-        >
-          <div
-            class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0"
-          >
-            <i class="fas fa-map-marker-alt text-white"></i>
-          </div>
-          <div class="min-w-0 flex-1">
-            <p class="text-xs text-gray-500 font-medium">Address</p>
-            <p class="font-semibold text-gray-800 text-sm">
-              123 Tourism Street
-            </p>
-          </div>
+        <div class="min-w-0 flex-1">
+          <p class="text-xs text-gray-500 font-medium">Address</p>
+          <p class="font-semibold text-gray-800 text-sm">123 Tourism Street</p>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Social Media Links -->
-    <div class="mt-8 text-center">
-      <p class="text-sm text-gray-600 mb-3 font-medium">
-        Connect with us on social media
-      </p>
-      <div class="flex justify-center gap-3">
-        <a
-          href="#"
-          class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white hover:scale-110 transform transition-all duration-200 hover:shadow-lg"
-        >
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a
-          href="#"
-          class="w-10 h-10 bg-gradient-to-br from-sky-400 to-sky-500 rounded-full flex items-center justify-center text-white hover:scale-110 transform transition-all duration-200 hover:shadow-lg"
-        >
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a
-          href="#"
-          class="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center text-white hover:scale-110 transform transition-all duration-200 hover:shadow-lg"
-        >
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a
-          href="#"
-          class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white hover:scale-110 transform transition-all duration-200 hover:shadow-lg"
-        >
-          <i class="fab fa-linkedin-in"></i>
-        </a>
-      </div>
+  <!-- Social Media Links -->
+  <div class="mt-8 text-center">
+    <p class="text-sm text-gray-600 mb-3 font-medium">
+      Connect with us on social media
+    </p>
+    <div class="flex justify-center gap-3">
+      <a
+        href="https://www.facebook.com/"
+        class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white hover:scale-110 transform transition-all duration-200 hover:shadow-lg"
+      >
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a
+        href="https://x.com/"
+        class="w-10 h-10 bg-gradient-to-br from-sky-400 to-sky-500 rounded-full flex items-center justify-center text-white hover:scale-110 transform transition-all duration-200 hover:shadow-lg"
+      >
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a
+        href="https://www.instagram.com/"
+        class="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center text-white hover:scale-110 transform transition-all duration-200 hover:shadow-lg"
+      >
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a
+        href="https://www.linkedin.com/home/"
+        class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white hover:scale-110 transform transition-all duration-200 hover:shadow-lg"
+      >
+        <i class="fab fa-linkedin-in"></i>
+      </a>
     </div>
   </div>
 </div>
