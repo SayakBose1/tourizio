@@ -81,7 +81,7 @@ export class WorldMapComponent implements OnInit {
           const popupHtml = this.createPopupHtml(dest, state, imgUrl);
 
           // Instead of .bindPopup(), use click event for a custom div overlay
-          marker.on('click', () => {
+          marker.on('click', (e) => {
             const popup = L.DomUtil.create('div', 'custom-popup');
             popup.innerHTML = popupHtml;
 
@@ -89,17 +89,43 @@ export class WorldMapComponent implements OnInit {
             popupPane.innerHTML = ''; // clear previous popup
             popupPane.appendChild(popup);
 
+            // Get the marker's pixel position
             const point = this.map.latLngToContainerPoint(coords);
-            popup.style.position = 'absolute';
-            popup.style.left = `${point.x - 100}px`; // adjust to center
-            popup.style.top = `${point.y - 140}px`;
 
-            // ✅ Close button handler
+            // Calculate popup dimensions (approximate)
+            const popupWidth = 280;
+            const popupHeight = 250; // approximate height of your popup
+
+            // Position popup above and centered on marker
+            popup.style.position = 'absolute';
+            popup.style.left = `${point.x - popupWidth / 2}px`; // center horizontally
+            popup.style.top = `${point.y - popupHeight - 10}px`; // above marker with 10px gap
+            popup.style.zIndex = '1000';
+
+            // Prevent popup from going off-screen
+            const mapSize = this.map.getSize();
+            const currentLeft = parseFloat(popup.style.left);
+            const currentTop = parseFloat(popup.style.top);
+
+            // Adjust if going off left edge
+            if (currentLeft < 10) {
+              popup.style.left = '10px';
+            }
+            // Adjust if going off right edge
+            if (currentLeft + popupWidth > mapSize.x - 10) {
+              popup.style.left = `${mapSize.x - popupWidth - 10}px`;
+            }
+            // Adjust if going off top edge
+            if (currentTop < 10) {
+              popup.style.top = `${point.y + 40}px`; // show below marker instead
+            }
+
+            // Close button handler
             const closeBtn = popup.querySelector('.close-btn');
             if (closeBtn) {
               closeBtn.addEventListener('click', (event) => {
-                event.stopPropagation(); // prevent map click
-                popupPane.innerHTML = ''; // remove popup
+                event.stopPropagation();
+                popupPane.innerHTML = '';
               });
             }
           });
@@ -115,36 +141,93 @@ export class WorldMapComponent implements OnInit {
   }
 
   private createPopupHtml(dest: any, state: string, imgUrl: string): string {
-    const rating = dest.rating || 4; // default 4 stars
+    const rating = dest.rating || 4;
     return `
     <div class="map-card" style="
-        width: 250px; 
-        padding: 10px; 
-        border-radius: 12px; 
-        box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-        background: #fff;
-        font-family: sans-serif;
+        width: 280px; 
+        padding: 0; 
+        border-radius: 20px; 
+        overflow: hidden;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         position: relative;
     ">
-      <!-- ✖️ Close Button -->
+      <!-- Close Button -->
       <button class="close-btn" style="
           position: absolute;
-          top: 0px;
-          right: 0px;
-          background: transparent;
+          top: 8px;
+          right: 8px;
+          width: 32px;
+          height: 32px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
           border: none;
-          font-size: 16px;
+          border-radius: 50%;
+          font-size: 20px;
           font-weight: bold;
-          color: #666;
+          color: #64748b;
           cursor: pointer;
+          z-index: 10;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+          transition: all 0.2s ease;
       ">&times;</button>
 
-      <img src="${imgUrl}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px"/>
-      <h3 style="margin:0 0 4px 0;font-size:16px;font-weight:bold">${dest.name}</h3>
-      <p style="margin:0 0 6px 0;color:#555;font-size:14px">${state}</p>
-      <div style="display:flex;align-items:center">
-        ${this.renderStars(rating)}
-        <span style="margin-left:6px;color:#555;font-size:13px">(${rating})</span>
+      <!-- Image with Gradient Overlay -->
+      <div style="position: relative; overflow: hidden;">
+        <img src="${imgUrl}" style="
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+        "/>
+        <div style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+        "></div>
+      </div>
+
+      <!-- Content -->
+      <div style="padding: 16px;">
+        <h3 style="
+            margin: 0 0 6px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.3;
+        ">${dest.name}</h3>
+        
+        <p style="
+            margin: 0 0 12px 0;
+            color: #64748b;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        ">
+          <span style="color: #3b82f6;">🚩</span>
+          ${state}
+        </p>
+        
+        <div style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e5e7eb;
+        ">
+          <div style="display: flex; gap: 2px;">
+            ${this.renderStars(rating)}
+          </div>
+          <span style="
+              color: #64748b;
+              font-size: 13px;
+              font-weight: 600;
+          ">${rating}.0</span>
+        </div>
       </div>
     </div>
   `;

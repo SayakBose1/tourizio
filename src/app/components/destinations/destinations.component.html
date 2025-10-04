@@ -397,14 +397,75 @@
 </div>
 
 <!-- World Map Button -->
-<div class="flex justify-center my-8">
-  <button
-    routerLink="/worldmap"
-    class="px-6 py-3 bg-gradient-to-br from-blue-400 to-indigo-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transform transition-all flex items-center gap-2"
-  >
-    <i class="fas fa-globe-americas text-xl"></i>
-    Explore World Map
-  </button>
+<div
+  class="relative bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white py-8 text-center rounded-2xl mx-auto max-w-4xl my-12 overflow-hidden shadow-xl px-4"
+>
+  <!-- Hover overlay -->
+  <div
+    class="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  ></div>
+
+  <!-- Decorative elements -->
+  <div
+    class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"
+  ></div>
+  <div
+    class="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"
+  ></div>
+
+  <div class="relative z-10">
+    <!-- Icon -->
+    <div
+      class="inline-flex items-center justify-center w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full mb-4 animate-pulse"
+    >
+      <i class="fas fa-globe-americas text-white text-xl"></i>
+    </div>
+
+    <!-- Heading -->
+    <h2 class="text-2xl md:text-3xl font-bold mb-3">
+      Explore Our Interactive Map
+    </h2>
+
+    <!-- Description -->
+    <p class="mb-6 text-sm md:text-base text-white/90 max-w-xl mx-auto px-4">
+      Navigate through destinations on an interactive world map. Click markers
+      to discover hidden gems.
+    </p>
+
+    <!-- Button -->
+    <button
+      routerLink="/worldmap"
+      class="bg-white text-teal-600 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 inline-flex items-center gap-2 group"
+    >
+      <i class="fas fa-map-marked-alt transition-transform"></i>
+      <span>View World Map</span>
+      <i
+        class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"
+      ></i>
+    </button>
+
+    <!-- Feature badges -->
+    <div class="flex flex-wrap justify-center gap-3 mt-6">
+      <div
+        class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5"
+      >
+        <i class="fas fa-map-marker-alt text-sm"></i>
+        <span>100+ Locations</span>
+      </div>
+      <div
+        class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5"
+      >
+        <i class="fas fa-images text-sm"></i>
+        <span>HD Photos</span>
+      </div>
+      <div
+        class="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5"
+      >
+        <i class="fas fa-mouse-pointer text-sm"></i>
+        <span>Interactive</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Featured Experiences Section -->
