@@ -106,29 +106,14 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Guided Tours -->
       <div
-        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal"
+        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal group"
         style="transition-delay: 0.2s"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-16 h-16 mx-auto mb-4 text-blue-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+        <div
+          class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 14l9-5-9-5-9 5 9 5z"
-          />
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 14l6.16-3.422a12.083 12.083 0 01-.36 4.206C15.595 16.675 14.038 18 12 18s-3.595-1.325-5.8-3.216a12.083 12.083 0 01-.36-4.206L12 14z"
-          />
-        </svg>
+          <i class="fas fa-map-marked-alt text-3xl text-blue-600"></i>
+        </div>
         <h3 class="text-xl font-semibold mb-2">Guided Tours</h3>
         <p class="text-gray-600">
           Enjoy professional guided tours at top destinations.
@@ -137,23 +122,14 @@
 
       <!-- Hotel Booking -->
       <div
-        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal"
+        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal group"
         style="transition-delay: 0.4s"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-16 h-16 mx-auto mb-4 text-blue-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+        <div
+          class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2v-7H3v7a2 2 0 002 2z"
-          />
-        </svg>
+          <i class="fas fa-hotel text-3xl text-green-600"></i>
+        </div>
         <h3 class="text-xl font-semibold mb-2">Hotel Booking</h3>
         <p class="text-gray-600">
           Book the best hotels with ease and confidence.
@@ -162,29 +138,14 @@
 
       <!-- Adventure Trips -->
       <div
-        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal"
+        class="p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg transform transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-2xl scroll-reveal group"
         style="transition-delay: 0.6s"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-16 h-16 mx-auto mb-4 text-blue-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+        <div
+          class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 8c-1.657 0-3 1.567-3 3.5S10.343 15 12 15s3-1.567 3-3.5S13.657 8 12 8z"
-          />
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 2v2m0 16v2m8.485-8.485l-1.414 1.414M4.929 4.929l-1.414 1.414M20 12h2M2 12h2M19.071 4.929l-1.414-1.414M6.343 17.657l-1.414-1.414"
-          />
-        </svg>
+          <i class="fas fa-hiking text-3xl text-orange-600"></i>
+        </div>
         <h3 class="text-xl font-semibold mb-2">Adventure Trips</h3>
         <p class="text-gray-600">
           Experience exciting adventures tailored for you.
@@ -535,15 +496,24 @@
 </div>
 
 <!--Booking-->
-<div class="bg-blue-600 text-white py-12 text-center rounded-lg mx-4 md:mx-32">
-  <h2 class="text-3xl font-bold mb-4">Ready for Your Next Adventure?</h2>
-  <p class="mb-6">
-    Discover amazing destinations and plan your dream trip with us.
-  </p>
-  <button
-    (click)="goToDestinations()"
-    class="bg-yellow-400 text-blue-700 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-500 transition"
-  >
-    Explore Now
-  </button>
+<div class="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-10 text-center rounded-3xl mx-4 md:mx-32 my-16 overflow-hidden shadow-2xl">
+  <div class="absolute inset-0 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+  
+  <div class="relative z-10">
+    <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full mb-6">
+      <i class="fas fa-compass text-white text-2xl"></i>
+    </div>
+    <h2 class="text-4xl font-bold mb-4">Ready for Your Next Adventure?</h2>
+    <p class="mb-8 text-lg text-white/90 max-w-2xl mx-auto">
+      Discover amazing destinations and plan your dream trip with us today.
+    </p>
+    <button
+      (click)="goToDestinations()"
+      class="bg-yellow-400 text-blue-700 font-bold px-8 py-4 rounded-xl hover:bg-yellow-300 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2 mx-auto"
+    >
+      <i class="fas fa-rocket"></i>
+      Explore Now
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
 </div>

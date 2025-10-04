@@ -16,22 +16,30 @@ export interface Place {
   type?: 'Adventure' | 'Cultural' | 'Food' | 'Nature';
 }
 
+interface CachedImage {
+  url: string;
+  timestamp: number;
+  query: string;
+}
+
+interface ImageCache {
+  [key: string]: CachedImage;
+}
+
 @Component({
   selector: 'app-destinations',
   templateUrl: './destinations.component.html',
   styleUrls: ['./destinations.component.scss'],
 })
-export class DestinationsComponent
-  implements OnInit, AfterViewChecked, OnDestroy
-{
+export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestroy {
   // DATA
   destinations: string[] = [];
   placesMap: Record<string, Place[]> = {};
   selectedDestination: string | null = null;
 
   // UI lists
-  popularPlaces: Place[] = []; // always 6 random cards
-  filteredPlaces: Place[] = []; // destination-specific cards
+  popularPlaces: Place[] = [];
+  filteredPlaces: Place[] = [];
   trendingPlaces: Place[] = [];
   favoritePlaces: Place[] = [];
 
@@ -41,8 +49,9 @@ export class DestinationsComponent
   private mapsInitialized: Record<string, boolean> = {};
   private mapsInstances: Record<string, L.Map> = {};
 
-  private readonly PEXELS_API_KEY =
-    'lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq';
+  private readonly PEXELS_API_KEY = 'lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq';
+  private readonly CACHE_DURATION = 30 * 24 * 60 * 60 * 1000; // 30 days
+  private readonly CACHE_KEY = 'destination_images_cache';
 
   // Scroll Reveal
   private scrollRevealElements: NodeListOf<Element> | null = null;
@@ -50,6 +59,12 @@ export class DestinationsComponent
   private resizeListener: (() => void) | null = null;
   private ticking = false;
   private animationFrame: number | null = null;
+
+  // Search & Filter
+  searchQuery: string = '';
+  searchedPlaces: Place[] = [];
+  popularityFilter: 'high' | 'medium' | 'low' | '' = '';
+  priceFilter: 'high' | 'medium' | 'low' | '' = '';
 
   constructor(
     private router: Router,
@@ -61,16 +76,12 @@ export class DestinationsComponent
     await this.loadDestinations();
     this.initScrollReveal();
     this.loadFavorites();
-
-    // Pick 6 random places once on init
     this.showRandomPlaces();
   }
 
   // ===== SCROLL REVEAL =====
   private initScrollReveal(): void {
-    this.scrollRevealElements = document.querySelectorAll(
-      '.scroll-reveal, .title-reveal',
-    );
+    this.scrollRevealElements = document.querySelectorAll('.scroll-reveal, .title-reveal');
     this.scrollListener = () => this.optimizedScrollReveal();
     this.resizeListener = () => this.optimizedScrollReveal();
 
@@ -97,8 +108,7 @@ export class DestinationsComponent
 
     this.scrollRevealElements.forEach((element: Element, index: number) => {
       const htmlElement = element as HTMLElement;
-      const elementTop =
-        htmlElement.getBoundingClientRect().top + window.pageYOffset;
+      const elementTop = htmlElement.getBoundingClientRect().top + window.pageYOffset;
       const revealPoint = 100;
       if (scrollTop + windowHeight - revealPoint > elementTop) {
         if (!htmlElement.classList.contains('show')) {
@@ -131,38 +141,111 @@ export class DestinationsComponent
     await Promise.allSettled(promises);
   }
 
-  // private async fetchImage(query: string): Promise<string> {
-  //   try {
-  //     const res = await fetch(
-  //       `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-  //         query,
-  //       )}&per_page=1&orientation=landscape`,
-  //       { headers: { Authorization: this.PEXELS_API_KEY } },
-  //     );
-  //     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-  //     const data = await res.json();
-  //     if (data.photos?.length > 0) return data.photos[0].src.medium;
-  //   } catch (err) {
-  //     console.error('Error fetching image for:', query, err);
-  //   }
-  //   return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
-  //     query.split(' ')[0],
-  //   )}`;
-  // }
-
-  // ===== RANDOM PLACES =====
-
-  // Replace your existing fetchImage method with this improved version:
-
-  private async fetchImage(query: string): Promise<string> {
+  // ===== IMAGE CACHING =====
+  private getCachedImage(query: string): string | null {
     try {
-      // Enhanced query with destination-focused keywords
+      const cacheStr = localStorage.getItem(this.CACHE_KEY);
+      if (!cacheStr) return null;
+
+      const cache: ImageCache = JSON.parse(cacheStr);
+      const normalizedQuery = this.normalizeQuery(query);
+      const cached = cache[normalizedQuery];
+
+      if (!cached) return null;
+
+      const now = Date.now();
+      if (now - cached.timestamp > this.CACHE_DURATION) {
+        this.removeFromCache(normalizedQuery);
+        return null;
+      }
+
+      return cached.url;
+    } catch (err) {
+      console.error('Error reading image cache:', err);
+      return null;
+    }
+  }
+
+  private cacheImage(query: string, url: string): void {
+    try {
+      const cacheStr = localStorage.getItem(this.CACHE_KEY);
+      const cache: ImageCache = cacheStr ? JSON.parse(cacheStr) : {};
+      
+      const normalizedQuery = this.normalizeQuery(query);
+      cache[normalizedQuery] = {
+        url,
+        timestamp: Date.now(),
+        query: normalizedQuery,
+      };
+
+      const entries = Object.entries(cache);
+      if (entries.length > 200) {
+        entries
+          .sort((a, b) => a[1].timestamp - b[1].timestamp)
+          .slice(0, 50)
+          .forEach(([key]) => delete cache[key]);
+      }
+
+      localStorage.setItem(this.CACHE_KEY, JSON.stringify(cache));
+    } catch (err) {
+      console.error('Error caching image:', err);
+      if (err instanceof DOMException && err.name === 'QuotaExceededError') {
+        this.clearOldCache();
+        this.cacheImage(query, url);
+      }
+    }
+  }
+
+  private normalizeQuery(query: string): string {
+    return query.toLowerCase().trim().replace(/\s+/g, ' ');
+  }
+
+  private removeFromCache(query: string): void {
+    try {
+      const cacheStr = localStorage.getItem(this.CACHE_KEY);
+      if (!cacheStr) return;
+
+      const cache: ImageCache = JSON.parse(cacheStr);
+      delete cache[query];
+      localStorage.setItem(this.CACHE_KEY, JSON.stringify(cache));
+    } catch (err) {
+      console.error('Error removing from cache:', err);
+    }
+  }
+
+  private clearOldCache(): void {
+    try {
+      const cacheStr = localStorage.getItem(this.CACHE_KEY);
+      if (!cacheStr) return;
+
+      const cache: ImageCache = JSON.parse(cacheStr);
+      const now = Date.now();
+      
+      const recentCache: ImageCache = {};
+      Object.entries(cache).forEach(([key, value]) => {
+        if (now - value.timestamp < 7 * 24 * 60 * 60 * 1000) {
+          recentCache[key] = value;
+        }
+      });
+
+      localStorage.setItem(this.CACHE_KEY, JSON.stringify(recentCache));
+    } catch (err) {
+      console.error('Error clearing old cache:', err);
+    }
+  }
+
+  // ===== IMAGE FETCHING =====
+  private async fetchImage(query: string): Promise<string> {
+    const cachedUrl = this.getCachedImage(query);
+    if (cachedUrl) {
+      return cachedUrl;
+    }
+
+    try {
       const enhancedQuery = `${query} travel destination landmark`;
 
       const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-          enhancedQuery,
-        )}&per_page=15&orientation=landscape`,
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(enhancedQuery)}&per_page=15&orientation=landscape`,
         { headers: { Authorization: this.PEXELS_API_KEY } },
       );
 
@@ -170,55 +253,25 @@ export class DestinationsComponent
       const data = await res.json();
 
       if (data.photos?.length > 0) {
-        // Score each photo based on quality indicators
         const scoredPhotos = data.photos.map((photo: any) => {
           const alt = (photo.alt || '').toLowerCase();
           let score = 0;
 
-          // Heavily penalize people/vehicles
-          const strongExclude = [
-            'person',
-            'people',
-            'man',
-            'woman',
-            'men',
-            'women',
-            'car',
-            'vehicle',
-            'portrait',
-            'face',
-            'selfie',
-          ];
+          const strongExclude = ['person', 'people', 'man', 'woman', 'men', 'women', 'car', 'vehicle', 'portrait', 'face', 'selfie'];
           if (strongExclude.some((term) => alt.includes(term))) {
             score -= 100;
           }
 
-          // Lightly penalize indoor/closeup shots
           const lightExclude = ['indoor', 'restaurant', 'closeup', 'close-up'];
           if (lightExclude.some((term) => alt.includes(term))) {
             score -= 30;
           }
 
-          // Reward destination-related terms
-          const goodTerms = [
-            'landscape',
-            'city',
-            'architecture',
-            'building',
-            'monument',
-            'view',
-            'aerial',
-            'landmark',
-            'temple',
-            'beach',
-            'mountain',
-            'scenic',
-          ];
+          const goodTerms = ['landscape', 'city', 'architecture', 'building', 'monument', 'view', 'aerial', 'landmark', 'temple', 'beach', 'mountain', 'scenic'];
           goodTerms.forEach((term) => {
             if (alt.includes(term)) score += 20;
           });
 
-          // Reward if query location name is in alt text
           const locationParts = query.toLowerCase().split(' ');
           locationParts.forEach((part) => {
             if (part.length > 3 && alt.includes(part)) score += 30;
@@ -227,39 +280,34 @@ export class DestinationsComponent
           return { photo, score };
         });
 
-        // Sort by score and pick the best one
         scoredPhotos.sort((a, b) => b.score - a.score);
 
-        // Use the highest scoring photo if it's decent (score > -50)
         if (scoredPhotos[0].score > -50) {
-          return scoredPhotos[0].photo.src.medium;
+          const imageUrl = scoredPhotos[0].photo.src.medium;
+          this.cacheImage(query, imageUrl);
+          return imageUrl;
         }
 
-        // If all photos have bad scores, try fallback search
         return this.fetchSpecificDestinationImage(query);
       }
     } catch (err) {
       console.error('Error fetching image for:', query, err);
     }
 
-    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
-      query.split(' ')[0],
-    )}`;
+    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(query.split(' ')[0])}`;
   }
 
-  // Add this new method to your component:
   private async fetchSpecificDestinationImage(query: string): Promise<string> {
-    try {
-      // Extract just the place name (before any comma or 'in')
-      const placeName = query.split(',')[0].split(' in ')[0].trim();
+    const cacheKey = query + '_specific';
+    const cachedUrl = this.getCachedImage(cacheKey);
+    if (cachedUrl) return cachedUrl;
 
-      // Try searching with just the place name + basic keywords
+    try {
+      const placeName = query.split(',')[0].split(' in ')[0].trim();
       const specificQuery = `${placeName} tourist destination`;
 
       const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-          specificQuery,
-        )}&per_page=8&orientation=landscape`,
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(specificQuery)}&per_page=8&orientation=landscape`,
         { headers: { Authorization: this.PEXELS_API_KEY } },
       );
 
@@ -267,27 +315,26 @@ export class DestinationsComponent
       const data = await res.json();
 
       if (data.photos?.length > 0) {
-        // Pick a random photo from the results to add variety
-        const randomIndex = Math.floor(
-          Math.random() * Math.min(3, data.photos.length),
-        );
-        return data.photos[randomIndex].src.medium;
+        const randomIndex = Math.floor(Math.random() * Math.min(3, data.photos.length));
+        const imageUrl = data.photos[randomIndex].src.medium;
+        this.cacheImage(cacheKey, imageUrl);
+        return imageUrl;
       }
     } catch (err) {
       console.error('Fallback image search failed:', err);
     }
 
-    // Last resort: use the original query without enhancements
     return this.fetchBasicImage(query);
   }
 
-  // Add this final fallback method:
   private async fetchBasicImage(query: string): Promise<string> {
+    const cacheKey = query + '_basic';
+    const cachedUrl = this.getCachedImage(cacheKey);
+    if (cachedUrl) return cachedUrl;
+
     try {
       const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-          query,
-        )}&per_page=5&orientation=landscape`,
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`,
         { headers: { Authorization: this.PEXELS_API_KEY } },
       );
 
@@ -295,19 +342,19 @@ export class DestinationsComponent
       const data = await res.json();
 
       if (data.photos?.length > 0) {
-        // Pick second or third image to avoid most common result
         const index = Math.min(1, data.photos.length - 1);
-        return data.photos[index].src.medium;
+        const imageUrl = data.photos[index].src.medium;
+        this.cacheImage(cacheKey, imageUrl);
+        return imageUrl;
       }
     } catch (err) {
       console.error('Basic image search failed:', err);
     }
 
-    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(
-      query.split(' ')[0],
-    )}`;
+    return `https://via.placeholder.com/400x250/4285f4/ffffff?text=${encodeURIComponent(query.split(' ')[0])}`;
   }
 
+  // ===== RANDOM PLACES =====
   private showRandomPlaces(): void {
     const allPlaces: Place[] = Object.values(this.placesMap).flat();
     if (!allPlaces || allPlaces.length === 0) return;
@@ -329,7 +376,7 @@ export class DestinationsComponent
     return a;
   }
 
-  // ===== MAPS (only for filteredPlaces) =====
+  // ===== MAPS =====
   private setCustomMarker(): void {
     const customIcon = L.divIcon({
       className: 'custom-marker',
@@ -453,10 +500,7 @@ export class DestinationsComponent
 
   private saveFavorites() {
     try {
-      localStorage.setItem(
-        'favoritePlaces',
-        JSON.stringify(this.favoritePlaces),
-      );
+      localStorage.setItem('favoritePlaces', JSON.stringify(this.favoritePlaces));
     } catch (err) {
       console.error('Error saving favorites:', err);
     }
@@ -471,84 +515,54 @@ export class DestinationsComponent
     }
   }
 
-  // ===== LIFECYCLE =====
-  ngAfterViewChecked(): void {
-    if (this.filteredPlaces.length) this.initializeMaps();
-    this.optimizedScrollReveal();
-  }
-
-  ngOnDestroy(): void {
-    this.cleanupMaps();
-    if (this.scrollListener)
-      window.removeEventListener('scroll', this.scrollListener);
-    if (this.resizeListener)
-      window.removeEventListener('resize', this.resizeListener);
-    if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
-  }
-
-  searchQuery: string = '';
-  searchedPlaces: Place[] = [];
-
+  // ===== SEARCH & FILTER =====
   onSearch(): void {
     const query = this.searchQuery.trim().toLowerCase();
 
     if (!query) {
-      this.searchedPlaces = []; // show back random 6
-      this.selectedDestination = ''; // reset dropdown selection
-      this.filteredPlaces = []; // clear filtered list
+      this.searchedPlaces = [];
+      this.selectedDestination = '';
+      this.filteredPlaces = [];
       return;
     }
 
     const allPlaces: Place[] = Object.values(this.placesMap).flat();
-    this.searchedPlaces = allPlaces.filter((p) =>
-      p.name.toLowerCase().startsWith(query),
-    );
+    this.searchedPlaces = allPlaces.filter((p) => p.name.toLowerCase().startsWith(query));
 
-    // Fetch images dynamically for each result
-    this.searchedPlaces.forEach((place, idx) => {
+    this.searchedPlaces.forEach((place) => {
       this.fetchImage(`${place.name} ${place.location}`).then((img) => {
         place.image = img;
       });
     });
 
-    // Initialize maps for searched places after render
     setTimeout(() => {
       this.cleanupMaps();
-      this.filteredPlaces = [...this.searchedPlaces]; // so map init still works
+      this.filteredPlaces = [...this.searchedPlaces];
       this.initializeMaps();
     }, 200);
   }
 
-  popularityFilter: 'high' | 'medium' | 'low' | '' = '';
-  priceFilter: 'high' | 'medium' | 'low' | '' = '';
-
   onFilterChange(): void {
     let allPlaces: Place[] = Object.values(this.placesMap).flat();
 
-    // Start with search query if present
     if (this.searchQuery.trim()) {
       const query = this.searchQuery.trim().toLowerCase();
-      allPlaces = allPlaces.filter((p) =>
-        p.name.toLowerCase().startsWith(query),
-      );
+      allPlaces = allPlaces.filter((p) => p.name.toLowerCase().startsWith(query));
     }
 
-    // Apply popularity filter
     if (this.popularityFilter) {
       allPlaces = allPlaces.filter((p) => {
-        if (this.popularityFilter === 'high') return p.price >= 18000; // example
-        if (this.popularityFilter === 'medium')
-          return p.price >= 13000 && p.price < 18000;
+        if (this.popularityFilter === 'high') return p.price >= 18000;
+        if (this.popularityFilter === 'medium') return p.price >= 13000 && p.price < 18000;
         if (this.popularityFilter === 'low') return p.price < 13000;
         return true;
       });
     }
 
-    // Apply price filter
     if (this.priceFilter) {
       allPlaces = allPlaces.sort((a, b) => {
         if (this.priceFilter === 'high') return b.price - a.price;
-        if (this.priceFilter === 'medium') return a.price - b.price; // optional: adjust logic
+        if (this.priceFilter === 'medium') return a.price - b.price;
         if (this.priceFilter === 'low') return a.price - b.price;
         return 0;
       });
@@ -564,11 +578,20 @@ export class DestinationsComponent
 
   openWiki(destinationName: string) {
     if (!destinationName) return;
-
-    // Format the name for Wikipedia URL (spaces → underscores)
     const wikiUrl = `https://en.wikipedia.org/wiki/${destinationName.replace(/\s+/g, '_')}`;
-
-    // Open in a new tab
     window.open(wikiUrl, '_blank');
+  }
+
+  // ===== LIFECYCLE =====
+  ngAfterViewChecked(): void {
+    if (this.filteredPlaces.length) this.initializeMaps();
+    this.optimizedScrollReveal();
+  }
+
+  ngOnDestroy(): void {
+    this.cleanupMaps();
+    if (this.scrollListener) window.removeEventListener('scroll', this.scrollListener);
+    if (this.resizeListener) window.removeEventListener('resize', this.resizeListener);
+    if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
   }
 }

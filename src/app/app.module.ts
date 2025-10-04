@@ -1,6 +1,6 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';  
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -11,13 +11,12 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
 import { environment } from '../environments/environment';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FloatingPopupComponent } from './pages/floating-popup/floating-popup.component';
-
 
 @NgModule({
   declarations: [
@@ -31,20 +30,19 @@ import { FloatingPopupComponent } from './pages/floating-popup/floating-popup.co
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,          
+    FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    HttpClientModule,  
-    LoginComponent,    
-    SignupComponent,   
+    HttpClientModule,
+    LoginComponent,
+    SignupComponent,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
     BrowserAnimationsModule,
-    
   ],
-  providers: [],
+  providers: [{ provide: PERSISTENCE, useValue: 'local' }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}

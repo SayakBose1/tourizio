@@ -1,143 +1,173 @@
-<footer class="bg-blue-900 text-blue-100 mt-auto">
-  <div class="max-w-7xl mx-auto px-6 py-6">
+<footer class="relative bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 text-blue-100 mt-auto overflow-hidden">
+  <!-- Decorative Elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 py-6 relative z-10">
     <!-- Main Footer Content -->
-    <div class="grid md:grid-cols-3 gap-6">
+    <div class="grid md:grid-cols-3 gap-8 mb-4">
       <!-- Brand Section -->
       <div class="md:col-span-1">
-        <h2 class="text-xl font-bold text-white mb-2">Tourizio</h2>
-        <p class="text-sm text-blue-200 leading-relaxed">
-          Discover India's hidden gems with curated travel experiences and
-          seamless booking.
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+            <i class="fas fa-route text-white text-xl"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-white">Tourizio</h2>
+        </div>
+        <p class="text-sm text-blue-200 leading-relaxed mb-4">
+          Discover India's hidden gems with curated travel experiences and seamless booking. Your adventure starts here.
         </p>
+        <div class="flex items-center gap-2 text-sm">
+          <i class="fas fa-shield-alt text-green-400"></i>
+          <span class="text-blue-200">Trusted by 10,000+ travelers</span>
+        </div>
       </div>
 
       <!-- Links Section -->
-      <div class="grid grid-cols-2 gap-4 md:col-span-2">
+      <div class="grid grid-cols-2 gap-8 md:col-span-2">
         <!-- Quick Links -->
         <div>
-          <h3
-            class="font-semibold text-white mb-2 text-sm uppercase tracking-wide"
-          >
+          <h3 class="font-bold text-white mb-4 text-base flex items-center gap-2">
+            <i class="fas fa-compass text-blue-400"></i>
             Navigate
           </h3>
-          <ul class="space-y-1 text-sm">
+          <ul class="space-y-3 text-sm">
             <li>
               <a
                 routerLink="/"
-                class="text-blue-200 hover:text-white transition-colors"
-                >Home</a
+                class="text-blue-200 hover:text-white transition-all flex items-center gap-2 group"
               >
+                <i class="fas fa-chevron-right text-xs text-blue-400 group-hover:translate-x-1 transition-transform"></i>
+                Home
+              </a>
             </li>
             <li>
               <a
                 routerLink="/destinations"
-                class="text-blue-200 hover:text-white transition-colors"
-                >Destinations</a
+                class="text-blue-200 hover:text-white transition-all flex items-center gap-2 group"
               >
+                <i class="fas fa-chevron-right text-xs text-blue-400 group-hover:translate-x-1 transition-transform"></i>
+                Destinations
+              </a>
             </li>
             <li>
               <a
                 routerLink="/booking"
-                class="text-blue-200 hover:text-white transition-colors"
-                >Booking</a
+                class="text-blue-200 hover:text-white transition-all flex items-center gap-2 group"
               >
+                <i class="fas fa-chevron-right text-xs text-blue-400 group-hover:translate-x-1 transition-transform"></i>
+                Booking
+              </a>
             </li>
             <li>
               <a
                 routerLink="/contact"
-                class="text-blue-200 hover:text-white transition-colors"
-                >Contact</a
+                class="text-blue-200 hover:text-white transition-all flex items-center gap-2 group"
               >
+                <i class="fas fa-chevron-right text-xs text-blue-400 group-hover:translate-x-1 transition-transform"></i>
+                Contact
+              </a>
             </li>
           </ul>
         </div>
 
         <!-- Contact & Social -->
         <div>
-          <h3
-            class="font-semibold text-white mb-2 text-sm uppercase tracking-wide"
-          >
+          <h3 class="font-bold text-white mb-4 text-base flex items-center gap-2">
+            <i class="fas fa-paper-plane text-blue-400"></i>
             Connect
           </h3>
-          <div class="space-y-1 text-sm">
-            <p>
-              <a
-                href="mailto:support&#64;tourizio.com"
-                class="text-blue-200 hover:text-white transition-colors"
-                >support&#64;tourizio.com</a
-              >
+          <div class="space-y-3 text-sm">
+            <a
+              href="mailto:support&#64;tourizio.com"
+              class="text-blue-200 hover:text-white transition-all flex items-center gap-2 group"
+            >
+              <i class="fas fa-envelope text-blue-400 group-hover:scale-110 transition-transform"></i>
+              support&#64;tourizio.com
+            </a>
+            <a
+              href="tel:+1 (555) 123-4567"
+              class="text-blue-200 hover:text-white transition-all flex items-center gap-2 group"
+            >
+              <i class="fas fa-phone text-blue-400 group-hover:scale-110 transition-transform"></i>
+              +1 (555) 123-4567
+            </a>
+            <p class="text-blue-200 flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-blue-400"></i>
+              Tourism Street, Travel City
             </p>
-            <p>
-              <a
-                href="tel:+1 (555) 123-4567"
-                class="text-blue-200 hover:text-white transition-colors"
-                >+1 (555) 123-4567</a
-              >
-            </p>
-            <p class="text-blue-300">Tourism Street, Travel City</p>
 
             <!-- Social Links -->
-            <div class="flex space-x-2 pt-2">
-              <!-- Twitter -->
-              <a
-                href="https://x.com/"
-                class="w-7 h-7 bg-blue-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
-              >
-                <svg
-                  class="w-3 h-3 text-blue-200"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
+            <div class="pt-2">
+              <p class="text-xs text-blue-300 mb-3 font-semibold">Follow Us</p>
+              <div class="flex gap-3">
+                <!-- Twitter -->
+                <a
+                  href="https://x.com/"
+                  target="_blank"
+                  class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white/20 transition-all transform hover:scale-110 hover:-translate-y-1 group"
                 >
-                  <path
-                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
-                  />
-                </svg>
-              </a>
-              <!-- Instagram -->
-              <a
-                href="https://www.instagram.com/"
-                class="w-7 h-7 bg-blue-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
-              >
-                <svg
-                  class="w-3 h-3 text-blue-200"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
+                  <svg
+                    class="w-4 h-4 text-blue-200 group-hover:text-white transition-colors"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                    />
+                  </svg>
+                </a>
+                <!-- Instagram -->
+                <a
+                  href="https://www.instagram.com/"
+                  target="_blank"
+                  class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white/20 transition-all transform hover:scale-110 hover:-translate-y-1 group"
                 >
-                  <path
-                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
-                  />
-                </svg>
-              </a>
-              <!-- Facebook -->
-              <a
-                href="https://www.facebook.com/"
-                class="w-7 h-7 bg-blue-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
-              >
-                <svg
-                  class="w-3 h-3 text-blue-200"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
+                  <svg
+                    class="w-4 h-4 text-blue-200 group-hover:text-white transition-colors"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                    />
+                  </svg>
+                </a>
+                <!-- Facebook -->
+                <a
+                  href="https://www.facebook.com/"
+                  target="_blank"
+                  class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white/20 transition-all transform hover:scale-110 hover:-translate-y-1 group"
                 >
-                  <path
-                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
-                  />
-                </svg>
-              </a>
-              <!-- YouTube -->
-              <a
-                href="https://www.youtube.com/"
-                class="w-7 h-7 bg-blue-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
-              >
-                <svg
-                  class="w-3 h-3 text-white"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
+                  <svg
+                    class="w-4 h-4 text-blue-200 group-hover:text-white transition-colors"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    />
+                  </svg>
+                </a>
+                <!-- YouTube -->
+                <a
+                  href="https://www.youtube.com/"
+                  target="_blank"
+                  class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white/20 transition-all transform hover:scale-110 hover:-translate-y-1 group"
                 >
-                  <path
-                    d="M23.498 6.186a2.973 2.973 0 0 0-2.094-2.1C19.548 3.5 12 3.5 12 3.5s-7.548 0-9.404.586a2.973 2.973 0 0 0-2.094 2.1A30.044 30.044 0 0 0 0 12a30.044 30.044 0 0 0 .502 5.814 2.973 2.973 0 0 0 2.094 2.1C4.452 20.5 12 20.5 12 20.5s7.548 0 9.404-.586a2.973 2.973 0 0 0 2.094-2.1A30.044 30.044 0 0 0 24 12a30.044 30.044 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"
-                  />
-                </svg>
-              </a>
+                  <svg
+                    class="w-4 h-4 text-blue-200 group-hover:text-white transition-colors"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M23.498 6.186a2.973 2.973 0 0 0-2.094-2.1C19.548 3.5 12 3.5 12 3.5s-7.548 0-9.404.586a2.973 2.973 0 0 0-2.094 2.1A30.044 30.044 0 0 0 0 12a30.044 30.044 0 0 0 .502 5.814 2.973 2.973 0 0 0 2.094 2.1C4.452 20.5 12 20.5 12 20.5s7.548 0 9.404-.586a2.973 2.973 0 0 0 2.094-2.1A30.044 30.044 0 0 0 24 12a30.044 30.044 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"
+                    />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -145,41 +175,61 @@
     </div>
 
     <!-- Download App Section -->
-    <div class="flex items-center gap-4 mt-6">
-      <a href="https://play.google.com/store/apps/" target="_blank">
-        <img
-          src="assets/images/googlePlay.svg"
-          alt="Google Play Store"
-          class="h-10 w-auto cursor-pointer hover:scale-102 transition-transform"
-        />
-      </a>
-
-      <a href="https://apps.apple.com/app/" target="_blank">
-        <img
-          src="assets/images/appStore.svg"
-          alt="Apple App Store"
-          class="h-10 w-auto cursor-pointer hover:scale-102 transition-transform"
-        />
-      </a>
+    <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 mb-4 border border-white/10">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-center md:text-left">
+          <h3 class="text-lg font-bold text-white mb-1 flex items-center justify-center md:justify-start gap-2">
+            <i class="fas fa-mobile-alt text-blue-400"></i>
+            Download Our App
+          </h3>
+          <p class="text-sm text-blue-200">Book on the go with our mobile app</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="https://play.google.com/store/apps/" target="_blank" class="transform hover:scale-105 transition-transform">
+            <img
+              src="assets/images/googlePlay.svg"
+              alt="Google Play Store"
+              class="h-12 w-auto"
+            />
+          </a>
+          <a href="https://apps.apple.com/app/" target="_blank" class="transform hover:scale-105 transition-transform">
+            <img
+              src="assets/images/appStore.svg"
+              alt="Apple App Store"
+              class="h-12 w-auto"
+            />
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- Bottom Bar -->
-    <div
-      class="border-t border-blue-700 mt-4 pt-4 flex flex-col md:flex-row justify-between items-center text-xs text-blue-300"
-    >
-      <p>© 2025 Tourizio. All rights reserved.</p>
-      <div class="flex space-x-4 mt-2 md:mt-0">
+    <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-blue-200">
+      <p class="flex items-center gap-2">
+        <i class="fas fa-copyright text-blue-400"></i>
+        2025 Tourizio. All rights reserved.
+      </p>
+      <div class="flex flex-wrap justify-center gap-6">
         <a
           href="https://en.wikipedia.org/wiki/Privacy_policy"
-          class="hover:text-white transition-colors"
-          >Privacy Policy</a
+          target="_blank"
+          class="hover:text-white transition-colors flex items-center gap-1 group"
         >
+          <i class="fas fa-shield-alt text-xs text-blue-400 group-hover:scale-110 transition-transform"></i>
+          Privacy Policy
+        </a>
         <a
           href="https://en.wikipedia.org/wiki/Terms_of_service"
-          class="hover:text-white transition-colors"
-          >Terms of Service</a
+          target="_blank"
+          class="hover:text-white transition-colors flex items-center gap-1 group"
         >
-        <span class="hover:text-white transition-colors">Made by Sayak</span>
+          <i class="fas fa-file-contract text-xs text-blue-400 group-hover:scale-110 transition-transform"></i>
+          Terms of Service
+        </a>
+        <span class="flex items-center gap-1">
+          <i class="fas fa-code text-xs text-blue-400"></i>
+          Made by Sayak
+        </span>
       </div>
     </div>
   </div>
