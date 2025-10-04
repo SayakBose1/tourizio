@@ -1,0 +1,61 @@
+#map {
+  width: 100%;
+  height: 100vh;
+}
+/* global styles or component CSS */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* ensure map is behind UI elements */
+  position: relative; /* avoid absolute floating over other elements */
+}
+.leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+}
+
+.map-card img {
+  border-radius: 0.5rem;
+}
+
+.map-card h3 {
+  font-size: 1rem;
+}
+
+.map-card .fa-star {
+  margin-right: 2px;
+}
+.custom-popup {
+  width: 220px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.custom-popup img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.custom-popup .details {
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.custom-popup .details h4 {
+  margin: 4px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.custom-popup .details .rating {
+  color: #facc15;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

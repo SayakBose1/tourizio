@@ -3,7 +3,7 @@
   <h1 class="text-4xl font-bold text-blue-600 mb-4">
     {{ title }}
   </h1>
-  <p class="text-gray-700 text-lg">
+  <p class="text-gray-700 text-lg h-8 md:h-10">
     {{ displaySubtitle }}<span *ngIf="showCursor" class="typing-cursor"></span>
   </p>
 </div>
@@ -21,7 +21,7 @@
   speed="700"
   allow-touch-move="true"
   grab-cursor="true"
-  class="w-full max-w-4xl mx-auto rounded-lg shadow-lg"
+  class="w-full max-w-4xl mx-auto rounded-lg shadow-lg mt-4"
 >
   <swiper-slide>
     <img

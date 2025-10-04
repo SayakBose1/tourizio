@@ -41,7 +41,8 @@ export class AppComponent {
       url.startsWith('/login') ||
       url.startsWith('/signup') ||
       url.startsWith('/profile') ||
-      url.startsWith('/payment')
+      url.startsWith('/payment') ||
+      url.startsWith('/worldmap')
     );
   }
 
