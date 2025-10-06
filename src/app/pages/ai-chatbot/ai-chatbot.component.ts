@@ -87,26 +87,28 @@ Rules for AI:
     }
   }
 
-  scrollToBottom(force: boolean = false) {
-    setTimeout(() => {
-      if (!this.messagesContainer?.nativeElement) return;
-      const container = this.messagesContainer.nativeElement;
+ scrollToBottom(force: boolean = false) {
+    if (!this.messagesContainer?.nativeElement) return;
+    const container = this.messagesContainer.nativeElement;
 
+    const doScroll = () => {
       if (force) {
-        container.scrollTop = container.scrollHeight; // 👈 instantly move to bottom
+        container.scrollTop = container.scrollHeight; // force scroll
       } else {
-        // Only auto-scroll if close to bottom
         const distanceToBottom =
           container.scrollHeight - container.scrollTop - container.clientHeight;
         if (distanceToBottom < 100) {
           container.scrollTop = container.scrollHeight;
         }
       }
-    }, 50);
+    };
+
+    // Double requestAnimationFrame ensures mobile scroll works with virtual keyboards
+    requestAnimationFrame(() => requestAnimationFrame(doScroll));
   }
 
   ngAfterViewChecked() {
-    this.scrollToBottom();
+    this.scrollToBottom(); // keep near bottom during updates
   }
 
   selectQuickReply(reply: string) {
