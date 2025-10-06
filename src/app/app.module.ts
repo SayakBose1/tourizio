@@ -17,6 +17,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FloatingPopupComponent } from './pages/floating-popup/floating-popup.component';
+import { AiChatbotComponent } from './pages/ai-chatbot/ai-chatbot.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { FloatingPopupComponent } from './pages/floating-popup/floating-popup.co
     FooterComponent,
     ProfileComponent,
     FloatingPopupComponent,
+    AiChatbotComponent,
   ],
   imports: [
     BrowserModule,
