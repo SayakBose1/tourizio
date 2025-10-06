@@ -18,6 +18,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FloatingPopupComponent } from './pages/floating-popup/floating-popup.component';
 import { AiChatbotComponent } from './pages/ai-chatbot/ai-chatbot.component';
+import { VrPreviewComponent } from './pages/vr-preview/vr-preview.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AiChatbotComponent } from './pages/ai-chatbot/ai-chatbot.component';
     ProfileComponent,
     FloatingPopupComponent,
     AiChatbotComponent,
+    VrPreviewComponent,
   ],
   imports: [
     BrowserModule,

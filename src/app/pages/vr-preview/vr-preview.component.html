@@ -1,0 +1,80 @@
+<div class="vr-wrapper">
+  <!-- Search Bar -->
+  <div class="search-container">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        placeholder="Search destinations by name or location..."
+        class="search-input"
+        aria-label="Search destinations">
+      <button 
+        *ngIf="searchQuery" 
+        (click)="clearSearch()" 
+        class="clear-btn"
+        aria-label="Clear search">
+        ✕
+      </button>
+    </div>
+    <div class="search-info" *ngIf="searchQuery">
+      <span>{{ filteredPlaces.length }} result{{ filteredPlaces.length !== 1 ? 's' : '' }} found</span>
+    </div>
+  </div>
+
+  <!-- No Results Message -->
+  <div class="no-results" *ngIf="noResultsFound">
+    <div class="no-results-icon">🌍</div>
+    <h3>No destinations found</h3>
+    <p>Try searching with different keywords</p>
+    <button (click)="clearSearch()" class="reset-btn">Show All Destinations</button>
+  </div>
+
+  <!-- VR Content -->
+  <div *ngIf="currentPlace && !noResultsFound">
+    <div class="vr-header">
+      <h2>{{ currentPlace.name }}</h2>
+      <p>{{ currentPlace.location }}</p>
+      <div class="vr-badge">360° Virtual Experience</div>
+    </div>
+
+  <div class="vr-scene-container">
+    <div class="vr-container" *ngIf="currentPlace.imgUrl">
+      <a-scene embedded style="width: 100%; height: 500px;">
+        <a-sky 
+          [attr.src]="currentPlace.imgUrl" 
+          rotation="0 -130 0" 
+          crossorigin="anonymous"
+          animation="property: rotation; to: 0 230 0; dur: 60000; loop: true; easing: linear">
+        </a-sky>
+        <a-camera position="0 1.6 0">
+          <a-cursor color="#667eea"></a-cursor>
+        </a-camera>
+      </a-scene>
+      
+      <!-- Loading overlay (add *ngIf condition based on loading state) -->
+      <div class="loading-overlay" *ngIf="isLoading">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+
+    <div class="navigation">
+      <button 
+        (click)="prevImage()" 
+        [disabled]="currentIndex === 0"
+        aria-label="Previous location">
+        ← Previous
+      </button>
+      
+      <span>{{ currentIndex + 1 }} / {{ places.length }}</span>
+      
+      <button 
+        (click)="nextImage()" 
+        [disabled]="currentIndex === places.length - 1"
+        aria-label="Next location">
+        Next →
+      </button>
+    </div>
+  </div>
+</div>

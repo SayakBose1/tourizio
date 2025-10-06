@@ -42,7 +42,8 @@ export class AppComponent {
       url.startsWith('/signup') ||
       url.startsWith('/profile') ||
       url.startsWith('/payment') ||
-      url.startsWith('/worldmap')
+      url.startsWith('/worldmap') ||
+      url.startsWith('/vr')
     );
   }
 

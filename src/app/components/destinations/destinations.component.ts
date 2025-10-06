@@ -31,7 +31,9 @@ interface ImageCache {
   templateUrl: './destinations.component.html',
   styleUrls: ['./destinations.component.scss'],
 })
-export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class DestinationsComponent
+  implements OnInit, AfterViewChecked, OnDestroy
+{
   // DATA
   destinations: string[] = [];
   placesMap: Record<string, Place[]> = {};
@@ -49,7 +51,8 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
   private mapsInitialized: Record<string, boolean> = {};
   private mapsInstances: Record<string, L.Map> = {};
 
-  private readonly PEXELS_API_KEY = 'lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq';
+  private readonly PEXELS_API_KEY =
+    'lziGnbzjpGpnwAGAu1KYKuJghDSuOVfworDozfcEESqesyoebEOalcTq';
   private readonly CACHE_DURATION = 30 * 24 * 60 * 60 * 1000; // 30 days
   private readonly CACHE_KEY = 'destination_images_cache';
 
@@ -81,7 +84,9 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   // ===== SCROLL REVEAL =====
   private initScrollReveal(): void {
-    this.scrollRevealElements = document.querySelectorAll('.scroll-reveal, .title-reveal');
+    this.scrollRevealElements = document.querySelectorAll(
+      '.scroll-reveal, .title-reveal',
+    );
     this.scrollListener = () => this.optimizedScrollReveal();
     this.resizeListener = () => this.optimizedScrollReveal();
 
@@ -108,7 +113,8 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
     this.scrollRevealElements.forEach((element: Element, index: number) => {
       const htmlElement = element as HTMLElement;
-      const elementTop = htmlElement.getBoundingClientRect().top + window.pageYOffset;
+      const elementTop =
+        htmlElement.getBoundingClientRect().top + window.pageYOffset;
       const revealPoint = 100;
       if (scrollTop + windowHeight - revealPoint > elementTop) {
         if (!htmlElement.classList.contains('show')) {
@@ -170,7 +176,7 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
     try {
       const cacheStr = localStorage.getItem(this.CACHE_KEY);
       const cache: ImageCache = cacheStr ? JSON.parse(cacheStr) : {};
-      
+
       const normalizedQuery = this.normalizeQuery(query);
       cache[normalizedQuery] = {
         url,
@@ -220,7 +226,7 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
       const cache: ImageCache = JSON.parse(cacheStr);
       const now = Date.now();
-      
+
       const recentCache: ImageCache = {};
       Object.entries(cache).forEach(([key, value]) => {
         if (now - value.timestamp < 7 * 24 * 60 * 60 * 1000) {
@@ -257,7 +263,19 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
           const alt = (photo.alt || '').toLowerCase();
           let score = 0;
 
-          const strongExclude = ['person', 'people', 'man', 'woman', 'men', 'women', 'car', 'vehicle', 'portrait', 'face', 'selfie'];
+          const strongExclude = [
+            'person',
+            'people',
+            'man',
+            'woman',
+            'men',
+            'women',
+            'car',
+            'vehicle',
+            'portrait',
+            'face',
+            'selfie',
+          ];
           if (strongExclude.some((term) => alt.includes(term))) {
             score -= 100;
           }
@@ -267,7 +285,20 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
             score -= 30;
           }
 
-          const goodTerms = ['landscape', 'city', 'architecture', 'building', 'monument', 'view', 'aerial', 'landmark', 'temple', 'beach', 'mountain', 'scenic'];
+          const goodTerms = [
+            'landscape',
+            'city',
+            'architecture',
+            'building',
+            'monument',
+            'view',
+            'aerial',
+            'landmark',
+            'temple',
+            'beach',
+            'mountain',
+            'scenic',
+          ];
           goodTerms.forEach((term) => {
             if (alt.includes(term)) score += 20;
           });
@@ -315,7 +346,9 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
       const data = await res.json();
 
       if (data.photos?.length > 0) {
-        const randomIndex = Math.floor(Math.random() * Math.min(3, data.photos.length));
+        const randomIndex = Math.floor(
+          Math.random() * Math.min(3, data.photos.length),
+        );
         const imageUrl = data.photos[randomIndex].src.medium;
         this.cacheImage(cacheKey, imageUrl);
         return imageUrl;
@@ -500,7 +533,10 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   private saveFavorites() {
     try {
-      localStorage.setItem('favoritePlaces', JSON.stringify(this.favoritePlaces));
+      localStorage.setItem(
+        'favoritePlaces',
+        JSON.stringify(this.favoritePlaces),
+      );
     } catch (err) {
       console.error('Error saving favorites:', err);
     }
@@ -527,7 +563,9 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
     const allPlaces: Place[] = Object.values(this.placesMap).flat();
-    this.searchedPlaces = allPlaces.filter((p) => p.name.toLowerCase().startsWith(query));
+    this.searchedPlaces = allPlaces.filter((p) =>
+      p.name.toLowerCase().startsWith(query),
+    );
 
     this.searchedPlaces.forEach((place) => {
       this.fetchImage(`${place.name} ${place.location}`).then((img) => {
@@ -547,13 +585,16 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
     if (this.searchQuery.trim()) {
       const query = this.searchQuery.trim().toLowerCase();
-      allPlaces = allPlaces.filter((p) => p.name.toLowerCase().startsWith(query));
+      allPlaces = allPlaces.filter((p) =>
+        p.name.toLowerCase().startsWith(query),
+      );
     }
 
     if (this.popularityFilter) {
       allPlaces = allPlaces.filter((p) => {
         if (this.popularityFilter === 'high') return p.price >= 18000;
-        if (this.popularityFilter === 'medium') return p.price >= 13000 && p.price < 18000;
+        if (this.popularityFilter === 'medium')
+          return p.price >= 13000 && p.price < 18000;
         if (this.popularityFilter === 'low') return p.price < 13000;
         return true;
       });
@@ -582,6 +623,13 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
     window.open(wikiUrl, '_blank');
   }
 
+  viewVR(placeName: string) {
+    // Option 1: Navigate using router with query param
+    this.router.navigate(['/vr'], {
+      queryParams: { place: placeName },
+    });
+  }
+
   // ===== LIFECYCLE =====
   ngAfterViewChecked(): void {
     if (this.filteredPlaces.length) this.initializeMaps();
@@ -590,8 +638,10 @@ export class DestinationsComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnDestroy(): void {
     this.cleanupMaps();
-    if (this.scrollListener) window.removeEventListener('scroll', this.scrollListener);
-    if (this.resizeListener) window.removeEventListener('resize', this.resizeListener);
+    if (this.scrollListener)
+      window.removeEventListener('scroll', this.scrollListener);
+    if (this.resizeListener)
+      window.removeEventListener('resize', this.resizeListener);
     if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
   }
 }

@@ -6,6 +6,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { WorldMapComponent } from './pages/world-map/world-map.component';
+import { VrPreviewComponent } from './pages/vr-preview/vr-preview.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { animation: 'HomePage' } },
@@ -67,6 +68,7 @@ const routes: Routes = [
     component: WorldMapComponent,
     data: { animation: 'WorldMapPage' },
   },
+  { path: 'vr', component: VrPreviewComponent, data: { animation: 'VrPage' } },
   { path: '**', redirectTo: '' },
 ];
 
