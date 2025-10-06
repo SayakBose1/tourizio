@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-declare const puter: any; // Tell TypeScript that puter.js exists globally
+declare const puter: any; 
 
 interface Message {
   user: 'You' | 'AI';
@@ -87,13 +87,12 @@ Rules for AI:
     }
   }
 
- scrollToBottom(force: boolean = false) {
-    if (!this.messagesContainer?.nativeElement) return;
-    const container = this.messagesContainer.nativeElement;
-
-    const doScroll = () => {
+  scrollToBottom(force: boolean = false) {
+    setTimeout(() => {
+      if (!this.messagesContainer?.nativeElement) return;
+      const container = this.messagesContainer.nativeElement;
       if (force) {
-        container.scrollTop = container.scrollHeight; // force scroll
+        container.scrollTop = container.scrollHeight;
       } else {
         const distanceToBottom =
           container.scrollHeight - container.scrollTop - container.clientHeight;
@@ -101,16 +100,12 @@ Rules for AI:
           container.scrollTop = container.scrollHeight;
         }
       }
-    };
-
-    // Double requestAnimationFrame ensures mobile scroll works with virtual keyboards
-    requestAnimationFrame(() => requestAnimationFrame(doScroll));
+    }, 50);
   }
 
   ngAfterViewChecked() {
-    this.scrollToBottom(); // keep near bottom during updates
+    this.scrollToBottom();
   }
-
   selectQuickReply(reply: string) {
     this.sendMessage(reply);
   }
