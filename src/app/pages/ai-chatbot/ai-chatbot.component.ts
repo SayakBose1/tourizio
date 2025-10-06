@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-declare const puter: any; 
+declare const puter: any; // Tell TypeScript that puter.js exists globally
 
 interface Message {
   user: 'You' | 'AI';
@@ -69,11 +69,11 @@ Rules for AI:
       // Optional small delay to show typing animation
       await new Promise((r) => setTimeout(r, 300));
 
-      // Ask Puter.js for answer
+      // Ask Puter.js for answer using stronger model
       const answer: string = await puter.ai.chat(
         `${context}\nUser: ${question}`,
         {
-          model: 'gpt-5-mini',
+          model: 'gpt-5', // <- stronger model
         },
       );
 
@@ -106,6 +106,7 @@ Rules for AI:
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
+
   selectQuickReply(reply: string) {
     this.sendMessage(reply);
   }
