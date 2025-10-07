@@ -22,7 +22,10 @@ export class VrPreviewComponent implements OnInit {
   isLoading: boolean = false;
   noResultsFound: boolean = false;
 
-  constructor(private http: HttpClient, private unsplashService: UnsplashService) {}
+  constructor(
+    private http: HttpClient,
+    private unsplashService: UnsplashService,
+  ) {}
 
   ngOnInit(): void {
     // Load JSON from assets
@@ -50,8 +53,15 @@ export class VrPreviewComponent implements OnInit {
 
   loadImage(place: Place): void {
     if (!place) return;
-    if (place.imgUrl) return; // Already loaded
 
+    // ✅ Check localStorage first
+    const cachedImage = localStorage.getItem(`image_${place.name}`);
+    if (cachedImage) {
+      place.imgUrl = cachedImage;
+      return;
+    }
+
+    if (place.imgUrl) return; // Already loaded
     this.isLoading = true;
     const query = `${place.name} panorama`;
 
@@ -59,8 +69,10 @@ export class VrPreviewComponent implements OnInit {
       next: (res) => {
         if (res.results && res.results.length > 0) {
           place.imgUrl = res.results[0].urls.regular;
+
+          // ✅ Save to localStorage
+          localStorage.setItem(`image_${place.name}`, place.imgUrl);
         } else {
-          // fallback image
           place.imgUrl =
             'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1080';
         }
@@ -70,7 +82,7 @@ export class VrPreviewComponent implements OnInit {
         place.imgUrl =
           'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1080';
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -83,9 +95,10 @@ export class VrPreviewComponent implements OnInit {
       this.noResultsFound = false;
     } else {
       // Filter places by name or location
-      this.filteredPlaces = this.places.filter(place =>
-        place.name.toLowerCase().includes(query) ||
-        place.location.toLowerCase().includes(query)
+      this.filteredPlaces = this.places.filter(
+        (place) =>
+          place.name.toLowerCase().includes(query) ||
+          place.location.toLowerCase().includes(query),
       );
       this.noResultsFound = this.filteredPlaces.length === 0;
     }
