@@ -100,7 +100,7 @@
 
       <!-- VR Viewer Card -->
       <div
-        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-white/50 p-8"
+        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-white/50 p-8 w-full max-w-6xl mx-auto"
       >
         <div
           class="relative rounded-2xl overflow-hidden shadow-xl"
@@ -142,11 +142,13 @@
         </div>
 
         <!-- Navigation -->
-        <div class="flex items-center justify-center gap-6 mt-8">
+        <div
+          class="flex flex-wrap items-center justify-center gap-6 mt-8 sm:flex-nowrap"
+        >
           <button
             (click)="prevImage()"
             [disabled]="currentIndex === 0"
-            class="group bg-gradient-to-r from-purple-600 to-pink-600 disabled:from-gray-400 disabled:to-gray-400 text-white px-8 py-4 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center gap-2"
+            class="group bg-gradient-to-r from-purple-600 to-pink-600 disabled:from-gray-400 disabled:to-gray-400 text-white px-8 py-4 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center gap-2 w-full sm:w-auto justify-center"
           >
             <i
               class="fas fa-chevron-left group-hover:-translate-x-1 transition-transform"
@@ -155,7 +157,7 @@
           </button>
 
           <div
-            class="bg-gradient-to-r from-purple-100 to-pink-100 px-6 py-3 rounded-xl"
+            class="bg-gradient-to-r from-purple-100 to-pink-100 px-6 py-3 rounded-xl w-full sm:w-auto text-center"
           >
             <span class="text-purple-700 font-bold text-lg">
               {{ currentIndex + 1 }} / {{ places.length }}
@@ -165,7 +167,7 @@
           <button
             (click)="nextImage()"
             [disabled]="currentIndex === places.length - 1"
-            class="group bg-gradient-to-r from-purple-600 to-pink-600 disabled:from-gray-400 disabled:to-gray-400 text-white px-8 py-4 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center gap-2"
+            class="group bg-gradient-to-r from-purple-600 to-pink-600 disabled:from-gray-400 disabled:to-gray-400 text-white px-8 py-4 rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center gap-2 w-full sm:w-auto justify-center"
           >
             Next
             <i

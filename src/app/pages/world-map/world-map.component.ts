@@ -208,7 +208,7 @@ export class WorldMapComponent implements OnInit {
             align-items: center;
             gap: 4px;
         ">
-          <span style="color: #3b82f6;">🚩</span>
+          <span style="color: #3b82f6;"><i class="fas fa-map-marker-alt text-red-500"></i></span>
           ${state}
         </p>
         
