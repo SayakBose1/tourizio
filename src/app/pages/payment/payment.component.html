@@ -457,3 +457,122 @@
     </button>
   </div>
 </div>
+
+<!-- ✅ Payment Success Modal -->
+<div
+  *ngIf="showPaymentSuccess"
+  class="fixed inset-0 bg-gradient-to-br from-green-500/90 to-emerald-600/90 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn"
+>
+  <div
+    class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 transform transition-all animate-slideUp text-center"
+  >
+    <!-- Animated Success Checkmark -->
+    <div class="relative mb-6 flex justify-center">
+      <!-- Outer Circle Animation -->
+      <div
+        class="absolute w-32 h-32 bg-green-100 rounded-full animate-ping opacity-75"
+      ></div>
+      <div
+        class="absolute w-32 h-32 bg-green-200 rounded-full animate-pulse"
+      ></div>
+
+      <!-- Main Success Circle -->
+      <div
+        class="relative inline-flex items-center justify-center w-32 h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full shadow-2xl animate-bounce"
+        style="animation-duration: 0.6s; animation-iteration-count: 1;"
+      >
+        <!-- Checkmark SVG with Drawing Animation -->
+        <svg
+          class="w-20 h-20 text-white"
+          viewBox="0 0 52 52"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            class="checkmark-circle"
+            cx="26"
+            cy="26"
+            r="25"
+            fill="none"
+            stroke="white"
+            stroke-width="2"
+          />
+          <path
+            class="checkmark-check"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+            stroke-linecap="round"
+            d="M14 27l7 7 16-16"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="mb-6">
+      <h3 class="text-3xl font-bold text-gray-800 mb-2 animate-slideDown">
+        Payment Successful!
+      </h3>
+      <p class="text-gray-600 text-base mb-4">
+        Your transaction has been completed successfully
+      </p>
+
+      <!-- Amount Display -->
+      <div
+        class="inline-block bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-3 rounded-xl border-2 border-green-200 mb-4"
+      >
+        <p class="text-sm text-gray-600 mb-1">Amount Paid</p>
+        <div class="text-3xl font-bold text-green-600 flex items-center gap-2">
+          <i class="fas fa-rupee-sign text-xl"></i>
+          <span>{{ totalAmount | number }}.00</span>
+        </div>
+      </div>
+
+      <!-- Transaction Details -->
+      <div
+        class="bg-gray-50 rounded-xl p-4 text-left space-y-2 text-sm mb-4"
+      >
+        <div class="flex justify-between">
+          <span class="text-gray-600">Transaction ID:</span>
+          <span class="font-semibold text-gray-800">#TXN{{ transactionId }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Date & Time:</span>
+          <span class="font-semibold text-gray-800">{{ transactionDate }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Payment Method:</span>
+          <span class="font-semibold text-gray-800">Card ending in {{ getLastFourDigits() }}</span>
+        </div>
+      </div>
+
+      <!-- Success Icons -->
+      <div class="flex items-center justify-center gap-2 text-green-600 text-sm">
+        <i class="fas fa-check-circle"></i>
+        <span class="font-medium">Secure Payment • Encrypted Transaction</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-3">
+      <button
+        (click)="redirectToProfile()"
+        class="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-3 sm:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
+      >
+        <span class="flex items-center justify-center gap-2 text-base sm:text-lg">
+          <i class="fas fa-user-circle"></i>
+          Go to Profile
+        </span>
+      </button>
+
+      <button
+        class="flex-1 bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-semibold py-3 rounded-xl transition-all duration-200 hover:bg-gray-50"
+      >
+        <span class="flex items-center justify-center gap-2 text-base sm:text-lg">
+          <i class="fas fa-download"></i>
+          Download Receipt
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

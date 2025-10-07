@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-declare const puter: any; // Tell TypeScript that puter.js exists globally
+declare const puter: any;
 
 interface Message {
   user: 'You' | 'AI';
@@ -24,6 +24,9 @@ export class AiChatbotComponent implements AfterViewChecked {
   userInput = '';
   messages: Message[] = [];
   quickReplies = ['Destinations', 'Rides', 'Hotels', 'Packages'];
+  
+  private shouldAutoScroll = true; // Control auto-scroll
+  private lastMessageCount = 0; // Track message count
 
   toggleChat() {
     this.isOpen = !this.isOpen;
@@ -36,6 +39,7 @@ export class AiChatbotComponent implements AfterViewChecked {
     this.messages.push({ user: 'You', text: question });
     this.userInput = '';
     this.isTyping = true;
+    this.shouldAutoScroll = true; // Enable auto-scroll for new message
     this.scrollToBottom(true);
 
     const context = `
@@ -56,7 +60,7 @@ Features:
 - 24/7 AI chat assistant for user support.
 
 Rules for AI:
-1. Only answer based on Tourizio’s features, content, and travel-related topics.
+1. Only answer based on Tourizio's features, content, and travel-related topics.
 2. If asked something unrelated, reply exactly: "I can only answer questions about the Tourizio app."
 3. Be concise, friendly, and professional.
 4. If asked for recommendations, mention realistic Indian destinations (like Goa, Jaipur, Kerala) or Tourizio packages.
@@ -66,18 +70,17 @@ Rules for AI:
 `;
 
     try {
-      // Optional small delay to show typing animation
       await new Promise((r) => setTimeout(r, 300));
 
-      // Ask Puter.js for answer using stronger model
       const answer: string = await puter.ai.chat(
         `${context}\nUser: ${question}`,
         {
-          model: 'gpt-5', // <- stronger model
+          model:  'gpt-5',
         },
       );
 
       this.messages.push({ user: 'AI', text: answer });
+      this.shouldAutoScroll = true; // Enable auto-scroll for AI response
     } catch (err) {
       console.error(err);
       this.messages.push({ user: 'AI', text: 'Oops! Something went wrong.' });
@@ -91,20 +94,35 @@ Rules for AI:
     setTimeout(() => {
       if (!this.messagesContainer?.nativeElement) return;
       const container = this.messagesContainer.nativeElement;
+      
       if (force) {
         container.scrollTop = container.scrollHeight;
-      } else {
+      } else if (this.shouldAutoScroll) {
         const distanceToBottom =
           container.scrollHeight - container.scrollTop - container.clientHeight;
-        if (distanceToBottom < 100) {
+        if (distanceToBottom < 150) {
           container.scrollTop = container.scrollHeight;
         }
       }
     }, 50);
   }
 
+  // Detect user scroll to disable auto-scroll
+  onScroll(event: any) {
+    const container = event.target;
+    const distanceToBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+    
+    // If user scrolled up more than 100px from bottom, disable auto-scroll
+    this.shouldAutoScroll = distanceToBottom < 100;
+  }
+
   ngAfterViewChecked() {
-    this.scrollToBottom();
+    // Only auto-scroll when new messages arrive
+    if (this.messages.length !== this.lastMessageCount) {
+      this.lastMessageCount = this.messages.length;
+      this.scrollToBottom();
+    }
   }
 
   selectQuickReply(reply: string) {
