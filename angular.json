@@ -27,7 +27,9 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "leaflet"
+              "leaflet",
+              "jspdf",
+              "@emailjs/browser"
             ]
           },
           "configurations": {
@@ -50,19 +52,25 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "750kb",
-                  "maximumError": "1.5mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "8kb",
-                  "maximumError": "12kb"
+                  "maximumError": "15kb"
                 },
                 {
                   "type": "bundle",
                   "name": "vendor",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "750kb",
+                  "maximumError": "1.5mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ]
             },
