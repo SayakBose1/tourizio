@@ -10,6 +10,7 @@ export interface UserSession {
   photoURL?: string;
   metadata?: {
     creationTime?: string;
+    lastSignInTime?: string;
   };
 }
 
@@ -30,6 +31,9 @@ export class UserSessionService {
         );
 
         if (isGoogleUser || firebaseUser.emailVerified) {
+          // Reload user data to ensure metadata is fresh
+          await firebaseUser.reload();
+          
           const userData: UserSession = {
             uid: firebaseUser.uid,
             displayName: firebaseUser.displayName || '',
@@ -37,7 +41,8 @@ export class UserSessionService {
             isGoogleUser,
             photoURL: firebaseUser.photoURL || '',
             metadata: {
-              creationTime: firebaseUser.metadata?.creationTime,
+              creationTime: firebaseUser.metadata.creationTime || undefined,
+              lastSignInTime: firebaseUser.metadata.lastSignInTime || undefined,
             },
           };
 

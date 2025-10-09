@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../services/booking.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import jsPDF from 'jspdf';
-import { UserSessionService } from 'src/app/services/user-session.service';
+import { UserSessionService } from '../../services/user-session.service';
 
 // ✅ Booking History Interface
 interface BookingHistory {
@@ -67,11 +67,14 @@ export class PaymentComponent implements OnInit {
   userName: string = '';
   userEmail: string = '';
 
+  // Toast property
+  showToast: boolean = false;
+
   constructor(
     private router: Router,
     private bookingService: BookingService,
     private afAuth: AngularFireAuth,
-    private userSessionService: UserSessionService, // ✅ Injected
+    private userSessionService: UserSessionService,
   ) {}
 
   ngOnInit(): void {
@@ -246,8 +249,6 @@ export class PaymentComponent implements OnInit {
   }
 
   // ✅ Redirect to profile
-  // ✅ Update the redirectToProfile method in payment.component.ts
-
   redirectToProfile(): void {
     this.showPaymentSuccess = false;
 
@@ -276,15 +277,15 @@ export class PaymentComponent implements OnInit {
     const doc = new jsPDF();
 
     // Colors
-    const primaryColor: [number, number, number] = [41, 128, 185]; // Blue
-    const successColor: [number, number, number] = [39, 174, 96]; // Green
-    const textDark: [number, number, number] = [44, 62, 80]; // Dark gray
-    const textLight: [number, number, number] = [127, 140, 141]; // Light gray
-    const bgLight: [number, number, number] = [236, 240, 241]; // Light background
+    const primaryColor: [number, number, number] = [41, 128, 185];
+    const successColor: [number, number, number] = [39, 174, 96];
+    const textDark: [number, number, number] = [44, 62, 80];
+    const textLight: [number, number, number] = [127, 140, 141];
+    const bgLight: [number, number, number] = [236, 240, 241];
 
     // Header Background
     doc.setFillColor(...primaryColor);
-    const headerHeight = 28; // slightly shorter header
+    const headerHeight = 28;
     doc.rect(0, 0, 210, headerHeight, 'F');
 
     // Title
@@ -292,8 +293,7 @@ export class PaymentComponent implements OnInit {
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(255, 255, 255);
 
-    // Vertically center text
-    const textY = headerHeight / 2 + 7; // +7 to roughly center text (adjust if needed)
+    const textY = headerHeight / 2 + 7;
     doc.text('PAYMENT RECEIPT', 105, textY, { align: 'center' });
 
     // Success Badge
@@ -351,7 +351,6 @@ export class PaymentComponent implements OnInit {
     doc.setTextColor(...primaryColor);
     doc.text('PAYMENT DETAILS', 20, 117);
 
-    // Payment info with icons/bullets
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(...textDark);
@@ -368,7 +367,7 @@ export class PaymentComponent implements OnInit {
     doc.setFont('helvetica', 'bold');
     doc.text('SUCCESS', 70, 135);
 
-    // Amount Box - Highlighted
+    // Amount Box
     doc.setFillColor(248, 249, 250);
     doc.setDrawColor(...primaryColor);
     doc.setLineWidth(1);
@@ -383,12 +382,10 @@ export class PaymentComponent implements OnInit {
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(...primaryColor);
 
-    // Measure text width
     let textWidth = doc.getTextWidth(amountText);
-    const maxWidth = 150; // maximum width that fits in the box
+    const maxWidth = 150;
     let fontSize = 16;
 
-    // Auto scale font if text too wide
     while (textWidth > maxWidth && fontSize > 10) {
       fontSize -= 1;
       doc.setFontSize(fontSize);
@@ -401,7 +398,6 @@ export class PaymentComponent implements OnInit {
     doc.setFillColor(...bgLight);
     doc.rect(0, 175, 210, 122, 'F');
 
-    // Thank you message with icon
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(...primaryColor);
@@ -432,9 +428,7 @@ export class PaymentComponent implements OnInit {
       'Email: support@tourizio.com | Phone: +1 (555) 123-4567',
       105,
       218,
-      {
-        align: 'center',
-      },
+      { align: 'center' },
     );
 
     // Bottom decorative line
@@ -458,32 +452,22 @@ export class PaymentComponent implements OnInit {
       align: 'center',
     });
 
-    // Save the PDF
     doc.save(`Receipt_TXN${this.transactionId}.pdf`);
   }
 
-  // Add these properties to your component class
-  showToast: boolean = false;
-
-  // Add this method to show the toast
   showSuccessToast() {
     this.showToast = true;
-    // Auto-hide toast after 5 seconds
     setTimeout(() => {
       this.showToast = false;
     }, 5000);
   }
 
-  // Add this method to manually close the toast
   closeToast() {
     this.showToast = false;
   }
 
-  // Update your payment success logic to trigger the toast
-  // Call this when payment is successful (probably in your makePayment method)
   onPaymentSuccess() {
     this.showPaymentSuccess = true;
-    this.showSuccessToast(); // Add this line to show the toast
-    // ... rest of your success logic
+    this.showSuccessToast();
   }
 }
