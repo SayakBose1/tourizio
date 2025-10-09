@@ -173,7 +173,7 @@
     </p>
   </div>
 
-  <form (ngSubmit)="confirmBooking()" class="space-y-4">
+  <form (ngSubmit)="confirmBooking()" #bookingForm="ngForm" class="space-y-4">
     <!-- Name -->
     <div class="transform transition-all duration-200 hover:scale-[1.01]">
       <label class="block font-medium mb-1 text-gray-700 text-sm"
@@ -187,11 +187,21 @@
           type="text"
           [(ngModel)]="booking.name"
           name="name"
+          #nameField="ngModel"
           class="w-full border border-gray-300 rounded-lg p-2 pl-10 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200"
+          [class.border-red-500]="
+            nameField.invalid && (nameField.dirty || nameField.touched)
+          "
           placeholder="Enter your full name"
           required
         />
       </div>
+      <p
+        *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)"
+        class="text-red-500 text-xs mt-1 ml-1"
+      >
+        <i class="fas fa-exclamation-circle mr-1"></i>Full name is required
+      </p>
     </div>
 
     <!-- Destination -->
@@ -207,11 +217,27 @@
           type="text"
           [(ngModel)]="booking.destination"
           name="destination"
+          #destinationField="ngModel"
           class="w-full border border-gray-300 rounded-lg p-2 pl-10 bg-gray-50 cursor-not-allowed"
+          [class.border-red-500]="
+            destinationField.invalid &&
+            (destinationField.dirty || destinationField.touched)
+          "
           placeholder="select destination from destinations page"
+          required
           readonly
         />
       </div>
+      <p
+        *ngIf="
+          destinationField.invalid &&
+          (destinationField.dirty || destinationField.touched)
+        "
+        class="text-red-500 text-xs mt-1 ml-1"
+      >
+        <i class="fas fa-exclamation-circle mr-1"></i>Please select a
+        destination from the destinations page
+      </p>
     </div>
 
     <!-- Price -->
@@ -247,10 +273,20 @@
           type="date"
           [(ngModel)]="booking.date"
           name="date"
+          #dateField="ngModel"
           class="w-full border border-gray-300 rounded-lg p-2 pl-10 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200"
+          [class.border-red-500]="
+            dateField.invalid && (dateField.dirty || dateField.touched)
+          "
           required
         />
       </div>
+      <p
+        *ngIf="dateField.invalid && (dateField.dirty || dateField.touched)"
+        class="text-red-500 text-xs mt-1 ml-1"
+      >
+        <i class="fas fa-exclamation-circle mr-1"></i>Travel date is required
+      </p>
     </div>
 
     <!-- People -->
@@ -266,11 +302,33 @@
           type="number"
           [(ngModel)]="booking.people"
           name="people"
+          #peopleField="ngModel"
           placeholder="No. of people"
           class="w-full border border-gray-300 rounded-lg p-2 pl-10 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200"
+          [class.border-red-500]="
+            peopleField.invalid && (peopleField.dirty || peopleField.touched)
+          "
+          min="1"
           required
         />
       </div>
+      <p
+        *ngIf="
+          peopleField.invalid && (peopleField.dirty || peopleField.touched)
+        "
+        class="text-red-500 text-xs mt-1 ml-1"
+      >
+        <i class="fas fa-exclamation-circle mr-1"></i>
+        <span *ngIf="peopleField.errors?.['required']"
+          >Number of travelers is required</span
+        >
+        <span
+          *ngIf="
+            peopleField.errors?.['min'] && !peopleField.errors?.['required']
+          "
+          >At least 1 traveler is required</span
+        >
+      </p>
     </div>
 
     <!-- Total Price -->
@@ -308,13 +366,7 @@
     <!-- Confirm Booking Button -->
     <button
       type="submit"
-      [disabled]="
-        isBooking ||
-        !booking.name ||
-        !booking.destination ||
-        !booking.date ||
-        booking.people < 1
-      "
+      [disabled]="isBooking || !bookingForm.valid"
       class="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-3 px-4 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed font-semibold flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
     >
       <span *ngIf="!isBooking" class="flex items-center">

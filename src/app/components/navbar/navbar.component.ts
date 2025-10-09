@@ -12,10 +12,13 @@ import { Router, NavigationEnd } from '@angular/router'; // 👈 Import Navigati
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
   menuOpen = false;
   showProfileMenu = false;
+  showLogoutSuccessToast = false;
+  showLogoutErrorToast = false;
 
   private session = inject(UserSessionService);
   user$: Observable<UserSession | null> = this.session.user$;
@@ -47,10 +50,18 @@ export class NavbarComponent {
       await signOut(auth);
       this.session.clearUser();
       this.showProfileMenu = false;
-      console.log('User logged out successfully');
-      this.router.navigate(['/']); // 👈 Optional: Redirect to home after logout
+
+      // Show success toast
+      this.showLogoutSuccessToast = true;
+      setTimeout(() => (this.showLogoutSuccessToast = false), 5000);
+
+      this.router.navigate(['/']); // Optional: redirect home
     } catch (err) {
       console.error('Logout failed', err);
+
+      // Show error toast
+      this.showLogoutErrorToast = true;
+      setTimeout(() => (this.showLogoutErrorToast = false), 5000);
     }
   }
 
@@ -62,5 +73,13 @@ export class NavbarComponent {
     if (!clickedInside && this.showProfileMenu) {
       this.showProfileMenu = false;
     }
+  }
+
+  closeLogoutSuccessToast() {
+    this.showLogoutSuccessToast = false;
+  }
+
+  closeLogoutErrorToast() {
+    this.showLogoutErrorToast = false;
   }
 }

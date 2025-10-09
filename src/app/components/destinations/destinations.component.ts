@@ -75,6 +75,8 @@ export class DestinationsComponent
   popularityFilter: 'high' | 'medium' | 'low' | '' = '';
   priceFilter: 'high' | 'medium' | 'low' | '' = '';
 
+  showLoginToast = false;
+
   constructor(
     private router: Router,
     private sessionService: UserSessionService,
@@ -742,8 +744,12 @@ export class DestinationsComponent
         if (user) {
           this.router.navigate(['/booking'], { queryParams: { placeId } });
         } else {
-          alert('You need to login first to book.');
-          this.router.navigate(['/login']);
+          this.showLoginToast = true;
+
+          // Auto-hide after 5 seconds (same as progress bar)
+          setTimeout(() => {
+            this.showLoginToast = false;
+          }, 5000);
         }
       })
       .unsubscribe();
@@ -865,6 +871,10 @@ export class DestinationsComponent
     this.router.navigate(['/vr'], {
       queryParams: { place: placeName },
     });
+  }
+
+  closeLoginToast() {
+    this.showLoginToast = false;
   }
 
   // ===== LIFECYCLE =====

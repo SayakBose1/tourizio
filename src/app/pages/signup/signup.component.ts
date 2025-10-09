@@ -1,5 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -11,7 +17,7 @@ import { UserSessionService } from '../../services/user-session.service';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
@@ -21,6 +27,9 @@ export class SignupComponent implements OnInit {
   userEmail = '';
   resendCountdown = 0;
   isResendDisabled = false;
+  showSuccessToast = false;
+  showErrorToast = false;
+  errorMessage = '';
 
   private afAuth = inject(AngularFireAuth);
   private fb = inject(FormBuilder);
@@ -31,36 +40,86 @@ export class SignupComponent implements OnInit {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
   // Email/Password signup (DO NOT set session here)
   async onSignup() {
-  if (this.signupForm.valid && !this.isLoading) {
+    if (this.signupForm.invalid) {
+      Object.keys(this.signupForm.controls).forEach((key) => {
+        const control = this.signupForm.get(key);
+        control?.markAsTouched();
+        control?.markAsDirty();
+      });
+      return;
+    }
+
     this.isLoading = true;
     const { email, password, name } = this.signupForm.value;
 
     try {
-      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      // Try creating the user
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(
+        email,
+        password,
+      );
       await userCredential.user?.updateProfile({ displayName: name });
       await userCredential.user?.sendEmailVerification();
 
-      this.isEmailSent = true;
-      this.userEmail = email;
-
-      alert(' Verification email sent. Please verify your email first.');
-      
-      // Optional: navigate to a "check-email" page
-      this.router.navigate(['/check-email']); 
-
+      // Success toast
+      this.showSuccessToast = true;
+      setTimeout(() => (this.showSuccessToast = false), 5000);
     } catch (error: any) {
-      alert(error.message);
+      console.error('Signup error:', error);
+
+      if (error.code === 'auth/email-already-in-use') {
+        try {
+          // Sign in the existing user to check email verification
+          const existingUser = await this.afAuth.signInWithEmailAndPassword(
+            email,
+            password,
+          );
+          if (!existingUser.user?.emailVerified) {
+            // Resend verification
+            await existingUser.user.sendEmailVerification();
+
+            this.showSuccessToast = true;
+            setTimeout(() => (this.showSuccessToast = false), 5000);
+            this.router.navigate(['/check-email']);
+          } else {
+            // Already verified, ask user to login
+            this.errorMessage =
+              'Email already registered. Please login instead.';
+            this.showErrorToast = true;
+            setTimeout(() => (this.showErrorToast = false), 5000);
+          }
+        } catch (signInError: any) {
+          // Password mismatch or other issues
+          this.errorMessage =
+            'Email already registered. Please login with correct credentials.';
+          this.showErrorToast = true;
+          setTimeout(() => (this.showErrorToast = false), 5000);
+        }
+      } else if (error.code === 'auth/weak-password') {
+        this.errorMessage =
+          'Password is too weak. Please use at least 6 characters.';
+        this.showErrorToast = true;
+        setTimeout(() => (this.showErrorToast = false), 5000);
+      } else if (error.code === 'auth/invalid-email') {
+        this.errorMessage = 'Invalid email address.';
+        this.showErrorToast = true;
+        setTimeout(() => (this.showErrorToast = false), 5000);
+      } else {
+        this.errorMessage =
+          error.message || 'Something went wrong. Please try again.';
+        this.showErrorToast = true;
+        setTimeout(() => (this.showErrorToast = false), 5000);
+      }
     } finally {
       this.isLoading = false;
     }
   }
-}
 
   // Google signup/login (immediately set session)
   async signupWithGoogle() {
@@ -72,16 +131,16 @@ export class SignupComponent implements OnInit {
       const user = userCredential.user;
       if (user) {
         this.session.setUser({
-            uid: userCredential.user.uid, 
+          uid: userCredential.user.uid,
           displayName: user.displayName || '',
           email: user.email || '',
           isGoogleUser: true,
-          photoURL: user.photoURL || ''
+          photoURL: user.photoURL || '',
         });
       }
 
       alert('Google signup/login successful!');
-      this.router.navigate(['/']); 
+      this.router.navigate(['/']);
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -124,11 +183,25 @@ export class SignupComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  get name() { return this.signupForm.get('name'); }
-  get email() { return this.signupForm.get('email'); }
-  get password() { return this.signupForm.get('password'); }
+  get name() {
+    return this.signupForm.get('name');
+  }
+  get email() {
+    return this.signupForm.get('email');
+  }
+  get password() {
+    return this.signupForm.get('password');
+  }
 
   goToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  // Close toasts manually
+  closeSuccessToast() {
+    this.showSuccessToast = false;
+  }
+  closeErrorToast() {
+    this.showErrorToast = false;
   }
 }

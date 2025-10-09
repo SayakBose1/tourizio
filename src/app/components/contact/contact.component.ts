@@ -3,30 +3,31 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-contact',
-  templateUrl: './contact.component.html'
+  templateUrl: './contact.component.html',
+  styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent {
-  
-  // Replace with your actual Web3Forms access key
   web3formsKey = 'ed7befcf-3cfe-405c-a6b8-b871ea4ea2ff';
-  
+
   contact = {
     name: '',
     email: '',
     phone: '',
     inquiryType: '',
-    message: ''
+    message: '',
   };
 
   isSubmitting = false;
   showSuccessMessage = false;
   showErrorMessage = false;
+  showSuccessToast: boolean = false;
+  showErrorToast: boolean = false;
 
   constructor(private http: HttpClient) {}
 
   async submitContact() {
     if (this.isSubmitting) return;
-    
+
     this.isSubmitting = true;
     this.showSuccessMessage = false;
     this.showErrorMessage = false;
@@ -41,26 +42,40 @@ export class ContactComponent {
       formData.append('inquiry_type', this.contact.inquiryType || '');
       formData.append('message', this.contact.message);
       formData.append('subject', 'New Contact Form Submission - Tourism App');
-      
+
       // Optional: Add additional metadata
       formData.append('from_name', this.contact.name);
       formData.append('reply_to', this.contact.email);
-      
-      const response = await this.http.post('https://api.web3forms.com/submit', formData).toPromise();
-      
+
+      const response = await this.http
+        .post('https://api.web3forms.com/submit', formData)
+        .toPromise();
+
       // Success
       this.showSuccessMessage = true;
-      this.resetForm();
       
+      // ✅ Show success toast
+      this.showSuccessToast = true;
+      setTimeout(() => {
+        this.showSuccessToast = false;
+      }, 5000);
+      
+      this.resetForm();
+
       // Auto-hide success message after 5 seconds
       setTimeout(() => {
         this.showSuccessMessage = false;
       }, 5000);
-      
     } catch (error) {
       console.error('Error submitting form:', error);
       this.showErrorMessage = true;
-      
+
+      // ✅ Show error toast
+      this.showErrorToast = true;
+      setTimeout(() => {
+        this.showErrorToast = false;
+      }, 5000);
+
       // Auto-hide error message after 5 seconds
       setTimeout(() => {
         this.showErrorMessage = false;
@@ -76,14 +91,14 @@ export class ContactComponent {
       email: '',
       phone: '',
       inquiryType: '',
-      message: ''
+      message: '',
     };
   }
 
   // Alternative method using async/await with better error handling
   async submitContactAlternative() {
     if (this.isSubmitting) return;
-    
+
     this.isSubmitting = true;
     this.showSuccessMessage = false;
     this.showErrorMessage = false;
@@ -97,36 +112,59 @@ export class ContactComponent {
       message: this.contact.message,
       subject: 'New Contact Form Submission - Tourism App',
       from_name: this.contact.name,
-      reply_to: this.contact.email
+      reply_to: this.contact.email,
     };
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
 
     try {
-      const response: any = await this.http.post('https://api.web3forms.com/submit', formData, { headers }).toPromise();
-      
+      const response: any = await this.http
+        .post('https://api.web3forms.com/submit', formData, { headers })
+        .toPromise();
+
       if (response.success) {
         this.showSuccessMessage = true;
-        this.resetForm();
         
+        // ✅ Show success toast
+        this.showSuccessToast = true;
+        setTimeout(() => {
+          this.showSuccessToast = false;
+        }, 5000);
+        
+        this.resetForm();
+
         setTimeout(() => {
           this.showSuccessMessage = false;
         }, 5000);
       } else {
         throw new Error(response.message || 'Submission failed');
       }
-      
     } catch (error: any) {
       console.error('Error submitting form:', error);
       this.showErrorMessage = true;
-      
+
+      // ✅ Show error toast
+      this.showErrorToast = true;
+      setTimeout(() => {
+        this.showErrorToast = false;
+      }, 5000);
+
       setTimeout(() => {
         this.showErrorMessage = false;
       }, 5000);
     } finally {
       this.isSubmitting = false;
     }
+  }
+
+  // ✅ Methods to manually close toasts
+  closeSuccessToast() {
+    this.showSuccessToast = false;
+  }
+
+  closeErrorToast() {
+    this.showErrorToast = false;
   }
 }

@@ -24,62 +24,6 @@
     </div>
   </div>
 
-  <!-- Success Message -->
-  <div
-    *ngIf="showSuccessMessage"
-    class="mb-6 flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 text-green-800 rounded-lg shadow-md animate-fade-in"
-  >
-    <div
-      class="flex-shrink-0 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center"
-    >
-      <svg
-        class="w-6 h-6 text-white"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M5 13l4 4L19 7"
-        />
-      </svg>
-    </div>
-    <div>
-      <p class="font-semibold text-lg">Thank you for your message!</p>
-      <p class="text-sm">We'll get back to you within 24 hours.</p>
-    </div>
-  </div>
-
-  <!-- Error Message -->
-  <div
-    *ngIf="showErrorMessage"
-    class="mb-6 flex items-center gap-3 p-4 bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 text-red-800 rounded-lg shadow-md animate-fade-in"
-  >
-    <div
-      class="flex-shrink-0 w-10 h-10 bg-red-500 rounded-full flex items-center justify-center"
-    >
-      <svg
-        class="w-6 h-6 text-white"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"
-        />
-      </svg>
-    </div>
-    <div>
-      <p class="font-semibold text-lg">Something went wrong!</p>
-      <p class="text-sm">Please try again or contact us directly.</p>
-    </div>
-  </div>
-
   <!-- Contact Form -->
   <form (ngSubmit)="submitContact()" #contactForm="ngForm" class="space-y-5">
     <input type="hidden" name="access_key" [value]="web3formsKey" />
@@ -109,11 +53,21 @@
           type="text"
           [(ngModel)]="contact.name"
           name="name"
+          #nameField="ngModel"
           class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+          [class.border-red-500]="
+            nameField.invalid && (nameField.dirty || nameField.touched)
+          "
           placeholder="Your full name"
           required
         />
       </div>
+      <p
+        *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)"
+        class="text-red-500 text-xs mt-1 ml-1"
+      >
+        <i class="fas fa-exclamation-circle mr-1"></i>Name is required
+      </p>
     </div>
 
     <!-- Email -->
@@ -131,11 +85,29 @@
           type="email"
           [(ngModel)]="contact.email"
           name="email"
+          #emailField="ngModel"
           class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+          [class.border-red-500]="
+            emailField.invalid && (emailField.dirty || emailField.touched)
+          "
           placeholder="your.email@example.com"
           required
+          email
         />
       </div>
+      <p
+        *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)"
+        class="text-red-500 text-xs mt-1 ml-1"
+      >
+        <i class="fas fa-exclamation-circle mr-1"></i>
+        <span *ngIf="emailField.errors?.['required']">Email is required</span>
+        <span
+          *ngIf="
+            emailField.errors?.['email'] && !emailField.errors?.['required']
+          "
+          >Please enter a valid email address</span
+        >
+      </p>
     </div>
 
     <!-- Phone -->
@@ -203,12 +175,24 @@
         <textarea
           [(ngModel)]="contact.message"
           name="message"
+          #messageField="ngModel"
           rows="5"
           class="w-full border-2 border-gray-200 rounded-xl p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical transition-all duration-200 hover:border-gray-300"
+          [class.border-red-500]="
+            messageField.invalid && (messageField.dirty || messageField.touched)
+          "
           placeholder="Tell us how we can help you with your travel plans..."
           required
         ></textarea>
       </div>
+      <p
+        *ngIf="
+          messageField.invalid && (messageField.dirty || messageField.touched)
+        "
+        class="text-red-500 text-xs mt-1 ml-1"
+      >
+        <i class="fas fa-exclamation-circle mr-1"></i>Message is required
+      </p>
     </div>
 
     <!-- Privacy Notice -->
@@ -348,6 +332,100 @@
       >
         <i class="fab fa-linkedin-in"></i>
       </a>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Success Toast Notification -->
+<div
+  *ngIf="showSuccessToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] max-w-md sm:w-auto sm:right-4 sm:top-4 animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-green-500 p-3 sm:p-4 min-w-[280px] sm:min-w-[320px] backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-2 sm:gap-3">
+      <!-- Success Icon -->
+      <div
+        class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-check-circle text-green-600 text-lg sm:text-xl"></i>
+      </div>
+
+      <!-- Content -->
+      <div class="flex-1 min-w-0">
+        <h4 class="text-gray-900 font-bold text-sm sm:text-base mb-1">
+          Message Sent Successfully!
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm">
+          Thank you for contacting us. We'll respond within 24 hours.
+        </p>
+      </div>
+
+      <!-- Close Button -->
+      <button
+        (click)="closeSuccessToast()"
+        class="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors text-sm sm:text-base"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="mt-2 sm:mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Error Toast Notification -->
+<div
+  *ngIf="showErrorToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] max-w-md sm:w-auto sm:right-4 sm:top-4"
+  style="animation: slideInRight 0.4s ease-out"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-red-500 p-3 sm:p-4 min-w-[280px] sm:min-w-[320px] backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-2 sm:gap-3">
+      <!-- Error Icon -->
+      <div
+        class="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center"
+      >
+        <i
+          class="fas fa-exclamation-circle text-red-600 text-lg sm:text-xl"
+        ></i>
+      </div>
+
+      <!-- Content -->
+      <div class="flex-1 min-w-0">
+        <h4 class="text-gray-900 font-bold text-sm sm:text-base mb-1">
+          Something Went Wrong!
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm">
+          Unable to send your message. Please try again.
+        </p>
+        <p class="text-gray-500 text-[10px] sm:text-xs mt-1 truncate">
+          Or contact us directly at support&#64;tourizio.com
+        </p>
+      </div>
+
+      <!-- Close Button -->
+      <button
+        (click)="closeErrorToast()"
+        class="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors text-sm sm:text-base"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="mt-2 sm:mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-red-500 to-rose-500 rounded-full animate-shrink"
+      ></div>
     </div>
   </div>
 </div>

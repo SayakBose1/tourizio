@@ -23,7 +23,7 @@ interface BookingHistory {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './payment.component.html',
-  styleUrls: [],
+  styleUrls: ['./payment.component.css'],
 })
 export class PaymentComponent implements OnInit {
   cardNumber = '';
@@ -158,6 +158,13 @@ export class PaymentComponent implements OnInit {
       // ✅ Show success modal instead of alert
       this.showPaymentSuccess = true;
 
+      setTimeout(() => {
+        this.showToast = true;
+        setTimeout(() => {
+          this.showToast = false;
+        }, 5000);
+      }, 500);
+
       // Clear pending booking
       localStorage.removeItem('pendingBooking');
     } catch (err) {
@@ -177,13 +184,13 @@ export class PaymentComponent implements OnInit {
       userName: this.userName,
       userEmail: this.userEmail,
       cardLastFour: this.getLastFourDigits(),
-      totalAmount: this.totalAmount
+      totalAmount: this.totalAmount,
     };
 
     // Get existing booking history or create new array
     const existingHistory = localStorage.getItem('bookingHistory');
-    let bookingHistory: BookingHistory[] = existingHistory 
-      ? JSON.parse(existingHistory) 
+    let bookingHistory: BookingHistory[] = existingHistory
+      ? JSON.parse(existingHistory)
       : [];
 
     // Add new booking to the beginning of array (most recent first)
@@ -214,7 +221,7 @@ export class PaymentComponent implements OnInit {
   // ✅ Optional: Get specific booking by transaction ID
   getBookingByTxnId(txnId: string): BookingHistory | undefined {
     const history = this.getBookingHistory();
-    return history.find(booking => booking.transactionId === txnId);
+    return history.find((booking) => booking.transactionId === txnId);
   }
 
   // ✅ Helper methods for success modal
@@ -438,5 +445,30 @@ export class PaymentComponent implements OnInit {
 
     // Save the PDF
     doc.save(`Receipt_TXN${this.transactionId}.pdf`);
+  }
+
+  // Add these properties to your component class
+  showToast: boolean = false;
+
+  // Add this method to show the toast
+  showSuccessToast() {
+    this.showToast = true;
+    // Auto-hide toast after 5 seconds
+    setTimeout(() => {
+      this.showToast = false;
+    }, 5000);
+  }
+
+  // Add this method to manually close the toast
+  closeToast() {
+    this.showToast = false;
+  }
+
+  // Update your payment success logic to trigger the toast
+  // Call this when payment is successful (probably in your makePayment method)
+  onPaymentSuccess() {
+    this.showPaymentSuccess = true;
+    this.showSuccessToast(); // Add this line to show the toast
+    // ... rest of your success logic
   }
 }

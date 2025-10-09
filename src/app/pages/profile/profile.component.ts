@@ -14,6 +14,8 @@ export class ProfileComponent implements OnInit {
   user: UserSession | null = null;
   bookings: BookingData[] = [];
   loading = true; // loading state for bookings
+  showCancelSuccessToast = false;
+  showCancelErrorToast = false;
 
   constructor(
     private sessionService: UserSessionService,
@@ -104,10 +106,12 @@ export class ProfileComponent implements OnInit {
 
     this.bookingService.deleteBooking(bookingId).subscribe({
       next: () => {
-        // Remove the cancelled booking from local array
+        // Remove from local array
         this.bookings = this.bookings.filter((b) => b.id !== bookingId);
 
-        alert('✅ Booking cancelled successfully! Check your email for details.');
+        // Show success toast
+        this.showCancelSuccessToast = true;
+        setTimeout(() => (this.showCancelSuccessToast = false), 5000);
 
         // Send cancellation email
         this.bookingService
@@ -119,8 +123,19 @@ export class ProfileComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        alert('Failed to cancel booking. Try again.');
+
+        // Show error toast
+        this.showCancelErrorToast = true;
+        setTimeout(() => (this.showCancelErrorToast = false), 5000);
       },
     });
+  }
+
+  closeCancelSuccessToast() {
+    this.showCancelSuccessToast = false;
+  }
+
+  closeCancelErrorToast() {
+    this.showCancelErrorToast = false;
   }
 }

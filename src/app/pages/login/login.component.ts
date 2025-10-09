@@ -1,5 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { UserSessionService } from '../../services/user-session.service';
@@ -19,6 +24,10 @@ export class LoginComponent implements OnInit {
   showPassword = false;
   isEmailNotVerified = false;
   userEmail = '';
+  showSuccessToast = false;
+  showErrorToast = false;
+  successMessage = '';
+  errorMessage = '';
 
   private afAuth = inject(AngularFireAuth);
   private fb = inject(FormBuilder);
@@ -28,36 +37,69 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
   async onLogin() {
-    if (!this.loginForm.valid) return;
+    Object.keys(this.loginForm.controls).forEach((key) => {
+      const control = this.loginForm.get(key);
+      control?.markAsTouched();
+      control?.markAsDirty();
+    });
+
+    if (this.loginForm.invalid) {
+      return;
+    }
 
     this.isLoading = true;
     const { email, password } = this.loginForm.value;
 
     try {
-      const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
+      const userCredential = await this.afAuth.signInWithEmailAndPassword(
+        email,
+        password,
+      );
 
+      // Check email verification
       if (!userCredential.user?.emailVerified) {
-        this.isEmailNotVerified = true;
+        this.showErrorToast = true;
+        this.errorMessage = 'Email not verified. Please check your inbox.';
+        setTimeout(() => (this.showErrorToast = false), 5000);
+        await userCredential.user.sendEmailVerification();
         this.userEmail = email;
         return;
       }
 
-      // Set session for email user
+      // Successful login
       this.session.setUser({
-          uid: userCredential.user.uid,  
+        uid: userCredential.user.uid,
         email: email,
-        displayName: email.split('@')[0],
-        isGoogleUser: false
+        displayName: userCredential.user.displayName || email.split('@')[0],
+        isGoogleUser: false,
       });
 
-      this.router.navigate(['/']); 
+      this.showSuccessToast = true;
+      this.successMessage = `Welcome back, ${userCredential.user.displayName || email.split('@')[0]}!`;
+      setTimeout(() => (this.showSuccessToast = false), 5000);
+
+      this.router.navigate(['/']);
     } catch (error: any) {
-      alert(error.message);
+      // Handle Firebase auth errors
+      this.showErrorToast = true;
+      if (error.code === 'auth/user-not-found') {
+        this.errorMessage = 'User not found. Please sign up first.';
+      } else if (error.code === 'auth/wrong-password') {
+        this.errorMessage = 'Incorrect password. Try again.';
+      } else if (error.code === 'auth/invalid-email') {
+        this.errorMessage = 'Invalid email format.';
+      } else if (error.code === 'auth/invalid-credential') {
+        this.errorMessage = 'Invalid credentials. Check email or login method.';
+      } else {
+        this.errorMessage = error.message || 'Login failed. Try again.';
+      }
+
+      setTimeout(() => (this.showErrorToast = false), 5000);
     } finally {
       this.isLoading = false;
     }
@@ -68,14 +110,13 @@ export class LoginComponent implements OnInit {
     try {
       const provider = new GoogleAuthProvider();
       const userCredential = await this.afAuth.signInWithPopup(provider);
-
       if (userCredential.user) {
         this.session.setUser({
-            uid: userCredential.user.uid,  
+          uid: userCredential.user.uid,
           email: userCredential.user.email!,
           displayName: userCredential.user.displayName || '',
           photoURL: userCredential.user.photoURL || '',
-          isGoogleUser: true
+          isGoogleUser: true,
         });
         this.router.navigate(['/']);
       }

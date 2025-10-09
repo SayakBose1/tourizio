@@ -5,41 +5,124 @@
       <div
         class="mb-4 transform transition-all duration-200 hover:scale-[1.01]"
       >
-        <label for="email" class="block mb-1 font-semibold">Email</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          placeholder="test@email.com"
-          class="w-full px-4 py-2 rounded border focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        />
+        <label for="email" class="block mb-1 font-semibold text-gray-700">
+          Email <span class="text-red-500">*</span>
+        </label>
+        <div class="relative group">
+          <span
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+          >
+            <i class="fas fa-envelope"></i>
+          </span>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="you@example.com"
+            class="w-full px-4 py-2 pl-10 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none transition-all duration-200 hover:border-gray-300"
+            [class.border-red-500]="
+              loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+            "
+          />
+        </div>
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+          class="text-red-500 text-xs mt-1 ml-1"
+        >
+          <i class="fas fa-exclamation-circle mr-1"></i>
+          <span *ngIf="loginForm.get('email')?.errors?.['required']"
+            >Email is required</span
+          >
+          <span *ngIf="loginForm.get('email')?.errors?.['email']"
+            >Please enter a valid email</span
+          >
+        </div>
       </div>
+
       <div
-        class="mb-4 transform transition-all duration-200 hover:scale-[1.01]"
+        class="mb-4 relative transform transition-all duration-200 hover:scale-[1.01]"
       >
-        <label for="password" class="block mb-1 font-semibold">Password</label>
-        <div class="relative">
+        <label for="password" class="block mb-1 font-semibold text-gray-700">
+          Password <span class="text-red-500">*</span>
+        </label>
+        <div class="relative group">
+          <span
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+          >
+            <i class="fas fa-lock"></i>
+          </span>
           <input
             [type]="showPassword ? 'text' : 'password'"
             id="password"
             formControlName="password"
             placeholder="***********"
-            class="w-full px-4 py-2 rounded border focus:ring-2 focus:ring-blue-500 focus:outline-none pr-10"
+            class="w-full px-4 py-2 pl-10 pr-10 rounded-lg border-2 border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none transition-all duration-200 hover:border-gray-300"
+            [class.border-red-500]="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
           />
           <i
-            class="fa cursor-pointer text-gray-500 absolute inset-y-0 right-3 flex items-center"
+            class="fas cursor-pointer text-gray-400 hover:text-gray-600 absolute top-1/2 -translate-y-1/2 right-3 flex items-center transition-colors"
             [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"
             (click)="togglePasswordVisibility()"
           ></i>
+        </div>
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+          class="text-red-500 text-xs mt-1 ml-1"
+        >
+          <i class="fas fa-exclamation-circle mr-1"></i>
+          <span *ngIf="loginForm.get('password')?.errors?.['required']"
+            >Password is required</span
+          >
+          <span *ngIf="loginForm.get('password')?.errors?.['minlength']">
+            Password must be at least
+            {{
+              loginForm.get("password")?.errors?.["minlength"]?.requiredLength
+            }}
+            characters
+          </span>
         </div>
       </div>
 
       <button
         type="submit"
-        class="w-full py-2 mt-2 bg-blue-600 text-white rounded hover:bg-blue-700 transform transition-all duration-200 hover:scale-[1.01]"
-        [disabled]="loginForm.invalid || isLoading"
+        class="w-full py-3 mt-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+        [disabled]="isLoading || loginForm.invalid"
       >
-        {{ isLoading ? "Logging in..." : "Sign In" }}
+        <span *ngIf="!isLoading" class="flex items-center">
+          <i class="fas fa-sign-in-alt mr-2"></i>
+          Login
+        </span>
+        <span *ngIf="isLoading" class="flex items-center">
+          <svg
+            class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          Logging in...
+        </span>
       </button>
     </form>
 
@@ -90,6 +173,81 @@
     <div class="flex items-center justify-center mt-6 text-xs text-gray-500">
       <i class="fas fa-shield-alt mr-2 text-green-600"></i>
       <span>Your information is secure and encrypted</span>
+    </div>
+  </div>
+</div>
+<!-- ✅ Login Success Toast -->
+<div
+  *ngIf="showSuccessToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-green-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-check-circle text-green-600 text-lg sm:text-xl"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="text-gray-900 font-bold text-sm sm:text-base mb-1">
+          Login Successful
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          {{ successMessage }}
+        </p>
+      </div>
+      <button
+        (click)="showSuccessToast = false"
+        class="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-sm sm:text-base"></i>
+      </button>
+    </div>
+    <div class="mt-3 sm:mt-4 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Login Error / Not Verified Toast -->
+<div
+  *ngIf="showErrorToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-red-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center"
+      >
+        <i
+          class="fas fa-exclamation-circle text-red-600 text-lg sm:text-xl"
+        ></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="text-gray-900 font-bold text-sm sm:text-base mb-1">
+          Login Failed
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          {{ errorMessage }}
+        </p>
+      </div>
+      <button
+        (click)="showErrorToast = false"
+        class="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-sm sm:text-base"></i>
+      </button>
+    </div>
+    <div class="mt-3 sm:mt-4 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-red-500 to-rose-500 rounded-full animate-shrink"
+      ></div>
     </div>
   </div>
 </div>

@@ -310,3 +310,77 @@
     </ng-template>
   </div>
 </nav>
+<!-- ✅ Logout Success Toast -->
+<div
+  *ngIf="showLogoutSuccessToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-green-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-check-circle text-green-600 text-lg sm:text-xl"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="text-gray-900 font-bold text-sm sm:text-base mb-1">
+          Logged Out
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          You have successfully logged out.
+        </p>
+      </div>
+      <button
+        (click)="closeLogoutSuccessToast()"
+        class="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-sm sm:text-base"></i>
+      </button>
+    </div>
+    <div class="mt-3 sm:mt-4 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+<!-- ✅ Logout Error Toast -->
+<div
+  *ngIf="showLogoutErrorToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-red-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center"
+      >
+        <i
+          class="fas fa-exclamation-circle text-red-600 text-lg sm:text-xl"
+        ></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="text-gray-900 font-bold text-sm sm:text-base mb-1">
+          Logout Failed
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          Something went wrong. Please try again.
+        </p>
+      </div>
+      <button
+        (click)="closeLogoutErrorToast()"
+        class="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-sm sm:text-base"></i>
+      </button>
+    </div>
+    <div class="mt-3 sm:mt-4 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-red-500 to-rose-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
