@@ -246,9 +246,24 @@ export class PaymentComponent implements OnInit {
   }
 
   // ✅ Redirect to profile
+  // ✅ Update the redirectToProfile method in payment.component.ts
+
   redirectToProfile(): void {
     this.showPaymentSuccess = false;
-    this.router.navigate(['/profile']);
+
+    // Pass booking success state to profile page
+    this.router.navigate(['/profile'], {
+      state: {
+        bookingSuccess: true,
+        bookingDetails: {
+          transactionId: this.transactionId,
+          destination: this.bookingData.destination,
+          totalAmount: this.totalAmount,
+          people: this.bookingData.people,
+          date: this.bookingData.date,
+        },
+      },
+    });
   }
 
   cancelPayment() {

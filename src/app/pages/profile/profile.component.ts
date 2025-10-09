@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   UserSessionService,
   UserSession,
@@ -13,14 +14,28 @@ import { BookingService, BookingData } from '../../services/booking.service';
 export class ProfileComponent implements OnInit {
   user: UserSession | null = null;
   bookings: BookingData[] = [];
-  loading = true; // loading state for bookings
+  loading = true;
   showCancelSuccessToast = false;
   showCancelErrorToast = false;
+
+  // ✅ Add booking success toast properties
+  showBookingSuccessToast = false;
+  bookingSuccessDetails: any = null;
 
   constructor(
     private sessionService: UserSessionService,
     private bookingService: BookingService,
-  ) {}
+    private router: Router, // ✅ Inject Router
+  ) {
+    // ✅ Check for navigation state in constructor
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      const state = navigation.extras.state;
+      if (state['bookingSuccess']) {
+        this.bookingSuccessDetails = state['bookingDetails'];
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.sessionService.user$.subscribe((u) => {
@@ -31,6 +46,17 @@ export class ProfileComponent implements OnInit {
         this.bookingService.getUserBookings(u.uid).subscribe((bookings) => {
           this.bookings = bookings;
           this.loading = false;
+
+          // ✅ Show success toast after bookings are loaded
+          if (this.bookingSuccessDetails) {
+            setTimeout(() => {
+              this.showBookingSuccessToast = true;
+              setTimeout(() => {
+                this.showBookingSuccessToast = false;
+                this.bookingSuccessDetails = null;
+              }, 5000);
+            }, 500);
+          }
         });
       } else {
         this.bookings = [];
@@ -39,12 +65,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // Fallback if Google profile photo breaks
   onImgError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/default-avatar.png';
   }
 
-  // Open inbox on desktop or mobile
   checkMail() {
     if (!this.user?.email) return;
 
@@ -65,27 +89,20 @@ export class ProfileComponent implements OnInit {
       webUrl = `https://${domain}`;
     }
 
-    // Open web inbox in new tab (works for desktop and mobile reliably)
     window.open(webUrl, '_blank');
   }
 
-  // Helper function: open app if mobile, else web
   private openLink(appUrl: string, webUrl: string) {
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     if (isMobile) {
-      // Try opening app; fallback to web after 500ms
       const timeout = setTimeout(() => {
         window.open(webUrl, '_blank');
       }, 500);
 
-      // Attempt to open app
       window.location.href = appUrl;
-
-      // Clear timeout if app opens (blur event triggers)
       window.addEventListener('blur', () => clearTimeout(timeout));
     } else {
-      // Desktop: open web inbox
       window.open(webUrl, '_blank');
     }
   }
@@ -106,14 +123,10 @@ export class ProfileComponent implements OnInit {
 
     this.bookingService.deleteBooking(bookingId).subscribe({
       next: () => {
-        // Remove from local array
         this.bookings = this.bookings.filter((b) => b.id !== bookingId);
-
-        // Show success toast
         this.showCancelSuccessToast = true;
         setTimeout(() => (this.showCancelSuccessToast = false), 5000);
 
-        // Send cancellation email
         this.bookingService
           .sendCancellationMail(booking)
           .then(() => console.log('Cancellation email sent'))
@@ -123,8 +136,6 @@ export class ProfileComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-
-        // Show error toast
         this.showCancelErrorToast = true;
         setTimeout(() => (this.showCancelErrorToast = false), 5000);
       },
@@ -137,5 +148,11 @@ export class ProfileComponent implements OnInit {
 
   closeCancelErrorToast() {
     this.showCancelErrorToast = false;
+  }
+
+  // ✅ Add method to close booking success toast
+  closeBookingSuccessToast() {
+    this.showBookingSuccessToast = false;
+    this.bookingSuccessDetails = null;
   }
 }
