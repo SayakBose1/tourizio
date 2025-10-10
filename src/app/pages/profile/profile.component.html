@@ -30,9 +30,8 @@
         <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
           <!-- Profile Image / Default Icon -->
           <div class="relative group">
-            <ng-container
-              *ngIf="user.isGoogleUser && user.photoURL; else defaultIcon"
-            >
+            <ng-container *ngIf="user.photoURL; else defaultIcon">
+              <!-- Show photoURL if available (Google or custom avatar) -->
               <img
                 [src]="user.photoURL"
                 (error)="onImgError($event)"
@@ -41,6 +40,7 @@
               />
             </ng-container>
 
+            <!-- Default icon when no photoURL -->
             <ng-template #defaultIcon>
               <div
                 class="w-28 h-28 rounded-full shadow-xl flex items-center justify-center border-4 border-white/30 backdrop-blur-sm bg-gradient-to-br from-indigo-500 to-purple-500 text-white text-4xl transform transition-transform group-hover:scale-105"
@@ -142,7 +142,7 @@
                 <i class="fas fa-user-edit text-green-600"></i>
               </div>
               <div class="text-left">
-                <p class="font-semibold text-gray-900">Update Name</p>
+                <p class="font-semibold text-gray-900">Update Profile</p>
                 <p class="text-xs text-gray-500">Edit your display name</p>
               </div>
             </div>
@@ -153,24 +153,22 @@
 
           <!-- Change Avatar -->
           <button
-            (click)="openChangeProfileModal()"
+            (click)="openChangeAvatar()"
             class="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all duration-300 group"
           >
             <div class="flex items-center gap-3">
               <div
-                class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center"
+                class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center"
               >
-                <i class="fas fa-image text-yellow-600"></i>
+                <i class="fas fa-user-circle text-indigo-600"></i>
               </div>
               <div class="text-left">
                 <p class="font-semibold text-gray-900">Change Avatar</p>
-                <p class="text-xs text-gray-500">
-                  Select or upload a new avatar
-                </p>
+                <p class="text-xs text-gray-500">Update your profile picture</p>
               </div>
             </div>
             <i
-              class="fas fa-chevron-right text-gray-400 group-hover:text-yellow-600 transition-colors"
+              class="fas fa-chevron-right text-gray-400 group-hover:text-indigo-600 transition-colors"
             ></i>
           </button>
 
@@ -419,6 +417,7 @@
       </div>
     </div>
 
+    <!-- Not Logged In State -->
     <ng-template #notLoggedIn>
       <div
         class="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-16 text-center border border-white/50"
@@ -707,385 +706,582 @@
   </div>
 </div>
 
-<!-- Change Password Modal -->
+<!-- ✅ Change Password Modal -->
 <div
   *ngIf="showChangePasswordModal"
-  class="fixed inset-0 bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn"
+  class="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn px-4"
+  (click)="closeChangePasswordModal()"
 >
   <div
-    class="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-[0_20px_70px_-15px_rgba(0,0,0,0.3)] animate-scaleIn border border-slate-200/50"
+    class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-scaleIn"
+    (click)="$event.stopPropagation()"
   >
     <!-- Header -->
-    <div class="mb-6">
-      <div
-        class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-blue-500/20"
-      >
-        <svg
-          class="w-6 h-6 text-white"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-          />
-        </svg>
+          <i class="fas fa-key text-blue-600 text-xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900">Change Password</h3>
       </div>
-      <h3 class="text-2xl font-bold text-slate-900 mb-1">Change Password</h3>
-      <p class="text-slate-500 text-sm">
-        Create a secure password to protect your account
-      </p>
-    </div>
-
-    <!-- Input Field -->
-    <div class="mb-6">
-      <label class="block text-sm font-medium text-slate-700 mb-2"
-        >New Password</label
-      >
-      <input
-        type="password"
-        placeholder="Enter new password"
-        [(ngModel)]="newPassword"
-        class="w-full border border-slate-300 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all text-slate-900 placeholder:text-slate-400 bg-slate-50/50 hover:bg-white"
-      />
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="flex justify-end gap-3">
       <button
         (click)="closeChangePasswordModal()"
-        class="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl hover:bg-slate-200 transition-all font-medium hover:shadow-md"
+        class="text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+
+    <p class="text-gray-600 mb-6">
+      Enter your current password and choose a new one.
+    </p>
+
+    <!-- Form -->
+    <div class="space-y-4 mb-6">
+      <!-- Current Password -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Current Password
+        </label>
+        <div class="relative">
+          <input
+            [type]="showCurrentPassword ? 'text' : 'password'"
+            [(ngModel)]="currentPassword"
+            placeholder="Enter current password"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all pr-12"
+          />
+          <button
+            type="button"
+            (click)="showCurrentPassword = !showCurrentPassword"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            <i
+              [class]="showCurrentPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+            ></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- New Password -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          New Password
+        </label>
+        <div class="relative">
+          <input
+            [type]="showNewPassword ? 'text' : 'password'"
+            [(ngModel)]="newPassword"
+            placeholder="Enter new password"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all pr-12"
+          />
+          <button
+            type="button"
+            (click)="showNewPassword = !showNewPassword"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            <i
+              [class]="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+            ></i>
+          </button>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">
+          Must be at least 6 characters long
+        </p>
+      </div>
+
+      <!-- Confirm New Password -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Confirm New Password
+        </label>
+        <div class="relative">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            [(ngModel)]="confirmPassword"
+            placeholder="Confirm new password"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all pr-12"
+          />
+          <button
+            type="button"
+            (click)="showConfirmPassword = !showConfirmPassword"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            <i
+              [class]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+            ></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex gap-3">
+      <button
+        (click)="closeChangePasswordModal()"
+        class="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-300"
       >
         Cancel
       </button>
       <button
-        (click)="updatePassword()"
-        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all font-medium shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:-translate-y-0.5"
+        (click)="confirmChangePassword()"
+        [disabled]="passwordLoading"
+        class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        Update Password
+        <span *ngIf="!passwordLoading">Update Password</span>
+        <span *ngIf="passwordLoading" class="flex items-center gap-2">
+          <svg
+            class="animate-spin h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+          Updating...
+        </span>
       </button>
     </div>
   </div>
 </div>
 
-<!-- Update Profile Modal -->
+<!-- ✅ Update Profile Modal -->
 <div
   *ngIf="showUpdateProfileModal"
-  class="fixed inset-0 bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn"
+  class="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn px-4"
+  (click)="closeUpdateProfileModal()"
 >
   <div
-    class="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-[0_20px_70px_-15px_rgba(0,0,0,0.3)] animate-scaleIn border border-slate-200/50"
+    class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-scaleIn"
+    (click)="$event.stopPropagation()"
   >
     <!-- Header -->
-    <div class="mb-6">
-      <div
-        class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-emerald-500/20"
-      >
-        <svg
-          class="w-6 h-6 text-white"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-          />
-        </svg>
+          <i class="fas fa-user-edit text-green-600 text-xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900">Update Profile</h3>
       </div>
-      <h3 class="text-2xl font-bold text-slate-900 mb-1">Update Profile Name</h3>
-      <p class="text-slate-500 text-sm">Personalize how others see you</p>
-    </div>
-
-    <!-- Input Field -->
-    <div class="mb-6">
-      <label class="block text-sm font-medium text-slate-700 mb-2"
-        >Display Name</label
-      >
-      <input
-        type="text"
-        placeholder="Enter display name"
-        [(ngModel)]="updatedDisplayName"
-        class="w-full border border-slate-300 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-slate-900 placeholder:text-slate-400 bg-slate-50/50 hover:bg-white"
-      />
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="flex justify-end gap-3">
       <button
         (click)="closeUpdateProfileModal()"
-        class="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl hover:bg-slate-200 transition-all font-medium hover:shadow-md"
+        class="text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+
+    <p class="text-gray-600 mb-6">
+      Update your display name and profile information.
+    </p>
+
+    <!-- Form -->
+    <div class="space-y-4 mb-6">
+      <!-- Display Name -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Display Name
+        </label>
+        <input
+          type="text"
+          [(ngModel)]="newDisplayName"
+          placeholder="Enter your name"
+          class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+        />
+      </div>
+
+      <!-- Email (Read-only) -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Email Address
+        </label>
+        <input
+          type="email"
+          [value]="user?.email"
+          disabled
+          class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-500 cursor-not-allowed"
+        />
+        <p class="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex gap-3">
+      <button
+        (click)="closeUpdateProfileModal()"
+        class="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-300"
       >
         Cancel
       </button>
       <button
-        (click)="saveProfileUpdate()"
-        class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all font-medium shadow-lg shadow-emerald-600/30 hover:shadow-xl hover:shadow-emerald-600/40 hover:-translate-y-0.5"
+        (click)="confirmUpdateProfile()"
+        [disabled]="profileLoading"
+        class="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        Save Changes
+        <span *ngIf="!profileLoading">Save Changes</span>
+        <span *ngIf="profileLoading" class="flex items-center gap-2">
+          <svg
+            class="animate-spin h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+          Saving...
+        </span>
       </button>
     </div>
   </div>
 </div>
 
-<!-- Change Profile Modal -->
+<!-- ✅ Change Avatar Modal -->
 <div
-  *ngIf="showChangeProfileModal"
-  class="fixed inset-0 bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn"
+  *ngIf="showChangeAvatarModal"
+  class="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn px-4"
+  (click)="closeChangeAvatarModal()"
 >
   <div
-    class="bg-white rounded-3xl p-8 max-w-xl w-full max-h-[85vh] relative shadow-[0_20px_70px_-15px_rgba(0,0,0,0.3)] animate-scaleIn border border-slate-200/50 flex flex-col"
+    class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 animate-scaleIn max-h-[90vh] overflow-y-auto"
+    (click)="$event.stopPropagation()"
   >
     <!-- Header -->
-    <div class="mb-6 flex-shrink-0">
-      <div
-        class="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-amber-500/20"
-      >
-        <svg
-          class="w-6 h-6 text-white"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
+          <i class="fas fa-user-circle text-indigo-600 text-xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900">Change Avatar</h3>
       </div>
-      <h3 class="text-2xl font-bold text-slate-900 mb-1">
-        Change Profile Avatar
-      </h3>
-      <p class="text-slate-500 text-sm">
-        Choose from presets or upload your own photo
-      </p>
+      <button
+        (click)="closeChangeAvatarModal()"
+        class="text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-xl"></i>
+      </button>
     </div>
 
-    <!-- Scrollable Content -->
-    <div class="flex-1 overflow-y-auto pr-2 -mr-2 min-h-0">
-      <!-- Predefined Avatars -->
-      <div class="mb-6">
-        <label class="block text-sm font-medium text-slate-700 mb-3"
-          >Select Avatar</label
-        >
-        <div class="grid grid-cols-5 gap-3">
+    <!-- Current Avatar Preview -->
+    <div class="mb-6 text-center">
+      <p class="text-sm text-gray-600 mb-3">Current Avatar</p>
+      <div class="inline-block relative">
+        <img
+          *ngIf="selectedAvatar; else currentDefault"
+          [src]="selectedAvatar"
+          alt="Current Avatar"
+          class="w-24 h-24 rounded-full shadow-lg object-cover border-4 border-indigo-200"
+        />
+        <ng-template #currentDefault>
           <div
-            *ngFor="let avatar of predefinedAvatars"
-            class="aspect-square rounded-2xl border-2 cursor-pointer transition-all hover:scale-105 relative group overflow-hidden"
-            [class.border-amber-500]="selectedAvatar === avatar"
-            [class.border-slate-200]="selectedAvatar !== avatar"
-            [class.shadow-lg]="selectedAvatar === avatar"
-            [class.shadow-amber-500]="selectedAvatar === avatar"
-            (click)="selectAvatar(avatar)"
+            class="w-24 h-24 rounded-full shadow-lg flex items-center justify-center border-4 border-indigo-200 bg-gradient-to-br from-indigo-500 to-purple-500 text-white text-3xl mx-auto"
           >
-            <img
-              [src]="avatar"
-              alt="avatar"
-              class="w-full h-full object-cover"
-            />
-            <div
-              *ngIf="selectedAvatar === avatar"
-              class="absolute inset-0 bg-amber-500/20 flex items-center justify-center"
-            >
-              <div
-                class="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center"
-              >
-                <svg
-                  class="w-4 h-4 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="3"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </div>
-            </div>
+            <i class="fas fa-user"></i>
           </div>
-        </div>
+        </ng-template>
       </div>
+    </div>
 
-      <!-- Upload Custom Avatar -->
-      <div class="mb-6">
-        <label class="block text-sm font-medium text-slate-700 mb-3"
-          >Upload Custom Photo</label
-        >
-        <div
-          class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-amber-400 hover:bg-amber-50/50 transition-all cursor-pointer group"
-          [class.pointer-events-none]="uploadingAvatar"
-          [class.opacity-50]="uploadingAvatar"
-        >
-          <input
-            type="file"
-            accept="image/*"
-            (change)="uploadCustomAvatar($event)"
-            class="hidden"
-            id="avatar-upload"
-            [disabled]="uploadingAvatar"
-          />
-          <label for="avatar-upload" class="cursor-pointer">
-            <div
-              class="w-16 h-16 mx-auto mb-3 bg-slate-100 rounded-2xl flex items-center justify-center group-hover:bg-amber-100 transition-colors"
-            >
-              <svg
-                *ngIf="!uploadingAvatar"
-                class="w-8 h-8 text-slate-400 group-hover:text-amber-600 transition-colors"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                />
-              </svg>
-              <!-- Loading spinner -->
-              <div
-                *ngIf="uploadingAvatar"
-                class="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"
-              ></div>
-            </div>
-            <p class="text-sm text-slate-600 font-medium mb-1">
-              {{ uploadingAvatar ? "Uploading..." : "Click to upload" }}
-            </p>
-            <p class="text-xs text-slate-400">PNG, JPG or GIF (max. 5MB)</p>
-          </label>
-        </div>
+    <!-- Upload from Device -->
+    <div class="mb-6">
+      <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+        <i class="fas fa-upload text-indigo-600"></i>
+        Upload Your Photo
+      </h4>
+      <div
+        class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-indigo-400 transition-colors cursor-pointer bg-gray-50 hover:bg-indigo-50"
+      >
+        <input
+          type="file"
+          #fileInput
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          class="hidden"
+        />
+        <button (click)="fileInput.click()" class="w-full" type="button">
+          <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+          <p class="text-sm text-gray-600 font-medium">
+            Click to upload or drag and drop
+          </p>
+          <p class="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
+        </button>
+      </div>
+    </div>
 
-        <div
-          *ngIf="customAvatar"
-          class="mt-4 flex items-center gap-4 p-4 bg-slate-50 rounded-2xl"
+    <!-- Divider -->
+    <div class="flex items-center gap-3 mb-6">
+      <div class="flex-1 h-px bg-gray-300"></div>
+      <span class="text-sm text-gray-500 font-medium">OR CHOOSE A PRESET</span>
+      <div class="flex-1 h-px bg-gray-300"></div>
+    </div>
+
+    <!-- Preset Avatars -->
+    <div class="mb-6">
+      <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+        <i class="fas fa-palette text-indigo-600"></i>
+        Preset Avatars
+      </h4>
+      <div class="grid grid-cols-4 gap-3">
+        <button
+          *ngFor="let avatar of presetAvatars"
+          (click)="selectPresetAvatar(avatar)"
+          [class.ring-4]="selectedAvatar === avatar.url"
+          [class.ring-indigo-500]="selectedAvatar === avatar.url"
+          class="relative group rounded-xl overflow-hidden hover:scale-105 transition-transform"
+          type="button"
         >
           <img
-            [src]="customAvatar"
-            class="w-16 h-16 object-cover rounded-2xl shadow-md"
+            [src]="avatar.url"
+            [alt]="avatar.name"
+            class="w-full aspect-square object-cover"
           />
-          <div class="flex-1">
-            <p class="text-sm font-medium text-slate-900">
-              Custom avatar uploaded
-            </p>
-            <p class="text-xs text-slate-500">Ready to save</p>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-2"
+          >
+            <span class="text-white text-xs font-semibold">{{
+              avatar.name
+            }}</span>
           </div>
-        </div>
+          <div
+            *ngIf="selectedAvatar === avatar.url"
+            class="absolute top-1 right-1 w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-check text-white text-xs"></i>
+          </div>
+        </button>
       </div>
     </div>
 
-    <!-- Action Buttons -->
-    <div
-      class="flex justify-end gap-3 pt-6 border-t border-slate-200 flex-shrink-0"
-    >
+    <!-- Buttons -->
+    <div class="flex gap-3">
       <button
-        (click)="closeChangeProfileModal()"
-        class="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl hover:bg-slate-200 transition-all font-medium hover:shadow-md"
+        (click)="closeChangeAvatarModal()"
+        class="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-300"
       >
         Cancel
       </button>
       <button
-        (click)="saveProfileAvatar()"
-        class="px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-2xl hover:from-amber-700 hover:to-amber-800 transition-all font-medium shadow-lg shadow-amber-600/30 hover:shadow-xl hover:shadow-amber-600/40 hover:-translate-y-0.5"
+        (click)="confirmChangeAvatar()"
+        [disabled]="avatarLoading || !selectedAvatar"
+        class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        Save Avatar
+        <span *ngIf="!avatarLoading">Save Avatar</span>
+        <span *ngIf="avatarLoading" class="flex items-center gap-2">
+          <svg
+            class="animate-spin h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+          Saving...
+        </span>
       </button>
     </div>
   </div>
 </div>
 
-<!-- Email Preferences Modal -->
+<!-- ✅ Email Preferences Modal -->
 <div
   *ngIf="showEmailPreferencesModal"
-  class="fixed inset-0 bg-gradient-to-br from-slate-900/60 to-slate-800/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn"
+  class="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fadeIn px-4"
+  (click)="closeEmailPreferencesModal()"
 >
   <div
-    class="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-[0_20px_70px_-15px_rgba(0,0,0,0.3)] animate-scaleIn border border-slate-200/50"
+    class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-scaleIn"
+    (click)="$event.stopPropagation()"
   >
     <!-- Header -->
-    <div class="mb-6">
-      <div
-        class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-purple-500/20"
-      >
-        <svg
-          class="w-6 h-6 text-white"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-          />
-        </svg>
+          <i class="fas fa-bell text-purple-600 text-xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900">Email Preferences</h3>
       </div>
-      <h3 class="text-2xl font-bold text-slate-900 mb-1">Email Preferences</h3>
-      <p class="text-slate-500 text-sm">Manage how we communicate with you</p>
-    </div>
-
-    <!-- Preference Options -->
-    <div class="space-y-4 mb-6">
-      <label
-        class="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition-all group"
-      >
-        <div class="relative flex items-center h-6">
-          <input
-            type="checkbox"
-            [(ngModel)]="prefBookingEmails"
-            class="w-5 h-5 rounded-lg border-2 border-slate-300 text-purple-600 focus:ring-2 focus:ring-purple-500/50 focus:ring-offset-0 cursor-pointer transition-all"
-          />
-        </div>
-        <div class="flex-1">
-          <p class="font-medium text-slate-900 mb-0.5">Booking Notifications</p>
-          <p class="text-sm text-slate-500">
-            Get updates about your reservations and bookings
-          </p>
-        </div>
-      </label>
-
-      <label
-        class="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition-all group"
-      >
-        <div class="relative flex items-center h-6">
-          <input
-            type="checkbox"
-            [(ngModel)]="prefPromotions"
-            class="w-5 h-5 rounded-lg border-2 border-slate-300 text-purple-600 focus:ring-2 focus:ring-purple-500/50 focus:ring-offset-0 cursor-pointer transition-all"
-          />
-        </div>
-        <div class="flex-1">
-          <p class="font-medium text-slate-900 mb-0.5">Promotional Emails</p>
-          <p class="text-sm text-slate-500">
-            Receive special offers, deals, and updates
-          </p>
-        </div>
-      </label>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="flex justify-end gap-3">
       <button
         (click)="closeEmailPreferencesModal()"
-        class="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl hover:bg-slate-200 transition-all font-medium hover:shadow-md"
+        class="text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+
+    <p class="text-gray-600 mb-6">Manage your email notification settings.</p>
+
+    <!-- Preferences -->
+    <div class="space-y-4 mb-6">
+      <!-- Booking Confirmations -->
+      <div class="flex items-start justify-between p-4 bg-gray-50 rounded-xl">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="fas fa-ticket-alt text-purple-600"></i>
+            <p class="font-semibold text-gray-900">Booking Confirmations</p>
+          </div>
+          <p class="text-xs text-gray-600">
+            Receive emails when you book a trip
+          </p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            [(ngModel)]="emailPreferences.bookingConfirmations"
+            class="sr-only peer"
+          />
+          <div
+            class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"
+          ></div>
+        </label>
+      </div>
+
+      <!-- Promotional Emails -->
+      <div class="flex items-start justify-between p-4 bg-gray-50 rounded-xl">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="fas fa-tag text-purple-600"></i>
+            <p class="font-semibold text-gray-900">Promotional Emails</p>
+          </div>
+          <p class="text-xs text-gray-600">Get deals and special offers</p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            [(ngModel)]="emailPreferences.promotions"
+            class="sr-only peer"
+          />
+          <div
+            class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"
+          ></div>
+        </label>
+      </div>
+
+      <!-- Travel Updates -->
+      <div class="flex items-start justify-between p-4 bg-gray-50 rounded-xl">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="fas fa-plane text-purple-600"></i>
+            <p class="font-semibold text-gray-900">Travel Updates</p>
+          </div>
+          <p class="text-xs text-gray-600">
+            Important updates about your trips
+          </p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            [(ngModel)]="emailPreferences.travelUpdates"
+            class="sr-only peer"
+          />
+          <div
+            class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"
+          ></div>
+        </label>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="flex items-start justify-between p-4 bg-gray-50 rounded-xl">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="fas fa-newspaper text-purple-600"></i>
+            <p class="font-semibold text-gray-900">Newsletter</p>
+          </div>
+          <p class="text-xs text-gray-600">
+            Monthly travel tips and inspiration
+          </p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            [(ngModel)]="emailPreferences.newsletter"
+            class="sr-only peer"
+          />
+          <div
+            class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"
+          ></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex gap-3">
+      <button
+        (click)="closeEmailPreferencesModal()"
+        class="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-300"
       >
         Cancel
       </button>
       <button
         (click)="saveEmailPreferences()"
-        class="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl hover:from-purple-700 hover:to-purple-800 transition-all font-medium shadow-lg shadow-purple-600/30 hover:shadow-xl hover:shadow-purple-600/40 hover:-translate-y-0.5"
+        [disabled]="preferencesLoading"
+        class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        Save Preferences
+        <span *ngIf="!preferencesLoading">Save Preferences</span>
+        <span *ngIf="preferencesLoading" class="flex items-center gap-2">
+          <svg
+            class="animate-spin h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+          Saving...
+        </span>
       </button>
     </div>
   </div>
@@ -1166,6 +1362,302 @@
     </div>
 
     <div class="mt-3 sm:mt-4 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-red-500 to-rose-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Change Password Success Toast -->
+<div
+  *ngIf="showPasswordSuccessToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-blue-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-check-circle text-blue-600 text-lg sm:text-xl"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="text-gray-900 font-bold text-sm sm:text-base mb-1">
+          Password Updated
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          Your password has been changed successfully.
+        </p>
+      </div>
+      <button
+        (click)="closePasswordSuccessToast()"
+        class="text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <i class="fas fa-times text-sm sm:text-base"></i>
+      </button>
+    </div>
+    <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ❌ Change Password Error Toast -->
+<div
+  *ngIf="showPasswordErrorToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-red-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-exclamation-circle text-red-600"></i>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-900 text-sm sm:text-base mb-1">
+          Update Failed
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          {{ passwordErrorMessage }}
+        </p>
+      </div>
+      <button
+        (click)="closePasswordErrorToast()"
+        class="text-gray-400 hover:text-gray-600"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-red-500 to-rose-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Update Profile Success Toast -->
+<div
+  *ngIf="showProfileSuccessToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-green-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-check-circle text-green-600"></i>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-900 text-sm sm:text-base mb-1">
+          Profile Updated
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          Your profile has been updated successfully.
+        </p>
+      </div>
+      <button
+        (click)="closeProfileSuccessToast()"
+        class="text-gray-400 hover:text-gray-600"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ❌ Update Profile Error Toast -->
+<div
+  *ngIf="showProfileErrorToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-red-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-exclamation-circle text-red-600"></i>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-900 text-sm sm:text-base mb-1">
+          Update Failed
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          {{ profileErrorMessage }}
+        </p>
+      </div>
+      <button
+        (click)="closeProfileErrorToast()"
+        class="text-gray-400 hover:text-gray-600"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-red-500 to-rose-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Change Avatar Success Toast -->
+<div
+  *ngIf="showAvatarSuccessToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-indigo-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-user-circle text-indigo-600"></i>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-900 text-sm sm:text-base mb-1">
+          Avatar Updated
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          Your profile avatar has been changed.
+        </p>
+      </div>
+      <button
+        (click)="closeAvatarSuccessToast()"
+        class="text-gray-400 hover:text-gray-600"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ❌ Change Avatar Error Toast -->
+<div
+  *ngIf="showAvatarErrorToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-red-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-exclamation-circle text-red-600"></i>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-900 text-sm sm:text-base mb-1">
+          Avatar Update Failed
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          {{ avatarErrorMessage }}
+        </p>
+      </div>
+      <button
+        (click)="closeAvatarErrorToast()"
+        class="text-gray-400 hover:text-gray-600"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-red-500 to-rose-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Email Preferences Success Toast -->
+<div
+  *ngIf="showPreferencesSuccessToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-purple-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-bell text-purple-600"></i>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-900 text-sm sm:text-base mb-1">
+          Preferences Saved
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          Your email preferences have been updated.
+        </p>
+      </div>
+      <button
+        (click)="closePreferencesSuccessToast()"
+        class="text-gray-400 hover:text-gray-600"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-purple-500 to-fuchsia-500 rounded-full animate-shrink"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ❌ Email Preferences Error Toast -->
+<div
+  *ngIf="showPreferencesErrorToast"
+  class="fixed top-4 right-4 z-[100] w-[90%] sm:w-auto sm:max-w-md animate-slideInRight"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl border-l-4 border-red-500 p-4 sm:p-5 backdrop-blur-lg"
+  >
+    <div class="flex items-start gap-3 sm:gap-4">
+      <div
+        class="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center"
+      >
+        <i class="fas fa-exclamation-circle text-red-600"></i>
+      </div>
+      <div class="flex-1">
+        <h4 class="font-bold text-gray-900 text-sm sm:text-base mb-1">
+          Save Failed
+        </h4>
+        <p class="text-gray-600 text-xs sm:text-sm leading-snug">
+          {{ preferencesErrorMessage }}
+        </p>
+      </div>
+      <button
+        (click)="closePreferencesErrorToast()"
+        class="text-gray-400 hover:text-gray-600"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
       <div
         class="h-full bg-gradient-to-r from-red-500 to-rose-500 rounded-full animate-shrink"
       ></div>

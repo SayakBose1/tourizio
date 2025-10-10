@@ -6,6 +6,8 @@ import {
 } from '../../services/user-session.service';
 import { BookingService, BookingData } from '../../services/booking.service';
 import { AuthService } from '../../services/auth.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-profile',
@@ -21,28 +23,66 @@ export class ProfileComponent implements OnInit {
   showBookingSuccessToast = false;
   bookingSuccessDetails: any = null;
   showSettings = false;
+
+  // Delete Account Modal
   showDeleteModal = false;
   deletePassword = '';
   deleteLoading = false;
   showDeleteErrorToast = false;
   deleteErrorMessage = '';
   showDeleteSuccessToast = false;
+
+  // Change Password Modal
   showChangePasswordModal = false;
+  currentPassword = '';
   newPassword = '';
+  confirmPassword = '';
+  passwordLoading = false;
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+  showPasswordSuccessToast = false;
+  showPasswordErrorToast = false;
+  passwordErrorMessage = '';
+
+  // Update Profile Modal
   showUpdateProfileModal = false;
-  updatedDisplayName = '';
+  newDisplayName = '';
+  profileLoading = false;
+  showProfileSuccessToast = false;
+  showProfileErrorToast = false;
+  profileErrorMessage = '';
+
+  // Email Preferences Modal
   showEmailPreferencesModal = false;
-  prefBookingEmails = false;
-  prefPromotions = false;
-  showChangeProfileModal = false;
+  emailPreferences = {
+    bookingConfirmations: true,
+    promotions: true,
+    travelUpdates: true,
+    newsletter: false,
+  };
+  preferencesLoading = false;
+  showPreferencesSuccessToast = false;
+  showPreferencesErrorToast = false;
+  preferencesErrorMessage = '';
+
+  // Change Avatar Modal
+  showChangeAvatarModal = false;
+  selectedAvatar: string | null = null;
+  avatarLoading = false;
+  uploadedFile: File | null = null;
+  showAvatarSuccessToast = false;
+  showAvatarErrorToast = false;
+  avatarErrorMessage = '';
 
   constructor(
     private sessionService: UserSessionService,
     private bookingService: BookingService,
     private authService: AuthService,
+    private afAuth: AngularFireAuth,
+    private cdr: ChangeDetectorRef,
     private router: Router,
   ) {
-    // Check for navigation state in constructor
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
       const state = navigation.extras.state;
@@ -62,7 +102,6 @@ export class ProfileComponent implements OnInit {
           this.bookings = bookings;
           this.loading = false;
 
-          // Show success toast after bookings are loaded
           if (this.bookingSuccessDetails) {
             setTimeout(() => {
               this.showBookingSuccessToast = true;
@@ -86,10 +125,8 @@ export class ProfileComponent implements OnInit {
 
   checkMail() {
     if (!this.user?.email) return;
-
     const domain = this.user.email.split('@')[1].toLowerCase();
     let webUrl = '';
-
     if (domain.includes('gmail.com')) {
       webUrl = 'https://mail.google.com/mail/u/0/#inbox';
     } else if (
@@ -103,18 +140,15 @@ export class ProfileComponent implements OnInit {
     } else {
       webUrl = `https://${domain}`;
     }
-
     window.open(webUrl, '_blank');
   }
 
   private openLink(appUrl: string, webUrl: string) {
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
     if (isMobile) {
       const timeout = setTimeout(() => {
         window.open(webUrl, '_blank');
       }, 500);
-
       window.location.href = appUrl;
       window.addEventListener('blur', () => clearTimeout(timeout));
     } else {
@@ -130,10 +164,8 @@ export class ProfileComponent implements OnInit {
 
   cancelBooking(bookingId: string | undefined): void {
     if (!bookingId) return;
-
     const booking = this.bookings.find((b) => b.id === bookingId);
     if (!booking) return;
-
     if (!confirm('Are you sure you want to cancel this booking?')) return;
 
     this.bookingService.deleteBooking(bookingId).subscribe({
@@ -141,7 +173,6 @@ export class ProfileComponent implements OnInit {
         this.bookings = this.bookings.filter((b) => b.id !== bookingId);
         this.showCancelSuccessToast = true;
         setTimeout(() => (this.showCancelSuccessToast = false), 5000);
-
         this.bookingService
           .sendCancellationMail(booking)
           .then(() => console.log('Cancellation email sent'))
@@ -160,22 +191,18 @@ export class ProfileComponent implements OnInit {
   closeCancelSuccessToast() {
     this.showCancelSuccessToast = false;
   }
-
   closeCancelErrorToast() {
     this.showCancelErrorToast = false;
   }
-
   closeBookingSuccessToast() {
     this.showBookingSuccessToast = false;
     this.bookingSuccessDetails = null;
   }
 
-  // Settings panel methods
   toggleSettings() {
     this.showSettings = !this.showSettings;
   }
 
-  // Delete account methods
   openDeleteAccount() {
     this.showDeleteModal = true;
     this.showSettings = false;
@@ -190,8 +217,6 @@ export class ProfileComponent implements OnInit {
 
   async confirmDeleteAccount() {
     if (!this.user) return;
-
-    // Validate password for email/password users
     if (!this.user.isGoogleUser && !this.deletePassword) {
       this.deleteErrorMessage =
         'Please enter your password to confirm deletion.';
@@ -199,32 +224,25 @@ export class ProfileComponent implements OnInit {
       setTimeout(() => (this.showDeleteErrorToast = false), 5000);
       return;
     }
-
     this.deleteLoading = true;
 
     try {
-      // Re-authenticate before deleting
       if (this.user.isGoogleUser) {
         await this.authService.reauthenticateWithGoogle();
       } else {
         await this.authService.reauthenticate(this.deletePassword);
       }
 
-      // Delete the account
       await this.authService.deleteAccount();
 
-      // ✅ Show success toast
       this.deleteLoading = false;
       this.showDeleteModal = false;
       this.showDeleteSuccessToast = true;
-
-      // Hide success toast after 5 seconds
       setTimeout(() => (this.showDeleteSuccessToast = false), 5000);
     } catch (error: any) {
       this.deleteLoading = false;
       this.showDeleteModal = false;
 
-      // Handle different error types
       if (error.code === 'auth/wrong-password') {
         this.deleteErrorMessage = 'Incorrect password. Please try again.';
       } else if (error.code === 'auth/requires-recent-login') {
@@ -246,148 +264,348 @@ export class ProfileComponent implements OnInit {
   closeDeleteErrorToast() {
     this.showDeleteErrorToast = false;
   }
-
-  // ✅ Close delete success toast
   closeDeleteSuccessToast() {
     this.showDeleteSuccessToast = false;
   }
 
-  // Change Password
+  // ✅ Change Password Methods
   openChangePassword() {
-    this.showChangePasswordModal = true;
+    if (this.user?.isGoogleUser) {
+      alert(
+        '⚠️ Google users cannot change password here.\n\nPlease manage your password through your Google account settings.',
+      );
+      this.showSettings = false;
+      return;
+    }
+
     this.showSettings = false;
+    this.showChangePasswordModal = true;
+    this.currentPassword = '';
+    this.newPassword = '';
+    this.confirmPassword = '';
   }
 
   closeChangePasswordModal() {
     this.showChangePasswordModal = false;
+    this.currentPassword = '';
     this.newPassword = '';
+    this.confirmPassword = '';
+    this.passwordLoading = false;
+    this.showCurrentPassword = false;
+    this.showNewPassword = false;
+    this.showConfirmPassword = false;
   }
 
-  async updatePassword() {
-    if (!this.newPassword) return alert('Enter new password');
+  async confirmChangePassword() {
+    if (!this.currentPassword || !this.newPassword || !this.confirmPassword) {
+      this.passwordErrorMessage = 'Please fill in all fields.';
+      this.showPasswordErrorToast = true;
+      setTimeout(() => (this.showPasswordErrorToast = false), 5000);
+      return;
+    }
+
+    if (this.newPassword.length < 6) {
+      this.passwordErrorMessage =
+        'New password must be at least 6 characters long.';
+      this.showPasswordErrorToast = true;
+      setTimeout(() => (this.showPasswordErrorToast = false), 5000);
+      return;
+    }
+
+    if (this.newPassword !== this.confirmPassword) {
+      this.passwordErrorMessage = 'New passwords do not match.';
+      this.showPasswordErrorToast = true;
+      setTimeout(() => (this.showPasswordErrorToast = false), 5000);
+      return;
+    }
+
+    if (this.currentPassword === this.newPassword) {
+      this.passwordErrorMessage =
+        'New password must be different from current password.';
+      this.showPasswordErrorToast = true;
+      setTimeout(() => (this.showPasswordErrorToast = false), 5000);
+      return;
+    }
+
+    this.passwordLoading = true;
 
     try {
-      const user = await this.authService.getCurrentUser();
+      await this.authService.reauthenticate(this.currentPassword);
+      const user = await this.afAuth.currentUser;
       if (user) {
         await user.updatePassword(this.newPassword);
-        alert('Password updated successfully');
+        this.passwordLoading = false;
         this.closeChangePasswordModal();
+        this.showPasswordSuccessToast = true;
+        setTimeout(() => (this.showPasswordSuccessToast = false), 5000);
       }
     } catch (error: any) {
-      alert(error.message || 'Failed to update password');
+      this.passwordLoading = false;
+      console.error('Change password error:', error);
+      this.passwordErrorMessage =
+        error.code === 'auth/wrong-password'
+          ? 'Current password is incorrect.'
+          : error.message || 'Failed to change password.';
+      this.showPasswordErrorToast = true;
+      setTimeout(() => (this.showPasswordErrorToast = false), 5000);
     }
   }
 
-  // Update Profile
+  closePasswordSuccessToast() {
+    this.showPasswordSuccessToast = false;
+  }
+  closePasswordErrorToast() {
+    this.showPasswordErrorToast = false;
+  }
+
+  // ✅ Update Profile Methods
   openUpdateProfile() {
-    this.showUpdateProfileModal = true;
     this.showSettings = false;
-    this.updatedDisplayName = this.user?.displayName || '';
+    this.showUpdateProfileModal = true;
+    this.newDisplayName = this.user?.displayName || '';
   }
 
   closeUpdateProfileModal() {
     this.showUpdateProfileModal = false;
+    this.newDisplayName = '';
+    this.profileLoading = false;
   }
 
-  async saveProfileUpdate() {
-    if (!this.updatedDisplayName) return alert('Enter display name');
+  async confirmUpdateProfile() {
+    if (!this.newDisplayName || !this.newDisplayName.trim()) {
+      this.profileErrorMessage = 'Please enter a display name.';
+      this.showProfileErrorToast = true;
+      setTimeout(() => (this.showProfileErrorToast = false), 5000);
+      return;
+    }
+
+    const trimmedName = this.newDisplayName.trim();
+
+    if (trimmedName === this.user?.displayName) {
+      this.profileErrorMessage = 'No changes were made.';
+      this.showProfileErrorToast = true;
+      setTimeout(() => (this.showProfileErrorToast = false), 5000);
+      return;
+    }
+
+    this.profileLoading = true;
 
     try {
-      const user = await this.authService.getCurrentUser();
+      const user = await this.afAuth.currentUser;
       if (user) {
-        await user.updateProfile({ displayName: this.updatedDisplayName });
-        alert('Profile updated successfully');
-        this.user!.displayName = this.updatedDisplayName; // update locally
+        await user.updateProfile({ displayName: trimmedName });
+        if (this.user) {
+          this.user.displayName = trimmedName;
+          this.sessionService.setUser(this.user);
+        }
+        this.profileLoading = false;
         this.closeUpdateProfileModal();
+        this.showProfileSuccessToast = true;
+        setTimeout(() => (this.showProfileSuccessToast = false), 5000);
       }
     } catch (error: any) {
-      alert(error.message || 'Failed to update profile');
+      console.error('Update profile error:', error);
+      this.profileLoading = false;
+      this.profileErrorMessage =
+        error.message || 'Failed to update profile. Please try again.';
+      this.showProfileErrorToast = true;
+      setTimeout(() => (this.showProfileErrorToast = false), 5000);
     }
   }
 
-  // Email Preferences
-  openEmailPreferences() {
-    this.showEmailPreferencesModal = true;
-    this.showSettings = false;
+  closeProfileSuccessToast() {
+    this.showProfileSuccessToast = false;
+  }
+  closeProfileErrorToast() {
+    this.showProfileErrorToast = false;
+  }
 
-    // Load current preferences from user metadata or Firestore
-    // Example placeholders:
-    this.prefBookingEmails = true;
-    this.prefPromotions = false;
+  // ✅ Email Preferences Methods
+  openEmailPreferences() {
+    this.showSettings = false;
+    this.showEmailPreferencesModal = true;
   }
 
   closeEmailPreferencesModal() {
     this.showEmailPreferencesModal = false;
+    this.preferencesLoading = false;
+  }
+
+  loadEmailPreferences() {
+    if (!this.user) return;
+    const saved = localStorage.getItem(`emailPrefs_${this.user.uid}`);
+    if (saved) {
+      try {
+        this.emailPreferences = JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to load email preferences', e);
+      }
+    }
   }
 
   saveEmailPreferences() {
-    // TODO: Save preferences to Firestore
-    alert('Email preferences saved');
-    this.closeEmailPreferencesModal();
+    if (!this.user) return;
+    this.preferencesLoading = true;
+
+    setTimeout(() => {
+      localStorage.setItem(
+        `emailPrefs_${this.user!.uid}`,
+        JSON.stringify(this.emailPreferences),
+      );
+      this.preferencesLoading = false;
+      this.closeEmailPreferencesModal();
+      this.showPreferencesSuccessToast = true;
+      setTimeout(() => (this.showPreferencesSuccessToast = false), 5000);
+    }, 500);
   }
 
-  predefinedAvatars: string[] = [
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Phoenix',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Nebula',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Thunder',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Eclipse',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Cosmic',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Cipher',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Quantum',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Velvet',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Doctor',
-    'https://api.dicebear.com/9.x/adventurer/svg?seed=Ninja',
+  closePreferencesSuccessToast() {
+    this.showPreferencesSuccessToast = false;
+  }
+  closePreferencesErrorToast() {
+    this.showPreferencesErrorToast = false;
+  }
+
+  presetAvatars = [
+    {
+      name: 'Ninja',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ninja',
+    },
+    {
+      name: 'Pilot',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pilot',
+    },
+    {
+      name: 'Doctor',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Doctor',
+    },
+    {
+      name: 'Chef',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Chef',
+    },
+    {
+      name: 'Artist',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Artist',
+    },
+    {
+      name: 'Gamer',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Gamer',
+    },
+    {
+      name: 'Scientist',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Scientist',
+    },
+    {
+      name: 'Explorer',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=explorer&accessories=sunglasses&clothing=hoodie&eyebrows=default&eyes=happy&mouth=smile&top=hat',
+    },
+    {
+      name: 'Superhero',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Superhero',
+    },
+    {
+      name: 'Astronaut',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Astronaut',
+    },
+    {
+      name: 'Teacher',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Teacher',
+    },
+    {
+      name: 'Musician',
+      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Musician',
+    },
   ];
 
-  selectedAvatar: string | null = null;
-  customAvatar: string | null = null;
-
-  openChangeProfileModal() {
-    this.showChangeProfileModal = true;
+  openChangeAvatar() {
     this.showSettings = false;
+    this.showChangeAvatarModal = true;
     this.selectedAvatar = this.user?.photoURL || null;
-    this.customAvatar = null;
+    this.uploadedFile = null;
   }
 
-  closeChangeProfileModal() {
-    this.showChangeProfileModal = false;
+  closeChangeAvatarModal() {
+    this.showChangeAvatarModal = false;
     this.selectedAvatar = null;
-    this.customAvatar = null;
+    this.uploadedFile = null;
+    this.avatarLoading = false;
   }
 
-  selectAvatar(avatar: string) {
-    this.selectedAvatar = avatar;
-    this.customAvatar = null; // reset custom if predefined is selected
+  selectPresetAvatar(avatar: { name: string; url: string }) {
+    this.selectedAvatar = avatar.url;
+    this.uploadedFile = null;
   }
 
-  uploadCustomAvatar(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.customAvatar = e.target.result;
-        this.selectedAvatar = null; // reset predefined if custom is selected
-      };
-      reader.readAsDataURL(file);
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    if (!file.type.startsWith('image/')) {
+      this.avatarErrorMessage = 'Please select an image file.';
+      this.showAvatarErrorToast = true;
+      setTimeout(() => (this.showAvatarErrorToast = false), 5000);
+      return;
     }
+
+    if (file.size > 5 * 1024 * 1024) {
+      this.avatarErrorMessage = 'File size must be less than 5MB.';
+      this.showAvatarErrorToast = true;
+      setTimeout(() => (this.showAvatarErrorToast = false), 5000);
+      return;
+    }
+
+    this.uploadedFile = file;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.selectedAvatar = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
-  async saveProfileAvatar() {
+  async confirmChangeAvatar() {
+    if (!this.selectedAvatar) {
+      this.avatarErrorMessage = 'Please select an avatar.';
+      this.showAvatarErrorToast = true;
+      setTimeout(() => (this.showAvatarErrorToast = false), 5000);
+      return;
+    }
+
+    this.avatarLoading = true;
+
     try {
-      const user = await this.authService.getCurrentUser();
-      if (!user) return;
+      const user = await this.afAuth.currentUser;
+      if (user) {
+        await user.updateProfile({ photoURL: this.selectedAvatar });
+        if (this.user) {
+          // ✅ Pass a new object to trigger change detection
+          this.user = {
+            ...this.user,
+            photoURL: this.selectedAvatar,
+          };
+          this.sessionService.setUser(this.user);
+        }
 
-      let avatarUrl = this.selectedAvatar || this.customAvatar;
-      if (!avatarUrl) return alert('Select or upload an avatar');
-
-      await user.updateProfile({ photoURL: avatarUrl });
-
-      // Update locally
-      this.user!.photoURL = avatarUrl;
-      alert('Profile avatar updated successfully');
-      this.closeChangeProfileModal();
+        this.avatarLoading = false;
+        this.closeChangeAvatarModal();
+        this.showAvatarSuccessToast = true;
+        setTimeout(() => (this.showAvatarSuccessToast = false), 5000);
+      }
     } catch (error: any) {
-      alert(error.message || 'Failed to update avatar');
+      console.error('Update avatar error:', error);
+      this.avatarLoading = false;
+      this.avatarErrorMessage =
+        error.message || 'Failed to update avatar. Please try again.';
+      this.showAvatarErrorToast = true;
+      setTimeout(() => (this.showAvatarErrorToast = false), 5000);
     }
+  }
+
+  closeAvatarSuccessToast() {
+    this.showAvatarSuccessToast = false;
+  }
+
+  closeAvatarErrorToast() {
+    this.showAvatarErrorToast = false;
   }
 }
