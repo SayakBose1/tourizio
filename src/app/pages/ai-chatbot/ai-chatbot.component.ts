@@ -18,6 +18,7 @@ interface Message {
 @Component({
   selector: 'app-ai-chatbot',
   templateUrl: './ai-chatbot.component.html',
+  styleUrls: ['./ai-chatbot.component.css'],
 })
 export class AiChatbotComponent implements AfterViewChecked {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
