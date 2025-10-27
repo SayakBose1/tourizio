@@ -25,7 +25,7 @@
   </div>
 
   <!-- Contact Form -->
-  <form (ngSubmit)="submitContact()" #contactForm="ngForm" class="space-y-5">
+  <form (ngSubmit)="submitContact(contactForm)" #contactForm="ngForm" class="space-y-5">
     <input type="hidden" name="access_key" [value]="web3formsKey" />
     <input
       type="hidden"

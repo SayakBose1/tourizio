@@ -25,7 +25,7 @@ export class ContactComponent {
 
   constructor(private http: HttpClient) {}
 
-  async submitContact() {
+  async submitContact(contactForm: any) {
     if (this.isSubmitting) return;
 
     this.isSubmitting = true;
@@ -66,6 +66,16 @@ export class ContactComponent {
       setTimeout(() => {
         this.showSuccessMessage = false;
       }, 5000);
+
+      // ✅ Reset form and model correctly
+    contactForm.resetForm();
+    this.contact = {
+      name: '',
+      email: '',
+      phone: '',
+      inquiryType: '',
+      message: '',
+    };
     } catch (error) {
       console.error('Error submitting form:', error);
       this.showErrorMessage = true;
