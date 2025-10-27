@@ -169,7 +169,7 @@
       Book Your Destination
     </h2>
     <p class="text-gray-600 text-sm">
-      Visit destinations page to book your dream destination.
+      Fill in the details below to book your dream destination.
     </p>
   </div>
 
@@ -204,29 +204,36 @@
       </p>
     </div>
 
-    <!-- Destination -->
+    <!-- Destination Dropdown -->
     <div class="transform transition-all duration-200 hover:scale-[1.01]">
       <label class="block font-medium mb-1 text-gray-700 text-sm"
         >Destination <span class="text-red-500">*</span></label
       >
       <div class="relative">
-        <span class="absolute left-3 top-3 text-gray-400">
+        <span class="absolute left-3 top-3 text-gray-400 z-10">
           <i class="fas fa-map-marker-alt"></i>
         </span>
-        <input
-          type="text"
+        <select
           [(ngModel)]="booking.destination"
+          (ngModelChange)="onDestinationChange($event)"
           name="destination"
           #destinationField="ngModel"
-          class="w-full border border-gray-300 rounded-lg p-2 pl-10 bg-gray-50 cursor-not-allowed"
+          class="w-full border border-gray-300 rounded-lg p-2 pl-10 pr-10 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200 appearance-none bg-white cursor-pointer"
           [class.border-red-500]="
             destinationField.invalid &&
             (destinationField.dirty || destinationField.touched)
           "
-          placeholder="select destination from destinations page"
+          [class.bg-gray-50]="!isManualSelection && selectedPlace"
           required
-          readonly
-        />
+        >
+          <option value="">-- Select a destination --</option>
+          <option *ngFor="let place of allPlaces" [value]="place.name">
+            {{ place.name }}
+          </option>
+        </select>
+        <span class="absolute right-3 top-3 text-gray-400 pointer-events-none">
+          <i class="fas fa-chevron-down"></i>
+        </span>
       </div>
       <p
         *ngIf="
@@ -236,14 +243,21 @@
         class="text-red-500 text-xs mt-1 ml-1"
       >
         <i class="fas fa-exclamation-circle mr-1"></i>Please select a
-        destination from the destinations page
+        destination
+      </p>
+      <p
+        *ngIf="selectedPlace && !isManualSelection"
+        class="text-blue-600 text-xs mt-1 ml-1"
+      >
+        <i class="fas fa-info-circle mr-1"></i>Pre-selected from destinations
+        page. You can change it if needed.
       </p>
     </div>
 
     <!-- Price -->
     <div class="transform transition-all duration-200 hover:scale-[1.01]">
       <label class="block font-medium mb-1 text-gray-700 text-sm"
-        >Price (per person)</label
+        >Price (per person) <span class="text-red-500">*</span></label
       >
       <div class="relative">
         <span class="absolute left-3 top-3 text-gray-400">
@@ -251,13 +265,20 @@
         </span>
         <input
           type="text"
-          [value]="selectedPlace?.price | currency: 'INR'"
+          [value]="
+            selectedPlace
+              ? (selectedPlace.price | currency: 'INR')
+              : 'Select destination first'
+          "
           name="price"
           class="w-full border border-gray-300 rounded-lg p-2 pl-10 bg-gray-50 cursor-not-allowed"
-          placeholder="check price from destinations page"
           readonly
         />
       </div>
+      <p *ngIf="selectedPlace?.days" class="text-gray-600 text-xs mt-1 ml-1">
+        <i class="fas fa-calendar-day mr-1"></i>Trip duration:
+        {{ selectedPlace.days }} {{ selectedPlace.days === 1 ? "day" : "days" }}
+      </p>
     </div>
 
     <!-- Date -->
@@ -333,7 +354,7 @@
 
     <!-- Total Price -->
     <div
-      *ngIf="selectedPlace"
+      *ngIf="selectedPlace && booking.people"
       class="transform transition-all duration-200 hover:scale-[1.01]"
     >
       <label class="block font-medium mb-1 text-gray-700 text-sm"
@@ -350,6 +371,10 @@
           class="w-full border-2 border-green-200 rounded-lg p-2 pl-10 bg-green-50 font-semibold text-green-700 cursor-not-allowed"
         />
       </div>
+      <p class="text-gray-600 text-xs mt-1 ml-1">
+        <i class="fas fa-calculator mr-1"></i>₹{{ selectedPlace.price }} ×
+        {{ booking.people }} {{ booking.people === 1 ? "person" : "people" }}
+      </p>
     </div>
 
     <!-- Info Box -->

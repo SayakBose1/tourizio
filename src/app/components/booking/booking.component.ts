@@ -10,6 +10,7 @@ interface Place {
   name: string;
   location: string;
   price: number;
+  days?: number;
 }
 
 @Component({
@@ -28,6 +29,8 @@ export class BookingComponent implements OnInit {
   };
   selectedPlace: Place | null = null;
   placesMap: Record<string, Place[]> = {};
+  allPlaces: Place[] = [];
+  isManualSelection = false; // Track if user manually selected from dropdown
 
   successMessage = '';
   errorMessage = '';
@@ -45,18 +48,36 @@ export class BookingComponent implements OnInit {
       .then((res) => res.json())
       .then((data: any) => {
         this.placesMap = data.placesMap || {};
+        // Flatten all places into a single array for dropdown
+        this.allPlaces = Object.values(this.placesMap).flat();
 
         const placeId = +this.route.snapshot.queryParams['placeId'];
-        if (placeId) this.prefillBooking(placeId);
+        if (placeId) {
+          this.prefillBooking(placeId);
+        }
       })
       .catch((err) => console.error('Error loading places JSON', err));
   }
 
   prefillBooking(placeId: number) {
-    const allPlaces: Place[] = Object.values(this.placesMap).flat();
-    this.selectedPlace = allPlaces.find((p) => p.id === placeId) || null;
+    this.selectedPlace = this.allPlaces.find((p) => p.id === placeId) || null;
     if (this.selectedPlace) {
       this.booking.destination = this.selectedPlace.name;
+      this.isManualSelection = false; // This came from destinations page
+    }
+  }
+
+  onDestinationChange(placeName: string) {
+    if (!placeName) {
+      this.selectedPlace = null;
+      this.booking.destination = '';
+      return;
+    }
+
+    this.selectedPlace = this.allPlaces.find((p) => p.name === placeName) || null;
+    if (this.selectedPlace) {
+      this.booking.destination = this.selectedPlace.name;
+      this.isManualSelection = true; // User manually selected from dropdown
     }
   }
 
@@ -99,7 +120,7 @@ export class BookingComponent implements OnInit {
     if (this.booking.name) progress += 25;
     if (this.booking.destination) progress += 25;
     if (this.booking.date) progress += 25;
-    if (this.booking.people >= 1) progress += 25;
+    if (this.booking.people && this.booking.people >= 1) progress += 25;
 
     return progress;
   }
