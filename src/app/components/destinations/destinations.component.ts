@@ -825,8 +825,23 @@ export class DestinationsComponent
   }
 
   onFilterChange(): void {
+    // Check if any filter is active
+    const hasActiveFilter =
+      this.popularityFilter || this.priceFilter || this.searchQuery.trim();
+
+    // If no filters are active, clear searchedPlaces and show random 6 cards
+    if (!hasActiveFilter) {
+      this.searchedPlaces = [];
+      this.selectedDestination = null;
+      this.filteredPlaces = [];
+      this.cleanupMaps();
+      return;
+    }
+
+    // Start with all places from the map
     let allPlaces: Place[] = Object.values(this.placesMap).flat();
 
+    // Apply search filter if there's a query
     if (this.searchQuery.trim()) {
       const query = this.searchQuery.trim().toLowerCase();
       allPlaces = allPlaces.filter((p) =>
@@ -834,6 +849,7 @@ export class DestinationsComponent
       );
     }
 
+    // Apply popularity filter
     if (this.popularityFilter) {
       allPlaces = allPlaces.filter((p) => {
         if (this.popularityFilter === 'high') return p.price >= 18000;
@@ -844,16 +860,26 @@ export class DestinationsComponent
       });
     }
 
+    // Apply price sorting
     if (this.priceFilter) {
       allPlaces = allPlaces.sort((a, b) => {
         if (this.priceFilter === 'high') return b.price - a.price;
-        if (this.priceFilter === 'medium') return a.price - b.price;
         if (this.priceFilter === 'low') return a.price - b.price;
         return 0;
       });
     }
 
+    // Update searchedPlaces to show filtered results
     this.searchedPlaces = allPlaces;
+
+    // Load images for filtered places
+    this.searchedPlaces.forEach((place) => {
+      this.fetchImage(`${place.name} ${place.location}`).then((img) => {
+        place.image = img;
+      });
+    });
+
+    // Update maps
     setTimeout(() => {
       this.cleanupMaps();
       this.filteredPlaces = [...this.searchedPlaces];
